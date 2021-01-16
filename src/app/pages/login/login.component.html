@@ -1,0 +1,48 @@
+<!-- 
+<ion-content class="ion-padding">
+   <ion-img src="assets/imgs/logo.png"></ion-img>
+   <h2><b>Virtual World, Real Hope</b></h2>
+  <form [formGroup]="loginForm" (keyup.enter)="save()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">{{'LOGIN.EMAIL' | translate }}</ion-label>
+        <ion-input formControlName="email" ></ion-input>
+      </ion-item>
+      <app-control-error-message [control]="loginForm['controls']['email']"></app-control-error-message>
+
+      <ion-item>
+        <ion-label position="stacked">{{'LOGIN.PASSWORD' | translate }}</ion-label>
+        <ion-input formControlName="password"  type="password"  ></ion-input>
+      </ion-item>
+      <app-control-error-message [control]="loginForm['controls']['password']"></app-control-error-message>
+    </ion-list>
+  <ion-button expand="block" color="primary" type="submit" [disabled]="!loginForm.valid" (click)="save()">{{'LOGIN.LOGIN' | translate}}</ion-button>
+  </form>
+    <ion-button [routerLink]="['/signup']" fill="clear" color='medium'>
+      {{'LOGIN.GO_SIGNUP' | translate }}
+    </ion-button>
+</ion-content> -->
+
+<nb-layout>
+  <nb-layout-column>
+    <ion-img src="assets/imgs/logo_1.png"></ion-img>
+    <hr style="width:40%">
+    <h1 style="text-align: center;">Virtual World, Real Hope</h1>
+    <form [formGroup]="loginForm" (keyup.enter)="save()">
+      <nb-card accent="info">
+        <nb-card-body>
+          <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Email" formControlName="email">
+          <app-control-error-message [control]="loginForm['controls']['email']"></app-control-error-message>
+          <br>
+          <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Password" formControlName="password" type="password">
+          <app-control-error-message [control]="loginForm['controls']['password']"></app-control-error-message>
+        </nb-card-body>
+        <nb-card-footer>
+          <button nbButton fullWidth outline shape="semi-round" status="info" type="submit" [disabled]="!loginForm.valid" (click)="save()">
+            {{'LOGIN.LOGIN' | translate}} <nb-icon icon="arrow-forward-outline"></nb-icon>
+          </button>
+        </nb-card-footer>
+      </nb-card>
+    </form>
+  </nb-layout-column>
+</nb-layout>
