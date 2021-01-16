@@ -1,0 +1,267 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button  (click)="editPatient()">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-label>Connect Wirelessly</ion-label>
+      <ion-toggle color="secondary" [(ngModel)]="mainEventsService.wirelessMode"></ion-toggle>
+    </ion-buttons> -->
+    <ion-title>{{'PATIENT.PATIENT' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item [color]="mainEventsService.wirelessHeadsetSelected ? 'secondary' : 'danger'" *ngIf="mainEventsService.wirelessMode">
+    <ion-label>Connect To Headset Wirelessly </ion-label>
+    <ion-select placeholder="Select Headset" [(ngModel)]="mainEventsService.wirelessHeadsetSelected">
+      <ion-select-option *ngFor="let headset of headsets" [value]="headset.serial">{{ headset.name }} ({{headset.serial}})
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- <ion-card *ngIf="!mainEventsService.wirelessMode">
+    <ion-card-content>
+      <div class="headset-status">
+        <div *ngIf="mainEventsService.headsetIsReady()">
+          <ion-icon color="primary" name="checkmark-circle-outline"></ion-icon>
+          <ion-text color="primary">
+            The connected headset is ready.
+          </ion-text>
+        </div>
+
+        <div *ngIf="mainEventsService.preparingHeadset()">
+          <ion-spinner></ion-spinner>
+          <ion-text color="primary">
+            We are preparing the connected headset now, please wait...
+          </ion-text>
+        </div>
+
+        <div *ngIf="mainEventsService.headsetIsNotAuthorized()">
+          <ion-icon color="warning" name="alert"></ion-icon>
+          <ion-text color="warning">
+            The connected headset is not authorized!
+          </ion-text>
+        </div>
+        <div *ngIf="mainEventsService.headsetIsNotReady()">
+          <ion-icon color="warning" name="alert"></ion-icon>
+          <ion-text color="warning">
+            The connected headset is not ready, you can try to re-plug it.
+          </ion-text>
+        </div>
+
+        <div *ngIf="mainEventsService.someHeadsetsReady()">
+          <ion-icon color="success" name="checkmark-circle-outline"></ion-icon>
+          <ion-text color="success">
+            You have some ready headsets, you are safe to run any module now.
+          </ion-text>
+        </div>
+
+        <div *ngIf="mainEventsService.noHeadsetsReady()">
+          <ion-icon color="danger" name="close-circle-outline"></ion-icon>
+          <ion-text color="danger">
+            You have no headsets ready yet, Plug your headset through the USB.
+          </ion-text>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card> -->
+
+  <ion-card>
+    <ion-card-header>
+      <ion-list>
+        <ion-item>
+          <ion-text color="primary">
+            <h4>Patient Name: <b>{{patient?.name}}</b></h4>
+          </ion-text>
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          <ion-button item-right style="justify-content: space-between; text-transform:none!important;" shape="round" fill="outline" (click)="toggleShowPatientInfo()">
+            <!-- Show Patient Information -->
+              <ion-icon name="arrow-down"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-header>
+
+    <ion-card-content *ngIf="showPatientInfo">
+      <ion-card-subtitle color="medium">{{'PATIENT.DIAGNOSIS' | translate }}: {{patient?.diagnosis}}</ion-card-subtitle>
+      <ion-card-subtitle color="medium">{{'PATIENT.DATE_OF_BIRTH' | translate }}: {{patient?.date_of_birth}}</ion-card-subtitle>
+      <ion-card-subtitle color="medium">{{'PATIENT.PHONE' | translate }}: {{patient?.phone}}</ion-card-subtitle>
+      <ion-card-subtitle color="medium">{{'PATIENT.HAS_GUARDIAN' | translate }}: {{ (patient?.has_guardian ? 'YES' : 'NO') | translate}}</ion-card-subtitle>
+      <ion-card-subtitle color="medium" *ngIf="patient?.has_guardian" >{{'PATIENT.GUARDIAN_NAME' | translate }}: {{patient?.guardian_name}}</ion-card-subtitle>
+      <ion-card-subtitle color="medium">{{'PATIENT.ADDRESS' | translate }}: {{patient?.address}}</ion-card-subtitle>
+      <ion-avatar slot="start">
+        <ion-img [src]="patient?.photo ||'assets/imgs/avatar.png'"></ion-img>
+      </ion-avatar>
+      <ion-item>
+        <ion-label color="primary" position="stacked">{{'PATIENT.NOTES' | translate }}</ion-label>
+        {{patient?.notes}}
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-text color="primary">
+        <h4>Active Headsets: {{ onlineHeadsets.length }}</h4>
+      </ion-text>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- <ion-card-title  color="primary">Active Headsets: {{ onlineHeadsets.length }}</ion-card-title> -->
+      <!-- <ion-card-title *ngIf="onlineHeadsets.length == 0" color="danger">No Headsets Found</ion-card-title> -->
+      <ion-list>
+        <ion-item *ngFor="let headset of onlineHeadsets">
+          <ion-label> <small>Headset Name: </small> {{ headset.headsetName }} - <small> Serial Number: </small> {{ headset.headsetSerial }}</ion-label>
+          <ion-checkbox color="secondary" 
+                        (ionChange)="selectOnlineHeadset($event)"
+                        [name]="headset.headsetSerial"
+                        [disabled]="isOnlineHeadsetSelected && (selectedOnlineHeadset!=headset.headsetSerial)"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-grid>
+      <ion-row class="ion-align-items-start ion-justify-content-center">
+        <ion-col size="4" *ngFor="let module of modules">
+          <ion-card [ngClass]="{'has-updates': mainEventsService.trackedModules[module.id]?.new_version}" class="module-card">
+            <img [src]="module?.image ||'assets/imgs/vr_logo.jpeg'"/>
+            <ion-card-header>
+              <ion-text color="secondary" style="text-align:center;">
+                <h4>{{module?.name}}</h4>
+              </ion-text>
+              <!-- <ion-card-title color="secondary">{{module?.name}}</ion-card-title> -->
+              <ion-card-subtitle>
+                <!-- {{module?.description}} -->
+            </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading">
+                <!-- <ion-progress-bar [value]="mainEventsService.trackedModules[module.id]?.ratio"
+                [buffer]="mainEventsService.trackedModules[module.id]?.ratio"
+                class="my-buffer-progress"
+                ></ion-progress-bar> -->
+                <progress-bar [progress]="mainEventsService.trackedModules[module.id]?.ratio | round"
+                              [color-degraded]="{'0': '#ffbf00', '50': '#45a8c8', '90': '#0dbab1'}"
+                              >
+                </progress-bar>
+                <!-- Downloading Updates... {{ mainEventsService.trackedModules[module.id]?.ratio | round }} % -->
+
+                <ion-grid>
+                  <ion-row>
+                    <ion-col>
+
+                      <ion-button *ngIf="!mainEventsService.trackedModules[module.id]?.paused"
+                      expand="full" shape="round" fill="outline"
+                      color="primary" size='small' (click)="pauseDownloading(module)">
+                        <ion-icon name="pause"></ion-icon>
+                      </ion-button>
+
+                      <ion-button *ngIf="mainEventsService.trackedModules[module.id]?.paused"
+                      expand="full" shape="round" fill="outline"
+                        color="primary" size='small' (click)="resumeDownloading(module)">
+                        <ion-icon name="play"></ion-icon>
+                      </ion-button>
+                    
+                    </ion-col>
+                    <ion-col>
+
+                      <ion-button
+                        color="primary" size='small' (click)="cancelDownloading(module)"
+                        expand="full" shape="round" fill="outline"
+                        >
+                        <ion-icon name="close-circle"></ion-icon>
+                      </ion-button>
+
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+
+              <div *ngIf="mainEventsService.trackedModules[module.id]?.installing">
+                <ion-progress-bar
+                type="indeterminate"
+                color="light" ></ion-progress-bar>
+                Installing Updates...
+              </div>
+
+              <div *ngIf="!mainEventsService.trackedModules[module.id]?.downloading && !mainEventsService.trackedModules[module.id]?.installing">
+                <ion-text color="medium" *ngIf="mainEventsService.trackedModules[module.id]?.new_version">
+                  <ion-icon color="primary" name="alert"></ion-icon>
+                  Version {{mainEventsService.trackedModules[module.id]?.new_version}} is available.
+                  <br>
+                  <ion-button color="primary" size='small'
+                              expand="full" shape="round" 
+                              fill="outline" (click)="downloadLatestVersion(module)">
+                    Download Latest Version
+                  </ion-button>
+                </ion-text>
+
+                <ion-text color="medium" *ngIf="mainEventsService.trackedModules[module.id]?.new_version_not_installed">
+                  <ion-icon color="primary" name="alert"></ion-icon>
+                  Version {{mainEventsService.trackedModules[module.id]?.new_version}} is not installed.
+                  <br>
+                  <ion-button color="primary" size='small'
+                              expand="full" shape="round" 
+                              fill="outline" (click)="installLatestVersion(module)">
+                    Install
+                  </ion-button>
+                </ion-text>
+              </div>
+
+              <ion-grid>
+                <ion-row>
+                  <ion-col>
+                    <ion-button expand="full" shape="round" fill="outline"  color="primary" (click)="runModuleV2(module)"
+                    [disabled]="!isOnlineHeadsetSelected">
+                    <ion-icon name="play" slot="icon-only"></ion-icon>
+                      <!-- {{'PATIENT.START_MODULE' | translate}} -->
+                    </ion-button>
+                  </ion-col>
+                  <ion-col>
+                    <ion-button fill="outline"  expand="full" shape="round" color="secondary"
+                    [routerLink]="['/patient/', patient.id, 'modules', module.id, 'charts']">
+                    <ion-icon name="analytics" slot="icon-only"></ion-icon>
+                      <!-- Show Statistics -->
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="!mainEventsService.trackedModules[module.id]?.downloading && !mainEventsService.trackedModules[module.id]?.installing">
+                  <ion-button color="meduim" fill="clear" size='small' (click)="resetModule(module)" >
+                    Clear
+                  </ion-button>
+                <ion-button color="meduim" fill="clear" size='small' (click)="installAndroid(module)">
+                  Install Android
+                </ion-button>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <div class="empty-content" *ngIf="!modules?.length">
+          <div class="illustration-wrapper">
+            <ion-icon name="folder-open"></ion-icon>
+          </div>
+          <div class="empty-text">Patient Has No Modules!</div>
+        </div>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+    <ion-button expand="block" color="dark" fill="clear"
+      (click)="toggleConsole()" >
+      Show/hide Console
+    </ion-button>
+    <ion-button color="meduim" fill="clear" size='small'
+      (click)="resetModules()" >
+      Clear Downloaded Modules
+    </ion-button>
+</ion-content>

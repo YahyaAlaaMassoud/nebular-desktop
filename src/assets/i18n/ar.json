@@ -1,0 +1,70 @@
+{
+    "OK": "موافق",
+    "CANCEL": "إلغاء",
+    "YES": "نعم",
+    "NO": "لا",
+    "ERROR": "خطأ",
+    "SYS_ERROR": "لقد حدث بعض الأخطاء, تأكد من توصيل الإنترنت",
+    "TABS":{
+        "HOME":"الرئيسية",
+        "PROFILE":"حسابي"
+    },
+    "LOGIN":{
+        "LOGIN": "تسجيل الدخول",
+        "PHONE": "رقم الهاتف",
+        "EMAIL": "البريد الإلكتروني",
+        "PASSWORD": "كلمة السر",
+        "GO_SIGNUP": "تسجيل حساب جديد؟"
+    },
+    "SIGNUP":{
+        "SIGNUP": "تسجيل",
+        "PHONE": "رقم الهاتف",
+        "PASSWORD": "كلمة السر",
+        "NAME": "الأسم بالكامل",
+        "ADDRESS": "العنوان",
+        "GO_LOGIN": "لديك حساب بالفعل..تسجيل الدخول؟"
+    },
+    "PROFILE":{
+        "PHONE": "رقم الهاتف",
+        "PASSWORD": "كلمة السر",
+        "NAME": "الأسم بالكامل",
+        "ADDRESS": "العنوان",
+        "LOCATION": "الموقع على الخريطة",
+        "SPECIALTY":"تخصص",
+        "LOGOUT": "تسجيل الخروج",
+        "SECURITY": "الحماية والأمان",
+        "PRESONAL_INFO": "البيانات الشخصية"
+    },
+    "HOME":{
+        "PATIENTS":"المرضى"
+    },
+    "PATIENT":{
+        "NAME":"الإسم",
+        "EMAIL":"البريد الإلكتروني",
+        "PATIENT":"المريض",
+        "DATE_OF_BIRTH": "تاريح الميلاد",
+        "GENDER": "الجنس",
+        "FEMALE": "أنثي",
+        "MALE": "ذكر",
+        "DIAGNOSIS": "التشخيص",
+        "MODULES": "الوحدات العلاجية",
+        "PHONE":"رقم الهاتف",
+        "HAS_GUARDIAN":"لديه رفيق",
+        "GUARDIAN_NAME":"أسم الرفيق",
+        "ADDRESS":"العنوان",
+        "NOTES":"الملاحظات",
+        "START_MODULE": "أبدأ الوحدة العلاجية",
+        "ADD_PATIENT": "أضافة مريض",
+        "EDIT_PATIENT": "تعديل بيانات المريض",
+        "ADD_PATIENT_MSG": "تم أضافة مريض جديد بنجاح",
+        "EDIT_PATEINT_MSG": "تم تغديل المريض بنجاح"
+    },
+    "VALIDATION":{
+        "BLANK":"لا يمكن أن يكون فارغ!",
+        "INVALID_EMAIL":"البريد الإلكتروني غير صحيح!",
+        "INVALID_PHONE":"رقم الهاتف غير صحيح!",
+        "PASSWORD_CONFIRMATION":"تأكيد كلمة المرور خاطئة!",
+        "PASSWORD_TOO_SHORT":"أقل من اللازم!",
+        "PASSWORD_TOO_LONG":"أكثر من اللازم!"
+    }
+}

@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end" (click)="addPatient()"  >
+      <ion-button>
+        <ion-icon name="person-add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" (click)="userService.logout()" >
+      <ion-button>
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{'TABS.HOME' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list class="ion-no-padding" *ngIf="patients?.length">
+    <ion-item *ngFor="let patient of patients" [routerLink]="['/patient/', patient.id]">
+      <ion-avatar slot="start">
+        <ion-img [src]="patient?.photo ||'assets/imgs/avatar.png'" ></ion-img>
+      </ion-avatar>
+      <div class="usernameSection ion-no-padding">
+        <h5>
+          <ion-icon  name="person" color="medium"></ion-icon>
+          {{patient?.name}}
+        </h5>
+        <p class="descText ion-no-padding ion-no-margin">{{patient?.diagnosis}}</p>
+      </div>
+    </ion-item>
+  </ion-list>
+  <div class="empty-content" *ngIf="!loading && !patients?.length ">
+    <div class="illustration-wrapper">
+      <ion-icon name="heart-empty"></ion-icon>
+    </div>
+    <div class="empty-text">You Have No Patients Yet!</div>
+    <ion-button class="go-home-btn"
+        (click)="addPatient()" expand="block" color="primary">
+      Add Patient
+    </ion-button>
+  </div>
+</ion-content>

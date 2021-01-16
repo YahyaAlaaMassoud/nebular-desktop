@@ -1,0 +1,10 @@
+.sessions-list {
+    float: left;
+    width: fit-content;
+}
+
+ion-item {
+    display: inline-block;
+    width: fit-content;
+    margin-right: 5px;
+}

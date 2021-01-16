@@ -1,0 +1,70 @@
+{
+    "OK": "Ok",
+    "CANCEL": "Cancel",
+    "YES": "Yes",
+    "NO":"No",
+    "ERROR":"Error",
+    "SYS_ERROR":"Some error happend, Chaeck your connection, please.",
+    "TABS": {
+        "HOME": "Home",
+        "PROFILE": "Profile"
+    },
+    "LOGIN": {
+        "LOGIN": "Login",
+        "PHONE": "Phone",
+        "EMAIL": "Email",
+        "PASSWORD": "Password",
+        "GO_SIGNUP": "Create new account?"
+    },
+    "SIGNUP": {
+        "SIGNUP": "Signup",
+        "PHONE": "Phone",
+        "PASSWORD": "Password",
+        "NAME": "Full Name",
+        "ADDRESS": "Address",
+        "GO_LOGIN": "Already, have an account..login?"
+    },
+    "PROFILE": {
+        "PHONE": "Phone",
+        "PASSWORD": "Password",
+        "NAME": "Full Name",
+        "ADDRESS": "Address",
+        "LOCATION": "Location On Map",
+        "SPECIALTY": "Specialty",
+        "LOGOUT": "Logout",
+        "SECURITY": "Security",
+        "PRESONAL_INFO": "Personal Information"
+    },
+    "HOME": {
+        "PATIENTS": "Patients"
+    },
+    "PATIENT":{
+        "NAME": "Name",
+        "EMAIL": "Email",
+        "PATIENT": "Patient",
+        "DATE_OF_BIRTH": "Birth Date",
+        "GENDER": "Gender",
+        "MALE": "Male",
+        "FEMALE": "Female",
+        "DIAGNOSIS": "Diagnosis",
+        "MODULES":"Modules",
+        "PHONE": "Phone",
+        "HAS_GUARDIAN": "Has Guardian",
+        "GUARDIAN_NAME": "Guardian Name",
+        "ADDRESS": "Address",
+        "NOTES": "Notes",
+        "START_MODULE": "Start Module",
+        "ADD_PATIENT": "Add Patient",
+        "EDIT_PATIENT": "Edit Patient",
+        "ADD_PATIENT_MSG": "A new patient has been added successfully",
+        "EDIT_PATEINT_MSG": "The patient has been updated successfully"
+    },
+    "VALIDATION": {
+        "BLANK": "Can not be blank!",
+        "INVALID_EMAIL": "Not valid email!",
+        "INVALID_PHONE": "Not Valid phone number!",
+        "PASSWORD_CONFIRMATION": "Password confirmation is wrong!",
+        "PASSWORD_TOO_SHORT": "Too short!",
+        "PASSWORD_TOO_LONG": "Too long!"
+    }
+}

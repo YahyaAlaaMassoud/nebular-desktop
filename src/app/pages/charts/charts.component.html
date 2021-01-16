@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'PATIENT.PATIENT' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+<div *ngIf="selectedSessionsScope == 'Within Dates'">
+  <ngx-datetime-range-picker name="date" [options]="datePickerOptions" [settings]="datePickerSettings"
+   (dateRangeChanged)="onDateFilterChange($event)" required>
+  </ngx-datetime-range-picker>
+</div>
+
+<ion-list class="sessions-list ion-no-padding">
+  <ion-item *ngIf="sessions?.length" color='secondary' size="small" slot="start">
+    <ion-label position="stacked">Sessions Scope</ion-label>
+    <ion-select (ionChange)="changeSessionScope()" [(ngModel)]="selectedSessionsScope" interface="popover">
+      <ion-select-option *ngFor="let sessionsScope of sessionsScopes" [value]="sessionsScope">
+        {{ sessionsScope }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+</ion-list>
+
+  <ion-list class="sessions-list ion-no-padding" *ngIf="selectedSessionsScope == 'One Session'">
+    <ion-item *ngIf="sessions?.length" color='secondary' size="small" slot="start">
+      <ion-label position="stacked">Session</ion-label>
+      <ion-select (ionChange)="getStatistics()" [(ngModel)]="selectedSession" interface="popover">
+        <ion-select-option *ngFor="let session of sessions" [value] = "session">
+          {{ session?.session_date }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+    <div class="empty-content" *ngIf="!sessions?.length">
+      <div class="illustration-wrapper">
+        <ion-icon name="analytics"></ion-icon>
+      </div>
+      <div class="empty-text">No Sessions Available</div>
+    </div>
+
+    <app-stats *ngIf="showStats"
+     [moduleId]= "moduleId" [allData]="sessionStatistics"
+     [sessionName]="selectedSession.session_date"
+     [sessionsScope]="selectedSessionsScope"
+     ></app-stats>
+
+</ion-content>

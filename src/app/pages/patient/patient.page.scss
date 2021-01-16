@@ -1,0 +1,46 @@
+
+ion-card {
+    border: 2px solid var(--ion-color-primary);
+    border-radius: 1rem
+}
+
+ion-button {
+    --border-width: 1px;
+}
+
+.running-mode {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 23px;
+    margin-bottom: 10px;
+}
+
+.headset-status {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.has-updates {
+    border: 2px solid var(--ion-color-warning);
+}
+
+ion-select {
+    justify-content: center;
+}
+
+.my-buffer-progress{
+    --background: #ffffff;
+    --buffer-background:#d3d3d3;
+    --progress-background:#45a8c8;
+}
+
+.module-card {
+    transition: transform .2s;
+}
+
+.module-card:hover,
+.module-card:focus {
+    transform: scale(1.05);
+}
