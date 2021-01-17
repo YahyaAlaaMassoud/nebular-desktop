@@ -9,6 +9,9 @@ import { HomePage } from './home.page';
 import { AddPatientComponent } from './../add-patient/add-patient.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ComponentsModule } from '../../components/components.module';
+import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, 
+         NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
+         NbRadioModule, NbCheckboxModule } from '@nebular/theme';
 
 const routes: Routes = [
   {
@@ -25,7 +28,19 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     TranslateModule.forChild(),
     ReactiveFormsModule,
-    ComponentsModule
+    ComponentsModule,
+    NbLayoutModule,
+    NbSidebarModule.forRoot(),
+    NbInputModule,
+    NbButtonModule,
+    NbCardModule,
+    NbIconModule,
+    NbActionsModule,
+    NbListModule,
+    NbUserModule,
+    NbDatepickerModule,
+    NbRadioModule,
+    NbCheckboxModule
   ],
   declarations: [HomePage, AddPatientComponent],
   entryComponents: [AddPatientComponent]

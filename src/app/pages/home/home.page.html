@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="end" (click)="addPatient()"  >
       <ion-button>
@@ -39,4 +39,47 @@
       Add Patient
     </ion-button>
   </div>
-</ion-content>
+</ion-content> -->
+
+<nb-layout style="width: 100%;">
+  <nb-layout-header>
+    <div class="header-container">
+      <div class="logo-container">
+        <a routerLink="/home" class="sidebar-toggle">
+          <ion-img src="assets/imgs/logo_1.png"></ion-img>
+        </a>
+        <a class="logo">{{'TABS.HOME' | translate }}</a>
+      </div>
+    </div>
+
+    <div class="header-container" style="margin-left: auto!important;">
+      <nb-actions>
+        <nb-action icon="person-add" badgePosition="right" (click)="addPatient()" badgeStatus="info" title="Add New Patient" size="giant"></nb-action>
+        <nb-action icon="log-out-outline" badgePosition="right" (click)="userService.logout()" badgeStatus="info" title="Logout" size="giant"></nb-action>
+      </nb-actions>
+    </div>
+  </nb-layout-header>
+
+  <nb-layout-column>
+    <nb-card accent="success">
+      <nb-card-header><h3>Patients</h3></nb-card-header>
+      <nb-list *ngIf="patients?.length">
+        <nb-list-item *ngFor="let patient of patients" [routerLink]="['/patient/', patient.id]" class="patientItem">
+          <nb-user [name]="patient?.name"   
+                   [picture]="patient?.photo ||'assets/imgs/vr-kid.png'" 
+                   showName="true"
+                   showTitle="true"
+                   shape="semi-round"
+                   size="giant"></nb-user>
+        </nb-list-item>
+      </nb-list>
+      <nb-list>
+        <nb-list-item>
+          <button nbButton fullWidth shape="semi-round" status="success" (click)="addPatient()">
+            Add New Patient <nb-icon icon="person-add-outline"></nb-icon>
+          </button>
+        </nb-list-item>
+      </nb-list>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

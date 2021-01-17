@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Platform, Events } from '@ionic/angular';
 import { UserService } from '../../services/user/user.service';
 import { HelperService } from '../../services/helper/helper.service';
@@ -26,7 +26,7 @@ currentUser: any;
       private events: Events,
       public modalController: ModalController,
       private mainEventsService: MainEventsService,
-
+      private _cdr: ChangeDetectorRef,
     ) {
       this.events.subscribe('userUpdate', (user) => {
         this.currentUser = user;
@@ -45,6 +45,8 @@ currentUser: any;
       await this.helperService.showLoading();
       const result: any = await this.userService.getPatients();
       this.patients = result;
+      this._cdr.detectChanges();
+      console.log(this.patients)
       this.loading = false;
       await this.helperService.removeLoading();
       const headsets: any[] = await this.userService.getCenterHeadsets() as any[];
@@ -60,7 +62,7 @@ currentUser: any;
     const modal = await this.modalController.create({
       component: AddPatientComponent,
       animated: true,
-      backdropDismiss: true,
+      backdropDismiss: false,
       keyboardClose: true,
       showBackdrop: true
     });
