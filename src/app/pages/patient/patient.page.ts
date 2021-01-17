@@ -158,20 +158,14 @@ export class PatientPage implements OnInit {
   }
 
   selectOnlineHeadset(e) {
-    this.isOnlineHeadsetSelected = e.currentTarget.checked;
+    this.isOnlineHeadsetSelected = true;
 
-    if ( e.currentTarget.checked == true ) {
-      const selectionIdx = this.onlineHeadsets.findIndex(el => el.headsetSerial == e.target.name)
-      this.selectedOnlineHeadset = this.onlineHeadsets[selectionIdx].headsetSerial;
+    const selectionIdx = this.onlineHeadsets.findIndex(el => el.headsetSerial == e)
+    this.selectedOnlineHeadset = this.onlineHeadsets[selectionIdx].headsetSerial;
 
-      this.helperService.showToast('Headset with Serial Number: ' + this.selectedOnlineHeadset + ' has been selected');
-      // console.log(this.headsets.find((h) => h.serial === this.selectedOnlineHeadset.headsetSerial).id)
-    } else { 
-      this.selectedOnlineHeadset = null
-    }
+    this.helperService.showToast('Headset with Serial Number: ' + this.selectedOnlineHeadset + ' has been selected');
+    // console.log(this.headsets.find((h) => h.serial === this.selectedOnlineHeadset.headsetSerial).id)
     
-    this._cdr.detectChanges();
-
     console.log(this.isOnlineHeadsetSelected, this.selectedOnlineHeadset)
   }
 

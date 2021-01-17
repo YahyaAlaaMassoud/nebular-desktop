@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
@@ -8,126 +8,87 @@
         <ion-icon name="create"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <!-- <ion-buttons slot="end">
+    <ion-buttons slot="end">
       <ion-label>Connect Wirelessly</ion-label>
       <ion-toggle color="secondary" [(ngModel)]="mainEventsService.wirelessMode"></ion-toggle>
-    </ion-buttons> -->
+    </ion-buttons>
     <ion-title>{{'PATIENT.PATIENT' | translate }}</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
+<nb-layout style="width: 100%;">
+  <nb-layout-header>
+    <div class="header-container">
+      <nb-actions>
+        <nb-action routerLink="/home" icon="arrow-back-outline" badgePosition="right" badgeStatus="info" title="Back to Home Page" size="giant"></nb-action>
+        <nb-action icon="edit-2-outline" badgePosition="right" badgeStatus="info" title="Edit Patient" size="giant" (click)="editPatient()"></nb-action>
+      </nb-actions>
+    </div>
+  </nb-layout-header>
+
+  <nb-layout-column>
+    <nb-accordion>
+      <nb-accordion-item>
+        <nb-accordion-item-header class="patientAccordion">
+          <nb-user [name]="patient?.name"   
+                   [picture]="patient?.photo ||'assets/imgs/vr-kid.png'" 
+                   showName="true"
+                   showTitle="true"
+                   shape="semi-round"
+                   size="giant"></nb-user>
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          <nb-list>
+            <nb-list-item>
+              {{'PATIENT.DIAGNOSIS' | translate }}: {{patient?.diagnosis}}
+            </nb-list-item>
+            <nb-list-item>
+              {{'PATIENT.DATE_OF_BIRTH' | translate }}: {{patient?.date_of_birth}}
+            </nb-list-item>
+            <nb-list-item>
+              {{'PATIENT.PHONE' | translate }}: {{patient?.phone}}
+            </nb-list-item>
+            <nb-list-item>
+              {{'PATIENT.HAS_GUARDIAN' | translate }}: {{ (patient?.has_guardian ? 'YES' : 'NO') | translate}}
+            </nb-list-item>
+            <nb-list-item>
+              {{'PATIENT.GUARDIAN_NAME' | translate }}: {{patient?.guardian_name}}
+            </nb-list-item>
+            <nb-list-item>
+              {{'PATIENT.ADDRESS' | translate }}: {{patient?.address}}
+            </nb-list-item>
+            <nb-list-item>
+              {{'PATIENT.NOTES' | translate }}: {{patient?.notes}}
+            </nb-list-item>
+          </nb-list>
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+
+    <br>
+
+    <nb-card accent="success">
+      <!-- <nb-card-header>Active Headsets: {{ onlineHeadsets.length }}</nb-card-header> -->
+      <nb-card-body>
+        <nb-select fullWidth  shape="semi-round" size="giant" placeholder="Select Active Headset" 
+                   [(selected)]="selectedOnlineHeadset" (selectedChange)="selectOnlineHeadset($event)">
+          <nb-option *ngFor="let headset of onlineHeadsets" [value]="headset.headsetSerial">
+            {{ headset.headsetName }} - Serial Number: {{ headset.headsetSerial }}
+          </nb-option>
+        </nb-select>
+      </nb-card-body>
+    </nb-card>
+
+    <!-- <div class="allModules">
+      <div *ngFor="let module of modules">
+        <nb-card size="tiny" accent="success" class="moduleCard">
+          
+        </nb-card>
+      </div>
+    </div> -->
+  </nb-layout-column>
+</nb-layout>
 
 <ion-content class="ion-padding">
-  <ion-item [color]="mainEventsService.wirelessHeadsetSelected ? 'secondary' : 'danger'" *ngIf="mainEventsService.wirelessMode">
-    <ion-label>Connect To Headset Wirelessly </ion-label>
-    <ion-select placeholder="Select Headset" [(ngModel)]="mainEventsService.wirelessHeadsetSelected">
-      <ion-select-option *ngFor="let headset of headsets" [value]="headset.serial">{{ headset.name }} ({{headset.serial}})
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
-
-  <!-- <ion-card *ngIf="!mainEventsService.wirelessMode">
-    <ion-card-content>
-      <div class="headset-status">
-        <div *ngIf="mainEventsService.headsetIsReady()">
-          <ion-icon color="primary" name="checkmark-circle-outline"></ion-icon>
-          <ion-text color="primary">
-            The connected headset is ready.
-          </ion-text>
-        </div>
-
-        <div *ngIf="mainEventsService.preparingHeadset()">
-          <ion-spinner></ion-spinner>
-          <ion-text color="primary">
-            We are preparing the connected headset now, please wait...
-          </ion-text>
-        </div>
-
-        <div *ngIf="mainEventsService.headsetIsNotAuthorized()">
-          <ion-icon color="warning" name="alert"></ion-icon>
-          <ion-text color="warning">
-            The connected headset is not authorized!
-          </ion-text>
-        </div>
-        <div *ngIf="mainEventsService.headsetIsNotReady()">
-          <ion-icon color="warning" name="alert"></ion-icon>
-          <ion-text color="warning">
-            The connected headset is not ready, you can try to re-plug it.
-          </ion-text>
-        </div>
-
-        <div *ngIf="mainEventsService.someHeadsetsReady()">
-          <ion-icon color="success" name="checkmark-circle-outline"></ion-icon>
-          <ion-text color="success">
-            You have some ready headsets, you are safe to run any module now.
-          </ion-text>
-        </div>
-
-        <div *ngIf="mainEventsService.noHeadsetsReady()">
-          <ion-icon color="danger" name="close-circle-outline"></ion-icon>
-          <ion-text color="danger">
-            You have no headsets ready yet, Plug your headset through the USB.
-          </ion-text>
-        </div>
-      </div>
-    </ion-card-content>
-  </ion-card> -->
-
-  <ion-card>
-    <ion-card-header>
-      <ion-list>
-        <ion-item>
-          <ion-text color="primary">
-            <h4>Patient Name: <b>{{patient?.name}}</b></h4>
-          </ion-text>
-          &nbsp;
-          &nbsp;
-          &nbsp;
-          <ion-button item-right style="justify-content: space-between; text-transform:none!important;" shape="round" fill="outline" (click)="toggleShowPatientInfo()">
-            <!-- Show Patient Information -->
-              <ion-icon name="arrow-down"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-list>
-    </ion-card-header>
-
-    <ion-card-content *ngIf="showPatientInfo">
-      <ion-card-subtitle color="medium">{{'PATIENT.DIAGNOSIS' | translate }}: {{patient?.diagnosis}}</ion-card-subtitle>
-      <ion-card-subtitle color="medium">{{'PATIENT.DATE_OF_BIRTH' | translate }}: {{patient?.date_of_birth}}</ion-card-subtitle>
-      <ion-card-subtitle color="medium">{{'PATIENT.PHONE' | translate }}: {{patient?.phone}}</ion-card-subtitle>
-      <ion-card-subtitle color="medium">{{'PATIENT.HAS_GUARDIAN' | translate }}: {{ (patient?.has_guardian ? 'YES' : 'NO') | translate}}</ion-card-subtitle>
-      <ion-card-subtitle color="medium" *ngIf="patient?.has_guardian" >{{'PATIENT.GUARDIAN_NAME' | translate }}: {{patient?.guardian_name}}</ion-card-subtitle>
-      <ion-card-subtitle color="medium">{{'PATIENT.ADDRESS' | translate }}: {{patient?.address}}</ion-card-subtitle>
-      <ion-avatar slot="start">
-        <ion-img [src]="patient?.photo ||'assets/imgs/avatar.png'"></ion-img>
-      </ion-avatar>
-      <ion-item>
-        <ion-label color="primary" position="stacked">{{'PATIENT.NOTES' | translate }}</ion-label>
-        {{patient?.notes}}
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-text color="primary">
-        <h4>Active Headsets: {{ onlineHeadsets.length }}</h4>
-      </ion-text>
-    </ion-card-header>
-
-    <ion-card-content>
-      <!-- <ion-card-title  color="primary">Active Headsets: {{ onlineHeadsets.length }}</ion-card-title> -->
-      <!-- <ion-card-title *ngIf="onlineHeadsets.length == 0" color="danger">No Headsets Found</ion-card-title> -->
-      <ion-list>
-        <ion-item *ngFor="let headset of onlineHeadsets">
-          <ion-label> <small>Headset Name: </small> {{ headset.headsetName }} - <small> Serial Number: </small> {{ headset.headsetSerial }}</ion-label>
-          <ion-checkbox color="secondary" 
-                        (ionChange)="selectOnlineHeadset($event)"
-                        [name]="headset.headsetSerial"
-                        [disabled]="isOnlineHeadsetSelected && (selectedOnlineHeadset!=headset.headsetSerial)"></ion-checkbox>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
 
   <ion-list>
     <ion-grid>
