@@ -5,6 +5,7 @@ import { HelperService } from '../../services/helper/helper.service';
 import { ModalController } from '@ionic/angular';
 import { AddPatientComponent } from './../add-patient/add-patient.component';
 import { MainEventsService } from '../../services/main-events/main-events.service';
+import { NbDialogService, NbDialogRef } from '@nebular/theme';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,7 @@ currentUser: any;
       public modalController: ModalController,
       private mainEventsService: MainEventsService,
       private _cdr: ChangeDetectorRef,
+      private nbDialogService: NbDialogService,
     ) {
       this.events.subscribe('userUpdate', (user) => {
         this.currentUser = user;
@@ -59,12 +61,17 @@ currentUser: any;
   }
 
   async addPatient() {
+    // this.nbDialogService.open(
+    //   AddPatientComponent,
+    //   {
+    //     context: 'hola',
+    //   });
     const modal = await this.modalController.create({
       component: AddPatientComponent,
       animated: true,
       backdropDismiss: false,
       keyboardClose: true,
-      showBackdrop: true
+      showBackdrop: true,
     });
     await modal.present();
     const { data } = await modal.onDidDismiss();

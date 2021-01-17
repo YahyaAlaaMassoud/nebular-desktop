@@ -11,7 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ComponentsModule } from '../../components/components.module';
 import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, 
          NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
-         NbRadioModule, NbCheckboxModule } from '@nebular/theme';
+         NbRadioModule, NbCheckboxModule, NbDialogModule } from '@nebular/theme';
 
 const routes: Routes = [
   {
@@ -40,7 +40,8 @@ const routes: Routes = [
     NbUserModule,
     NbDatepickerModule,
     NbRadioModule,
-    NbCheckboxModule
+    NbCheckboxModule,
+    NbDialogModule.forChild()
   ],
   declarations: [HomePage, AddPatientComponent],
   entryComponents: [AddPatientComponent]
