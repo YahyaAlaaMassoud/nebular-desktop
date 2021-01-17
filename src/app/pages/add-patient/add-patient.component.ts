@@ -4,6 +4,7 @@ import { UserService } from '../../services/user/user.service';
 import { HelperService } from './../../services/helper/helper.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Validation } from '../../utils/validations';
+import { NbDialogRef } from '@nebular/theme';
 
 @Component({
   selector: 'app-add-patient',
@@ -17,7 +18,10 @@ export class AddPatientComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalController: ModalController,
     private helperService: HelperService,
-    private userService: UserService) { }
+    private userService: UserService,
+    // protected dialogRef: NbDialogRef<AddPatientComponent>
+    ) 
+  { }
 
   ngOnInit() {
     this.patientForm = this.formBuilder.group({
@@ -52,6 +56,7 @@ export class AddPatientComponent implements OnInit {
     this.modalController.dismiss({
       patient
     });
+    // this.dialogRef.close(patient);
   }
 
 }

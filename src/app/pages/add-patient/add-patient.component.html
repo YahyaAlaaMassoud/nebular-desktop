@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="end" (click)="dismiss()">
       {{'CANCEL' | translate }}
@@ -83,4 +83,85 @@
     <ion-button expand="block" color="primary" type="submit" [disabled]="!patientForm.valid" (click)="save()">
       {{'PATIENT.ADD_PATIENT' | translate}}</ion-button>
   </form>
-</ion-content>
+</ion-content> -->
+
+<nb-layout style="width: 100%;">
+  <nb-layout-header>
+    <div class="header-container">
+      <div class="logo-container">
+        <a class="sidebar-toggle">
+          <nb-icon icon="person-add-outline"></nb-icon>
+        </a>
+        <a class="logo">{{'PATIENT.ADD_PATIENT' | translate }}</a>
+      </div>
+    </div>
+
+    <div class="header-container" style="margin-left: auto!important;">
+      <nb-actions>
+        <nb-action icon="close-circle-outline" badgePosition="right" badgeStatus="danger" title="Add New Patient" size="giant" (click)="dismiss()"></nb-action>
+      </nb-actions>
+    </div>
+  </nb-layout-header>
+
+  <nb-layout-column style="overflow: auto; overflow-y:scroll; height: inherit;">
+    <form [formGroup]="patientForm">
+      <nb-list>
+        <nb-list-item>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Name" formControlName="name">
+          <app-control-error-message [control]="patientForm['controls']['name']"></app-control-error-message>
+        </nb-list-item>
+
+        <nb-list-item>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Email" formControlName="email">
+          <app-control-error-message [control]="patientForm['controls']['email']"></app-control-error-message>
+        </nb-list-item>
+
+        <nb-list-item>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Phone" formControlName="phone">
+          <app-control-error-message [control]="patientForm['controls']['phone']"></app-control-error-message>
+        </nb-list-item>
+
+        <nb-list-item>
+          <input type="text" nbInput 
+                 fullWidth fieldSize="medium" 
+                 shape="semi-round" placeholder="Date of birth" 
+                 formControlName="date_of_birth" [nbDatepicker]="dateTimePicker">
+          <nb-datepicker #dateTimePicker></nb-datepicker>
+          <app-control-error-message [control]="patientForm['controls']['date_of_birth']"></app-control-error-message>
+        </nb-list-item>
+
+        <nb-list-item>
+          <nb-radio
+            [value]="'female'">
+            {{'PATIENT.FEMALE' | translate }}
+          </nb-radio>
+          <nb-radio
+            [value]="'male'">
+            {{'PATIENT.MALE' | translate }}
+          </nb-radio>
+          <app-control-error-message [control]="patientForm['controls']['gender']"></app-control-error-message>
+        </nb-list-item>
+
+        <nb-list-item>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Address" formControlName="address">
+          <app-control-error-message [control]="patientForm['controls']['address']"></app-control-error-message>
+        </nb-list-item>
+
+        <nb-list-item>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Diagnosis" formControlName="diagnosis">
+          <app-control-error-message [control]="patientForm['controls']['diagnosis']"></app-control-error-message>
+        </nb-list-item>
+
+        <nb-list-item>
+          <nb-checkbox formControlName="has_guardian">Has Guardian</nb-checkbox>
+          <app-control-error-message [control]="patientForm['controls']['has_guardian']"></app-control-error-message>
+        </nb-list-item>
+
+        <nb-list-item>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Notes" formControlName="notes">
+          <app-control-error-message [control]="patientForm['controls']['notes']"></app-control-error-message>
+        </nb-list-item>
+      </nb-list>
+    </form>
+  </nb-layout-column>
+</nb-layout>
