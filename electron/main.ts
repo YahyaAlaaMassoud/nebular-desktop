@@ -127,13 +127,13 @@ async function createWindow() {
 
   const mainWindowBounds = storeHelper.get('mainWindowBounds');
   mainWindowBounds.webPreferences = { nodeIntegration: true };
-  mainWindowBounds.icon = path.join(__dirname, '/../../dist/vrapeutic-desktop/assets/icons/win/icon.png.png');
+  mainWindowBounds.icon = path.join(__dirname, '/../../dist/neb-desktop/assets/icons/win/icon.png.png');
   win = new BrowserWindow(mainWindowBounds);
   win.maximize();
   win.show();
   win.loadURL(
     url.format({
-      pathname: path.join(__dirname, `/../../dist/vrapeutic-desktop/index.html`),
+      pathname: path.join(__dirname, `/../../dist/neb-desktop/index.html`),
       protocol: 'file:',
       slashes: true,
     })
@@ -169,7 +169,7 @@ function createConsoleWindow() {
   consoleWin = new BrowserWindow(consoleWindowBounds);
   consoleWin.loadURL(
     url.format({
-      pathname: path.join(__dirname, `/../../dist/vrapeutic-desktop/assets/views/console.html`),
+      pathname: path.join(__dirname, `/../../dist/neb-desktop/assets/views/console.html`),
       protocol: 'file:',
       slashes: true,
     })
