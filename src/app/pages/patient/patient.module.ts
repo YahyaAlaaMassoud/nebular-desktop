@@ -11,6 +11,9 @@ import { EditPatientComponent } from '../edit-patient/edit-patient.component';
 import { ComponentsModule } from '../../components/components.module';
 import { ProgressBarModule } from "angular-progress-bar"
 import { RoundPipe } from '../../pipes/round.pipe';
+import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, 
+  NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
+  NbRadioModule, NbCheckboxModule, NbDialogModule, NbAccordionModule, NbSelectModule } from '@nebular/theme';
 
 const routes: Routes = [
 
@@ -33,7 +36,22 @@ const pages = [
     TranslateModule.forChild(),
     ReactiveFormsModule,
     ComponentsModule,
-    ProgressBarModule
+    ProgressBarModule,
+    NbLayoutModule,
+    NbSidebarModule.forRoot(),
+    NbInputModule,
+    NbButtonModule,
+    NbCardModule,
+    NbIconModule,
+    NbActionsModule,
+    NbListModule,
+    NbUserModule,
+    NbDatepickerModule,
+    NbRadioModule,
+    NbCheckboxModule,
+    NbDialogModule.forChild(),
+    NbAccordionModule,
+    NbSelectModule
   ],
   declarations: [
     PatientPage,
