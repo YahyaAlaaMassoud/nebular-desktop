@@ -37,6 +37,32 @@
                    size="giant"></nb-user>
         </nb-accordion-item-header>
         <nb-accordion-item-body>
+          <!-- <table>
+            <tr>
+              <td>{{'PATIENT.DIAGNOSIS' | translate }}</td>
+              <td>{{patient?.diagnosis}}</td>
+            </tr>
+            <tr>
+              <td>{{'PATIENT.DATE_OF_BIRTH' | translate }}</td>
+              <td>{{patient?.date_of_birth}}</td>
+            </tr>
+            <tr>
+              <td>{{'PATIENT.PHONE' | translate }}</td>
+              <td>{{patient?.phone}}</td>
+            </tr>
+            <tr>
+              <td>{{'PATIENT.HAS_GUARDIAN' | translate }}</td>
+              <td>{{ (patient?.has_guardian ? 'YES' : 'NO') | translate}}</td>
+            </tr>
+            <tr>
+              <td>{{'PATIENT.GUARDIAN_NAME' | translate }}</td>
+              <td>{{patient?.guardian_name}}</td>
+            </tr>
+            <tr>
+              <td>{{'PATIENT.NOTES' | translate }}</td>
+              <td>{{patient?.notes}}</td>
+            </tr>
+          </table> -->
           <nb-list>
             <nb-list-item>
               {{'PATIENT.DIAGNOSIS' | translate }}: {{patient?.diagnosis}}
@@ -69,7 +95,7 @@
     <nb-card accent="success">
       <!-- <nb-card-header>Active Headsets: {{ onlineHeadsets.length }}</nb-card-header> -->
       <nb-card-body>
-        <nb-select fullWidth  shape="semi-round" size="giant" placeholder="Select Active Headset" 
+        <nb-select fullWidth  shape="semi-round" size="giant" placeholder="Select Active Headset" [disabled]="!onlineHeadsets.length"
                    [(selected)]="selectedOnlineHeadset" (selectedChange)="selectOnlineHeadset($event)">
           <nb-option *ngFor="let headset of onlineHeadsets" [value]="headset.headsetSerial">
             {{ headset.headsetName }} - Serial Number: {{ headset.headsetSerial }}
