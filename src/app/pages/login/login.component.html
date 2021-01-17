@@ -24,15 +24,18 @@
 </ion-content> -->
 
 <nb-layout>
-  <nb-layout-column>
+  <nb-layout-column class="welcomePage">
     <ion-img src="assets/imgs/logo_1.png"></ion-img>
+    <br>
     <hr style="width:40%">
-    <h1 style="text-align: center;">Virtual World, Real Hope</h1>
-    <form [formGroup]="loginForm" (keyup.enter)="save()">
+    <br>
+    <!-- <h1 style="text-align: center;">Virtual World, Real Hope</h1> -->
+    <form [formGroup]="loginForm" (keyup.enter)="save()" class="loginForm">
       <nb-card accent="info">
         <nb-card-body>
           <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Email" formControlName="email">
           <app-control-error-message [control]="loginForm['controls']['email']"></app-control-error-message>
+          <br>
           <br>
           <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Password" formControlName="password" type="password">
           <app-control-error-message [control]="loginForm['controls']['password']"></app-control-error-message>

@@ -2,6 +2,11 @@
 
 @import '~@nebular/theme/styles/globals';
 
+* {
+  font-family: Roboto;
+  // font-weight: bold;
+}
+
 @include nb-install() {
   @include nb-theme-global();
 };

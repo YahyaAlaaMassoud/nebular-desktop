@@ -21,3 +21,21 @@ h2 {
 nb-card-body.example-items-col {
   align-items: stretch;
 }
+
+.loginForm {
+  width: 25rem; 
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+.welcomePage {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin: 0;
+  position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
