@@ -27,6 +27,7 @@ export class PatientPage implements OnInit {
   isOnlineHeadsetSelected = false;
   logger: any;
   showPatientInfo: boolean = false;
+  downloadStatus: string = 'primary';
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
@@ -208,6 +209,7 @@ export class PatientPage implements OnInit {
   }
 
   pauseDownloading(vrModule) {
+    console.log('PAUSING')
     this.mainEventsService.pauseDownloadNewVersion(vrModule.latest_version);
   }
 
@@ -290,5 +292,18 @@ export class PatientPage implements OnInit {
 
   toggleShowPatientInfo() {
     this.showPatientInfo = !this.showPatientInfo
+  }
+
+  getDownloadStatus () {
+    var prog = this.getDownloadingProgress(this.mainEventsService.trackedModules[module.id]?.ratio);
+    if ( prog <= 25 ) {
+      return 'danger'
+    } else if ( prog <= 50 ) {
+      return 'warning'
+    } else if ( prog <= 75 ) {
+      return 'info'
+    } else if ( prog <= 100 ) {
+      return 'success'
+    } 
   }
 }
