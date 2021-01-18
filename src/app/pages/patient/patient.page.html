@@ -19,8 +19,14 @@
   <nb-layout-header>
     <div class="header-container">
       <nb-actions>
-        <nb-action routerLink="/home" icon="arrow-back-outline" badgePosition="right" badgeStatus="info" title="Back to Home Page" size="giant"></nb-action>
-        <nb-action icon="edit-2-outline" badgePosition="right" badgeStatus="info" title="Edit Patient" size="giant" (click)="editPatient()"></nb-action>
+        <nb-action routerLink="/home" icon="arrow-back-outline" badgePosition="right" 
+                   badgeStatus="info" title="Back to Home Page" size="giant"></nb-action>
+        <nb-action size="giant" (click)="editPatient()" title="Edit Patient" 
+                    badgePosition="right" badgeStatus="info" class="action-icon">
+          <nb-icon class="action-icon" icon="edit-2-outline"></nb-icon>
+          <span>Edit Patient Profile</span>
+        </nb-action>
+        <!-- <nb-action icon="edit-2-outline" badgePosition="right" badgeStatus="info" title="Edit Patient" size="giant" (click)="editPatient()"></nb-action> -->
       </nb-actions>
     </div>
   </nb-layout-header>
@@ -39,27 +45,27 @@
         <nb-accordion-item-body>
           <!-- <table>
             <tr>
-              <td>{{'PATIENT.DIAGNOSIS' | translate }}</td>
+              <th>{{'PATIENT.DIAGNOSIS' | translate }}</th>
               <td>{{patient?.diagnosis}}</td>
             </tr>
             <tr>
-              <td>{{'PATIENT.DATE_OF_BIRTH' | translate }}</td>
+              <th>{{'PATIENT.DATE_OF_BIRTH' | translate }}</th>
               <td>{{patient?.date_of_birth}}</td>
             </tr>
             <tr>
-              <td>{{'PATIENT.PHONE' | translate }}</td>
+              <th>{{'PATIENT.PHONE' | translate }}</th>
               <td>{{patient?.phone}}</td>
             </tr>
             <tr>
-              <td>{{'PATIENT.HAS_GUARDIAN' | translate }}</td>
+              <th>{{'PATIENT.HAS_GUARDIAN' | translate }}</th>
               <td>{{ (patient?.has_guardian ? 'YES' : 'NO') | translate}}</td>
             </tr>
             <tr>
-              <td>{{'PATIENT.GUARDIAN_NAME' | translate }}</td>
+              <th>{{'PATIENT.GUARDIAN_NAME' | translate }}</th>
               <td>{{patient?.guardian_name}}</td>
             </tr>
             <tr>
-              <td>{{'PATIENT.NOTES' | translate }}</td>
+              <th>{{'PATIENT.NOTES' | translate }}</th>
               <td>{{patient?.notes}}</td>
             </tr>
           </table> -->
@@ -95,7 +101,9 @@
     <nb-card accent="success">
       <!-- <nb-card-header>Active Headsets: {{ onlineHeadsets.length }}</nb-card-header> -->
       <nb-card-body>
-        <nb-select fullWidth  shape="semi-round" size="giant" placeholder="Select Active Headset" [disabled]="!onlineHeadsets.length"
+        <nb-select nbTooltip="Start a module on your VR headset to connect" nbTooltipPlacement="top" 
+                   nbTooltipTrigger="hint" nbTooltipIcon="info-outline" nbTooltipStatus="primary"
+                   fullWidth  shape="semi-round" size="giant" placeholder="Select Active Headset" [disabled]="!onlineHeadsets.length"
                    [(selected)]="selectedOnlineHeadset" (selectedChange)="selectOnlineHeadset($event)">
           <nb-option *ngFor="let headset of onlineHeadsets" [value]="headset.headsetSerial">
             {{ headset.headsetName }} - Serial Number: {{ headset.headsetSerial }}
@@ -104,33 +112,70 @@
       </nb-card-body>
     </nb-card>
 
-    <!-- <div class="allModules">
-      <div *ngFor="let module of modules">
-        <nb-card size="tiny" accent="success" class="moduleCard">
-          
-        </nb-card>
-      </div>
-    </div> -->
+    <ul class="cards">
+      <li class="cards_item" *ngFor="let module of modules">
+        <div class="card">
+          <div class="card_image">
+            <img src="{{module?.image || 'assets/imgs/vr_logo.jpeg'}}"/>
+          </div>
+          <div class="card_content">
+            <nb-accordion>
+              <nb-accordion-item>
+                <nb-accordion-item-header>
+                  <h2 class="card_title">{{module?.name}}</h2>
+                </nb-accordion-item-header>
+
+                <nb-accordion-item-body>
+                  <p class="card_text">{{module?.description}}</p>
+                </nb-accordion-item-body>
+              </nb-accordion-item>
+            </nb-accordion>
+
+            <br>
+            <div class="buttons-row">
+              <button nbButton shape="semi-round" class="module-button" outline status="success"
+               (click)="runModuleV2(module)" [disabled]="!isOnlineHeadsetSelected">
+                {{'PATIENT.START_MODULE' | translate}} <nb-icon icon="arrow-right-outline"></nb-icon>
+              </button>
+              <button nbButton shape="semi-round" class="module-button" outline status="info"
+              [routerLink]="['/patient/', patient.id, 'modules', module.id, 'charts']">
+                Show Statistics <nb-icon icon="trending-up-outline"></nb-icon>
+              </button>
+            </div>
+            <br>
+            <div class="buttons-row">
+              <button nbButton shape="semi-round" class="module-button" outline status="danger"
+              *ngIf="!mainEventsService.trackedModules[module.id]?.downloading && !mainEventsService.trackedModules[module.id]?.installing">
+                Remove Module
+              </button>
+              <button nbButton shape="semi-round" class="module-button" outline status="info"
+               (click)="installAndroid(module)">
+                Install on Headset
+              </button>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
   </nb-layout-column>
 </nb-layout>
 
 <ion-content class="ion-padding">
-
   <ion-list>
     <ion-grid>
       <ion-row class="ion-align-items-start ion-justify-content-center">
         <ion-col size="4" *ngFor="let module of modules">
           <ion-card [ngClass]="{'has-updates': mainEventsService.trackedModules[module.id]?.new_version}" class="module-card">
-            <img [src]="module?.image ||'assets/imgs/vr_logo.jpeg'"/>
+            <!-- <img [src]="module?.image ||'assets/imgs/vr_logo.jpeg'"/>
             <ion-card-header>
               <ion-text color="secondary" style="text-align:center;">
                 <h4>{{module?.name}}</h4>
               </ion-text>
-              <!-- <ion-card-title color="secondary">{{module?.name}}</ion-card-title> -->
+              <ion-card-title color="secondary">{{module?.name}}</ion-card-title>
               <ion-card-subtitle>
-                <!-- {{module?.description}} -->
+                {{module?.description}}
             </ion-card-subtitle>
-            </ion-card-header>
+            </ion-card-header> -->
             <ion-card-content>
               <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading">
                 <!-- <ion-progress-bar [value]="mainEventsService.trackedModules[module.id]?.ratio"
@@ -205,20 +250,20 @@
                 </ion-text>
               </div>
 
-              <ion-grid>
+              <!-- <ion-grid>
                 <ion-row>
                   <ion-col>
                     <ion-button expand="full" shape="round" fill="outline"  color="primary" (click)="runModuleV2(module)"
                     [disabled]="!isOnlineHeadsetSelected">
                     <ion-icon name="play" slot="icon-only"></ion-icon>
-                      <!-- {{'PATIENT.START_MODULE' | translate}} -->
+                      {{'PATIENT.START_MODULE' | translate}}
                     </ion-button>
                   </ion-col>
                   <ion-col>
                     <ion-button fill="outline"  expand="full" shape="round" color="secondary"
                     [routerLink]="['/patient/', patient.id, 'modules', module.id, 'charts']">
                     <ion-icon name="analytics" slot="icon-only"></ion-icon>
-                      <!-- Show Statistics -->
+                      Show Statistics
                     </ion-button>
                   </ion-col>
                 </ion-row>
@@ -230,7 +275,7 @@
                   Install Android
                 </ion-button>
                 </ion-row>
-              </ion-grid>
+              </ion-grid> -->
             </ion-card-content>
           </ion-card>
         </ion-col>

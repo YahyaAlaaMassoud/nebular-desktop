@@ -37,12 +37,23 @@ ion-select {
 }
 
 .module-card {
-    transition: transform .2s;
+  --background: #ffffff;
+  transition: transform .2s;
 }
 
 .module-card:hover,
 .module-card:focus {
-    transform: scale(1.05);
+  --background: #ffffff;
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+ion-img {
+  border-radius: 5px 5px 0 0;
+}
+
+.container {
+  padding: 2px 16px;
 }
 
 .patientAccordion {
@@ -53,112 +64,130 @@ ion-select {
     background-color: #F5F5F5;
 }
 
-.allModules {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
-.allModules > * {
-    box-sizing: border-box;
-}
-
-.allModules > *:not(:last-child) {
-    margin-right: 32px;
-}
-
-/* Item sizing */
-.module-card {
-    width: 33%;
-    // flex: 0 1 calc(33.3% - 32px);
-}
-
-
 @import '~@nebular/theme/styles/global/breakpoints';
 @import '../../../themes';
 
 @include nb-install-component() {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+  // display: flex;
+  // justify-content: space-between;
+  // width: 100%;
 
-  .logo-container {
-    display: flex;
-    align-items: center;
-    width: calc(#{nb-theme(sidebar-width)} - #{nb-theme(header-padding)});
-  }
+  // nb-action {
+  //   height: auto;
+  //   display: flex;
+  //   align-content: center;
+  // }
 
-  nb-action {
-    height: auto;
-    display: flex;
-    align-content: center;
-  }
-
-  nb-user {
-    cursor: pointer;
-  }
-
-  ::ng-deep nb-search button {
-    padding: 0!important;
-  }
+  // nb-user {
+  //   cursor: pointer;
+  // }
 
   .header-container {
     display: flex;
     align-items: center;
     width: auto;
-
-    .sidebar-toggle {
-      @include nb-ltr(padding-right, 1.25rem);
-      @include nb-rtl(padding-left, 1.25rem);
-      text-decoration: none;
-      color: nb-theme(text-hint-color);
-      nb-icon {
-        font-size: 1.75rem;
-      }
-    }
-
-    .logo {
-      padding: 0 1.25rem;
-      font-size: 1.75rem;
-      @include nb-ltr(border-left, 1px solid nb-theme(divider-color));
-      @include nb-rtl(border-right, 1px solid nb-theme(divider-color));
-      white-space: nowrap;
-      text-decoration: none;
-    }
   }
 
-  @include media-breakpoint-down(sm) {
-    .control-item {
-      display: none;
-    }
-    .user-action {
-      border: none;
-      padding: 0;
-    }
+  .buttons-row {
+    align-items: center;
+    margin: -0.5rem;
   }
 
-  @include media-breakpoint-down(is) {
-    nb-select {
-      display: none;
-    }
+  button[nbButton] {
+    margin: 0.5rem;
+  }
+
+  button[nbButton]:hover:enabled {
+    // color: #45a8c8;
+    // background-color: white;
+    // border-color: #45a8c8;
+  }
+
+  .action-icon {
+    @include nb-ltr(margin-right, 0.5rem);
+    @include nb-rtl(margin-left, 0.5rem);
+    cursor: pointer;
+  }
+
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cards_item {
+  display: flex;
+  padding: 1rem;
+}
+
+@media (min-width: 40rem) {
+  .cards_item {
+    width: 50%;
   }
 }
 
-table  {
-  width: 100%;
-  border: 1px solid grey;
-  border-collapse: collapse;
+@media (min-width: 56rem) {
+  .cards_item {
+    width: 33.3333%;
+  }
 }
-th , td  {
-  border: 1px solid grey;
-  border-collapse: collapse;
-  padding: 5px;
+
+.card {
+  background-color: white;
+  border-radius: 0.25rem;
+  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
-table tr:nth-child(odd) {
-  background-color: #ffffff;
+
+.cards_item:hover,
+.cards_item:focus {
+  --background: #ffffff;
+  transform: scale(1.02);
 }
-table tr:nth-child(even) {
-  background-color: #ffffff;
+
+.card_content {
+  padding: 1rem;
+  // background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);
+  --background: #ffffff;
+}
+
+.card_title {
+  // color: #ffffff;
+  color: #45a8c8;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  margin: 0px;
+  margin: auto;
+}
+
+.card_text {
+  // color: #ffffff;
+  color: #45a8c8;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;    
+  font-weight: 400;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.module-button {
+  color:  #45a8c8;
 }

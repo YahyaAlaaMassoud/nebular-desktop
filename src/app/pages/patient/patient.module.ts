@@ -13,7 +13,8 @@ import { ProgressBarModule } from "angular-progress-bar"
 import { RoundPipe } from '../../pipes/round.pipe';
 import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, 
   NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
-  NbRadioModule, NbCheckboxModule, NbDialogModule, NbAccordionModule, NbSelectModule } from '@nebular/theme';
+  NbRadioModule, NbCheckboxModule, NbDialogModule, NbAccordionModule, NbSelectModule,
+  NbTooltipModule } from '@nebular/theme';
 
 const routes: Routes = [
 
@@ -51,7 +52,8 @@ const pages = [
     NbCheckboxModule,
     NbDialogModule.forChild(),
     NbAccordionModule,
-    NbSelectModule
+    NbSelectModule,
+    NbTooltipModule
   ],
   declarations: [
     PatientPage,
