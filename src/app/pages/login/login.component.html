@@ -28,17 +28,21 @@
     <ion-img src="assets/imgs/logo_1.png"></ion-img>
     <br>
     <hr style="width:40%">
-    <br>
-    <!-- <h1 style="text-align: center;">Virtual World, Real Hope</h1> -->
+    <h1 style="text-align: center;">Virtual World, Real Hope</h1>
     <form [formGroup]="loginForm" (keyup.enter)="save()" class="loginForm">
       <nb-card accent="info">
         <nb-card-body>
-          <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Email" formControlName="email">
-          <app-control-error-message [control]="loginForm['controls']['email']"></app-control-error-message>
+          <div class="form-group">
+            <label class="label">Email</label>
+            <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Email" formControlName="email">
+            <app-control-error-message [control]="loginForm['controls']['email']"></app-control-error-message>
+          </div>
           <br>
-          <br>
-          <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Password" formControlName="password" type="password">
-          <app-control-error-message [control]="loginForm['controls']['password']"></app-control-error-message>
+          <div class="form-group">
+            <label class="label">Password</label>
+            <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Password" formControlName="password" type="password">
+            <app-control-error-message [control]="loginForm['controls']['password']"></app-control-error-message>
+          </div>
         </nb-card-body>
         <nb-card-footer>
           <button nbButton fullWidth outline shape="semi-round" status="info" type="submit" [disabled]="!loginForm.valid" (click)="save()">
