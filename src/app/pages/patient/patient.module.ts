@@ -14,7 +14,7 @@ import { RoundPipe } from '../../pipes/round.pipe';
 import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, 
   NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
   NbRadioModule, NbCheckboxModule, NbDialogModule, NbAccordionModule, NbSelectModule,
-  NbTooltipModule } from '@nebular/theme';
+  NbTooltipModule, NbProgressBarModule, NbSpinnerModule } from '@nebular/theme';
 
 const routes: Routes = [
 
@@ -53,7 +53,9 @@ const pages = [
     NbDialogModule.forChild(),
     NbAccordionModule,
     NbSelectModule,
-    NbTooltipModule
+    NbTooltipModule,
+    NbProgressBarModule,
+    NbSpinnerModule
   ],
   declarations: [
     PatientPage,

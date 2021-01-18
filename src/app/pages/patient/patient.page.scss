@@ -172,6 +172,9 @@ ion-img {
   margin: 0px;
   margin: auto;
 }
+.card_title_accordion:hover {
+  background-color: #F5F5F5;
+}
 
 .card_text {
   // color: #ffffff;
@@ -186,8 +189,4 @@ img {
   height: auto;
   max-width: 100%;
   vertical-align: middle;
-}
-
-.module-button {
-  color:  #45a8c8;
 }
