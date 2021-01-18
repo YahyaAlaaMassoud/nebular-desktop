@@ -190,3 +190,13 @@ img {
   max-width: 100%;
   vertical-align: middle;
 }
+
+.module-controls {
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+}
+
+.module-control {
+  width: 15%;
+}

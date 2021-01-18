@@ -168,27 +168,37 @@
               </button>
             </div>
 
-            <br>
-
-            <div class="row">
-              <button nbButton shape="semi-round" class="" outline status="success"
+            <div class="row module-controls">
+              <button nbButton shape="semi-round" class="" outline status="success" size="large" class="module-control"
+              nbTooltip="Run Module" nbTooltipPlacement="bottom" 
+              nbTooltipTrigger="hint" nbTooltipStatus="success"
                (click)="runModuleV2(module)" [disabled]="!isOnlineHeadsetSelected">
-                {{'PATIENT.START_MODULE' | translate}} <nb-icon icon="arrow-right-outline"></nb-icon>
+                <!-- {{'PATIENT.START_MODULE' | translate}}  -->
+                <nb-icon icon="arrow-right-outline"></nb-icon>
               </button>
-              <button nbButton shape="semi-round" class="" outline status="info"
+              <button nbButton shape="semi-round" class="" outline status="info" size="large" class="module-control"
+              nbTooltip="Show Statistics" nbTooltipPlacement="bottom" 
+              nbTooltipTrigger="hint" nbTooltipStatus="info"
               [routerLink]="['/patient/', patient.id, 'modules', module.id, 'charts']">
-                Show Statistics <nb-icon icon="trending-up-outline"></nb-icon>
+                <!-- Show Statistics  -->
+                <nb-icon icon="trending-up-outline"></nb-icon>
               </button>
-            </div>
+            <!-- </div>
             <br>
-            <div class="row">
-              <button nbButton shape="semi-round" class="" outline status="danger"
+            <div class="row"> -->
+              <button nbButton shape="semi-round" class="" outline status="danger" size="large" class="module-control"
+              nbTooltip="Remove Module from Disk" nbTooltipPlacement="bottom" 
+              nbTooltipTrigger="hint" nbTooltipStatus="danger"
               *ngIf="!mainEventsService.trackedModules[module.id]?.downloading && !mainEventsService.trackedModules[module.id]?.installing">
-                Remove Module
+                <!-- Remove Module  -->
+                <nb-icon icon="trash-2-outline"></nb-icon>
               </button>
-              <button nbButton shape="semi-round" class="" outline status="info"
+              <button nbButton shape="semi-round" class="" outline status="warning" size="large" class="module-control"
+              nbTooltip="Install Module on Headset" nbTooltipPlacement="bottom" 
+              nbTooltipTrigger="hint" nbTooltipStatus="warning"
                (click)="installAndroid(module)">
-                Install on Headset
+                <!-- Install on Headset  -->
+                <nb-icon icon="download-outline"></nb-icon>
               </button>
             </div>
           </div>
