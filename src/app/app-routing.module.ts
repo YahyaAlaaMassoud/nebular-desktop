@@ -5,7 +5,7 @@ const routes: Routes = [
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule) },
   { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule) },
   { path: 'patient/:id', loadChildren: () => import('./pages/patient/patient.module').then(m => m.PatientPageModule) },
-  // { path: 'patient/:patient_id/modules/:module_id/charts', loadChildren: () => import('./pages/charts/charts.module').then(m => m.ChartsComponentModule) },
+  { path: 'patient/:patient_id/modules/:module_id/charts', loadChildren: () => import('./pages/charts/charts.module').then(m => m.ChartsComponentModule) },
   { path: '', redirectTo: 'login', pathMatch: 'full'}
 ];
 @NgModule({

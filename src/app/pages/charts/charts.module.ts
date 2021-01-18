@@ -9,7 +9,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ChartsComponent } from './charts.component';
 import { ChartsModule } from 'ng2-charts';
 import { StatsComponent } from '../stats/stats.component';
-import { MatTableModule, MatSortModule, MatFormFieldModule } from '@angular/material';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgxDatetimeRangePickerModule } from "ngx-datetime-range-picker";
 
 const routes: Routes = [
