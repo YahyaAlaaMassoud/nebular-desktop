@@ -24,8 +24,13 @@
 @import '~@nebular/theme/styles/theming';
 // @nebular out of the box themes
 @import '~@nebular/theme/styles/themes';
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
+
 
 $nb-themes: nb-register-theme((
+  font-family-primary: unquote('Quicksand, sans-serif'),
+  font-family-secondary: font-family-primary,
+
   layout-padding-top: 2.25rem,
 
   menu-item-icon-margin: 0 0.5rem 0 0,
