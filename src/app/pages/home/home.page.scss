@@ -135,4 +135,13 @@ ion-note{
       display: none;
     }
   }
+
+  .action-icon {
+    @include nb-ltr(margin-right, 0.5rem);
+    @include nb-rtl(margin-left, 0.5rem);
+    cursor: pointer;
+  }
+  .action-icon:hover {
+    background-color: whitesmoke;
+  }
 }

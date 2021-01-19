@@ -108,6 +108,9 @@ ion-img {
     @include nb-rtl(margin-left, 0.5rem);
     cursor: pointer;
   }
+  .action-icon:hover {
+    background-color: whitesmoke;
+  }
 
 }
 
@@ -125,6 +128,7 @@ ion-img {
 }
 
 .cards_item {
+  transition: transform .5s;
   display: flex;
   padding: 1rem;
 }
@@ -143,7 +147,7 @@ ion-img {
 
 .card {
   background-color: white;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
@@ -199,4 +203,10 @@ img {
 
 .module-control {
   width: 15%;
+}
+
+
+.center-div {
+  margin: auto; 
+  width: 55%;
 }
