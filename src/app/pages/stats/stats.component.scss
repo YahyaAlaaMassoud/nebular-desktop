@@ -3,7 +3,8 @@ div.chart {
   /* height: 100vh; */
   margin: 0 auto;
   display: flex;
-  width: 140vh;
+  // width: 140vh;
+  width: 60%;
 }
 
 .filters {
@@ -54,4 +55,38 @@ td {
         width: 700px;
         height: 600px;
     } */
+}
+
+.center-div {
+  margin: auto; 
+  width: 55%;
+}
+
+.module-controls {
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+}
+
+.module-control {
+  width: 15%;
+}
+
+.padded {
+  // padding: 0.3rem;
+}
+
+.filter-label {
+  // display: flex; 
+  // justify-content: space-around;
+  // justify-content: center;
+  padding: 0.3rem;
+}
+
+.empty-chart {
+  display: flex; 
+  justify-content: space-around;
+  padding: 0.3rem;
+  font-weight: bold;
+  font-size: 2vw;
 }
