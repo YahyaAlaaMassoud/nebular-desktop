@@ -98,7 +98,7 @@
 
     <br>
 
-    <nb-card class="center-div">
+    <nb-card class="center-div" accent="info">
       <!-- <nb-card-header>Active Headsets: {{ onlineHeadsets.length }}</nb-card-header> -->
       <nb-card-body>
         <nb-select nbTooltip="Start a module on your VR headset to connect, then press 'Play' button" nbTooltipPlacement="top"
@@ -142,28 +142,39 @@
             <br>
 
             <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading">
-              <nb-progress-bar size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round" status="downloadStatus" [displayValue]="true"></nb-progress-bar>
               <br>
-              <nb-actions>
-                <nb-action *ngIf="!mainEventsService.trackedModules[module.id]?.paused" (click)="pauseDownloading(module)">
+              <nb-progress-bar size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round" status="danger" [displayValue]="true">
+              </nb-progress-bar>
+              <br>
+              <div class="center-div" style="display: flex; align-items: center; justify-content: center; flex-direction: row;">
+                <button nbButton shape="round" class="" status="basic" size="medium"
+                        *ngIf="!mainEventsService.trackedModules[module.id]?.paused" (click)="pauseDownloading(module)">
+                  <!-- Download New Version.  -->
                   <nb-icon icon="pause-circle-outline"></nb-icon>
-                </nb-action>
-                <nb-action *ngIf="mainEventsService.trackedModules[module.id]?.paused" (click)="resumeDownloading(module)">
+                </button>
+                <button nbButton shape="round" class="" status="basic" size="medium"
+                        *ngIf="mainEventsService.trackedModules[module.id]?.paused" (click)="resumeDownloading(module)">
+                  <!-- Download New Version.  -->
                   <nb-icon icon="play-circle-outline"></nb-icon>
-                </nb-action>
-                <nb-action (click)="cancelDownloading(module)">
+                </button>
+                <button nbButton shape="round" class="" status="basic" size="medium"
+                        (click)="cancelDownloading(module)">
+                  <!-- Download New Version.  -->
                   <nb-icon icon="close-circle-outline"></nb-icon>
-                </nb-action>
-              </nb-actions>
+                </button>
+              </div>
+              <br>
             </div>
 
-            <div *ngIf="!mainEventsService.trackedModules[module.id]?.downloading && !mainEventsService.trackedModules[module.id]?.installing">
+            <div *ngIf="!mainEventsService.trackedModules[module.id]?.downloading && !mainEventsService.trackedModules[module.id]?.installing" 
+            class="center-div">
               <span *ngIf="mainEventsService.trackedModules[module.id]?.new_version">
                 Version <b>{{mainEventsService.trackedModules[module.id]?.new_version}}</b> is available.
               </span>
               <button nbButton shape="semi-round" class="" outline status="info"
                       *ngIf="mainEventsService.trackedModules[module.id]?.new_version" (click)="downloadLatestVersion(module)">
-                Download New Version. <nb-icon icon="cloud-download-outline"></nb-icon>
+                <!-- Download New Version.  -->
+                <nb-icon icon="cloud-download-outline"></nb-icon>
               </button>
 
               <span *ngIf="mainEventsService.trackedModules[module.id]?.new_version_not_installed">

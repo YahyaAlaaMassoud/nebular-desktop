@@ -27,7 +27,7 @@ export class PatientPage implements OnInit {
   isOnlineHeadsetSelected = false;
   logger: any;
   showPatientInfo: boolean = false;
-  downloadStatus: string = 'primary';
+  downloadStatus: string = 'danger';
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
