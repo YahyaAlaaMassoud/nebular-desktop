@@ -2,13 +2,13 @@ import { ChartsService } from './../../services/charts/charts.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user/user.service';
 import { HelperService } from './../../services/helper/helper.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.css'],
+  styleUrls: ['./charts.component.scss'],
 })
 export class ChartsComponent implements OnInit {
   patientId;
@@ -36,14 +36,15 @@ export class ChartsComponent implements OnInit {
     public chartsService: ChartsService,
     private userService: UserService,
     private helperService: HelperService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.patientId = this.route.snapshot.paramMap.get('patient_id');
     this.moduleId = this.route.snapshot.paramMap.get('module_id');
     this.sessionsScopes = this.chartsService.sessionsScopes;
-    this.initDefaultChartData();
+    // this.initDefaultChartData();
   }
 
   async initDefaultChartData() {
@@ -219,5 +220,9 @@ export class ChartsComponent implements OnInit {
     //     0.7627272727272726
     //   ]
     // ]
+  }
+
+  goBack() {
+    this.router.navigate(['/patient', this.patientId]);
   }
 }

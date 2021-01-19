@@ -13,6 +13,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgxDatetimeRangePickerModule } from "ngx-datetime-range-picker";
+import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, 
+  NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
+  NbRadioModule, NbCheckboxModule, NbDialogModule, NbAccordionModule, NbSelectModule,
+  NbTooltipModule, NbProgressBarModule, NbSpinnerModule, NbBadgeModule } from '@nebular/theme';
 
 const routes: Routes = [
 
@@ -33,7 +37,26 @@ const routes: Routes = [
     MatTableModule,
     MatSortModule,
     MatFormFieldModule,
-    NgxDatetimeRangePickerModule.forRoot()
+    NgxDatetimeRangePickerModule.forRoot(),
+    NbLayoutModule,
+    NbSidebarModule.forRoot(),
+    NbInputModule,
+    NbButtonModule,
+    NbCardModule,
+    NbIconModule,
+    NbActionsModule,
+    NbListModule,
+    NbUserModule,
+    NbDatepickerModule,
+    NbRadioModule,
+    NbCheckboxModule,
+    NbDialogModule.forChild(),
+    NbAccordionModule,
+    NbSelectModule,
+    NbTooltipModule,
+    NbProgressBarModule,
+    NbSpinnerModule,
+    NbBadgeModule
   ],
   declarations: [ChartsComponent, StatsComponent],
 })

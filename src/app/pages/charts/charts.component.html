@@ -1,13 +1,29 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>{{'PATIENT.PATIENT' | translate }}</ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
+<nb-layout>
+  <nb-layout-header fixed>
+    <div class="header-container">
+      <nb-actions size="small">
+        <nb-action icon="arrow-back-outline" badgePosition="right" class="action-icon" (click)="goBack()"
+                   badgeStatus="info" title="Back to Home Page" size="giant"></nb-action>
+        <nb-action size="giant" title="Statistics" class="action-icon"
+                   badgePosition="right" badgeStatus="info" class="action-icon">
+         <nb-icon class="action-icon" icon="trending-up-outline"></nb-icon>
+         <span>Statistics</span>
+       </nb-action>
+      </nb-actions>
+    </div>
+  </nb-layout-header>
+</nb-layout>
 
+<!-- 
 <ion-content class="ion-padding">
 <div *ngIf="selectedSessionsScope == 'Within Dates'">
   <ngx-datetime-range-picker name="date" [options]="datePickerOptions" [settings]="datePickerSettings"
@@ -50,4 +66,4 @@
      [sessionsScope]="selectedSessionsScope"
      ></app-stats>
 
-</ion-content>
+</ion-content> -->
