@@ -13,7 +13,7 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.css']
+  styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit, OnDestroy {
 
@@ -126,7 +126,9 @@ export class StatsComponent implements OnInit, OnDestroy {
         fill: false,
         backgroundColor: color,
         borderColor: color,
-        borderWidth: 1
+        borderWidth: 2,
+        pointRadius: 8,
+        pointHoverRadius: 10,
       } as ChartDataSets;
     });
     this.selectedChartConfigs.tooltipData = indexedTooltipData;
@@ -135,14 +137,17 @@ export class StatsComponent implements OnInit, OnDestroy {
         legend: {
           display: true,
           labels: {
-            fontSize: 12
+            fontSize: 16,
+            fontFamily: "'Quicksand'",
+            fontStyle: 'bold'
           }
         },
         title: {
-          display: true,
-          text: `${this.selectedChartConfigs.legend} (${this.selectedChartConfigs.fieldNameY.split('_').join(' ') })`,
-          fontSize: 14,
-          fontColor: this.selectedChartConfigs.color
+          display: false,
+          text: `${this.selectedChartConfigs.legend} - ${this.selectedChartConfigs.fieldNameY.split('_').join(' ') }`,
+          fontSize: 18,
+          fontColor: this.selectedChartConfigs.color,
+          fontFamily: "'Quicksand'"
         },
         hover: {
           mode: 'index' as InteractionMode,
@@ -151,6 +156,8 @@ export class StatsComponent implements OnInit, OnDestroy {
         tooltips: {
           enabled: true,
           mode: 'single' as InteractionMode,
+          titleFontFamily: "'Quicksand'",
+          bodyFontFamily: "'Quicksand'",
           titleFontSize: 14,
           bodyFontSize: 14,
           intersect: true,
@@ -166,7 +173,7 @@ export class StatsComponent implements OnInit, OnDestroy {
               });
               return tooltipDataArr;
             }
-          }
+          },
         },
         scales: {
           xAxes: [{
@@ -177,13 +184,19 @@ export class StatsComponent implements OnInit, OnDestroy {
             offset: true,
             gridLines: {
               offsetGridLines: true
+            },
+            ticks: {
+              fontFamily: "'Quicksand'",
+              fontStyle: 'bold'
             }
           }],
           yAxes: [{
             display: true,
             ticks: {
               suggestedMin: 0,
-              beginAtZero: true
+              beginAtZero: true,
+              fontFamily: "'Quicksand'",
+              fontStyle: 'bold'
             }
           }],
         }
