@@ -119,7 +119,8 @@ export class MainEventsService {
 
   setupHeadsetEvents() {
     this.events.subscribe('installing-android-module', (options) => {
-      this.helperService.showLoading(options.msg);
+      // this.helperService.showLoading(options.msg);
+      this.helperService.showNgLoading(options.msg);
     });
 
     this.events.subscribe('install-android-module-ready', (options) => {
@@ -127,12 +128,14 @@ export class MainEventsService {
         return this.helperService.showError(options.err);
       }
 
-      this.helperService.showToast(options.msg);
+      // this.helperService.showToast(options.msg);
+      this.helperService.showNbToast(options.msg);
     });
 
     this.events.subscribe('device-connected', (device) => {
       this.headsetConnectedState = this.headsetStates.preparing;
-      this.helperService.showToast('An Authorized device is connected ' + device.id);
+      // this.helperService.showToast('An Authorized device is connected ' + device.id);
+      this.helperService.showNbToast('An Authorized device is connected ' + device.id);
       this.headsetsPrepared.push({
         id: device.id
       });
@@ -141,12 +144,14 @@ export class MainEventsService {
 
     this.events.subscribe('device-disconnected', () => {
       this.headsetConnectedState = this.headsetStates.none;
-      this.helperService.showToast('The device is disconnected.');
+      // this.helperService.showToast('The device is disconnected.');
+      this.helperService.showNbToast('The device is disconnected.');
     });
 
     this.events.subscribe('unauthorized-device-connected', (device) => {
       this.headsetConnectedState = this.headsetStates.unauthorized;
-      this.helperService.showToast('The Device you just connected is not authorized!');
+      // this.helperService.showToast('The Device you just connected is not authorized!');
+      this.helperService.showNbToast('The Device you just connected is not authorized!');
     });
 
     this.events.subscribe('offline-headset-ready', (options) => {
@@ -159,11 +164,15 @@ export class MainEventsService {
         this.headsetsPrepared.push(options.headsetDevice);
       }
       this.headsetConnectedState = this.headsetStates.ready;
-      this.helperService.showToast('The Connected Headset is ready now, you can unplug it safely');
+      // this.helperService.showToast('The Connected Headset is ready now, you can unplug it safely');
+      this.helperService.showNbToast('The Connected Headset is ready now, you can unplug it safely');
     });
 
     this.events.subscribe('finding-selected-headset', (options) => {
-      if (!options.running) { this.helperService.showToast(options.msg); }
+      if (!options.running) { 
+        // this.helperService.showToast(options.msg); 
+        this.helperService.showNbToast(options.msg); 
+      }
     });
 
     this.events.subscribe('wrong-module-detected', (options) => {
@@ -199,7 +208,8 @@ export class MainEventsService {
         return this.helperService.showError(options.err);
       }
 
-      this.helperService.showToast('The Desktop Module is ready now');
+      // this.helperService.showToast('The Desktop Module is ready now');
+      this.helperService.showNbToast('The Desktop Module is ready now');
     });
 
     this.events.subscribe('headset-module-ready', (options) => {
@@ -207,7 +217,8 @@ export class MainEventsService {
         return this.helperService.showError(options.msg);
       }
 
-      this.helperService.showToast('The VR Module is ready now on the headset');
+      // this.helperService.showToast('The VR Module is ready now on the headset');
+      this.helperService.showNbToast('The VR Module is ready now on the headset');
       this.runModuleAfterHeadsetConnected(options.moduleName, options.moduleId);
     });
   }
@@ -345,7 +356,8 @@ export class MainEventsService {
         currentModule.ratio = 1;
         currentModule.new_version = null;
         currentModule.downloading = false;
-        this.helperService.showToast(`The version ${versionData.name} is downloaded successfully`);
+        // this.helperService.showToast(`The version ${versionData.name} is downloaded successfully`);
+        this.helperService.showNbToast(`The version ${versionData.name} is downloaded successfully`);
       });
     });
 
@@ -354,7 +366,8 @@ export class MainEventsService {
         const currentModule = this.trackedModules[versionData.vr_module_id];
         currentModule.new_version_not_installed = null;
         currentModule.installing = false;
-        this.helperService.showToast(`The version ${versionData.name} is installed successfully`);
+        // this.helperService.showToast(`The version ${versionData.name} is installed successfully`);
+        this.helperService.showNbToast(`The version ${versionData.name} is installed successfully`);
       });
     });
 
@@ -373,5 +386,9 @@ export class MainEventsService {
         this.helperService.showError(`An error while installing the version ${versionData.name}`);
       });
     });
+  }
+
+  isProdEnv() {
+    return environment.production;
   }
 }
