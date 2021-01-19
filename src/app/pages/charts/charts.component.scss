@@ -59,3 +59,28 @@ ion-item {
   }
 
 }
+
+.center-div {
+  margin: auto; 
+  width: 55%;
+}
+
+.module-controls {
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+}
+
+.module-control {
+  width: 15%;
+}
+
+.padded {
+  padding: 0.3rem;
+}
+
+.filter-label {
+  // display: flex; 
+  // justify-content: space-around;
+  padding: 0.3rem;
+}

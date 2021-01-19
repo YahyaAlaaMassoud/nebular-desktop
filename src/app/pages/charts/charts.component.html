@@ -21,6 +21,47 @@
       </nb-actions>
     </div>
   </nb-layout-header>
+
+  <nb-layout-column>
+    <div class="center-div row module-controls">
+      <div style="flex: row;">
+        <label class="label filter-label">Sessions Scopes</label>
+        <nb-select filled status="info"
+                    fullWidth  shape="semi-round" size="medium" placeholder="Sessions Scopes"
+                    [(selected)]="selectedSessionsScope" (selectedChange)="changeSessionScope()">
+          <nb-option *ngFor="let sessionsScope of sessionsScopes" [value]="sessionsScope">
+            {{ sessionsScope }}
+          </nb-option>
+        </nb-select>
+      </div>
+
+      <div style="flex: row;" *ngIf="selectedSessionsScope == 'One Session' && sessions?.length">
+        <label class="label filter-label">Session Date</label>
+        <nb-select filled status="info"
+                    fullWidth  shape="semi-round" size="medium" placeholder="Sessions Scopes"
+                    [(selected)]="selectedSession" (selectedChange)="getStatistics()">
+          <nb-option *ngFor="let session of sessions" [value]="session">
+            {{ session?.session_date }}
+          </nb-option>
+        </nb-select>
+      </div>
+    </div>
+
+    <div class="empty-content" *ngIf="!sessions?.length">
+      <div class="illustration-wrapper">
+        <nb-icon name="trending-up-outline"></nb-icon>
+      </div>
+      <div class="empty-text">No Sessions Available</div>
+    </div>
+    
+    <br>
+
+    <app-stats *ngIf="showStats && sessions?.length"
+                [moduleId]= "moduleId" [allData]="sessionStatistics"
+                [sessionName]="selectedSession.session_date"
+                [sessionsScope]="selectedSessionsScope"
+     ></app-stats>
+  </nb-layout-column>
 </nb-layout>
 
 <!-- 
@@ -30,17 +71,6 @@
    (dateRangeChanged)="onDateFilterChange($event)" required>
   </ngx-datetime-range-picker>
 </div>
-
-<ion-list class="sessions-list ion-no-padding">
-  <ion-item *ngIf="sessions?.length" color='secondary' size="small" slot="start">
-    <ion-label position="stacked">Sessions Scope</ion-label>
-    <ion-select (ionChange)="changeSessionScope()" [(ngModel)]="selectedSessionsScope" interface="popover">
-      <ion-select-option *ngFor="let sessionsScope of sessionsScopes" [value]="sessionsScope">
-        {{ sessionsScope }}
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
-</ion-list>
 
   <ion-list class="sessions-list ion-no-padding" *ngIf="selectedSessionsScope == 'One Session'">
     <ion-item *ngIf="sessions?.length" color='secondary' size="small" slot="start">
