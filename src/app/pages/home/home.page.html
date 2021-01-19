@@ -41,8 +41,8 @@
   </div>
 </ion-content> -->
 
-<nb-layout style="width: 100%;">
-  <nb-layout-header>
+<nb-layout center style="width: 100%;">
+  <nb-layout-header fixed>
     <div class="header-container">
       <div class="logo-container">
         <a routerLink="/home" class="sidebar-toggle">
@@ -54,14 +54,20 @@
 
     <div class="header-container" style="margin-left: auto!important;">
       <nb-actions>
-        <nb-action icon="person-add" badgePosition="right" (click)="addPatient()" badgeStatus="info" title="Add New Patient" size="giant"></nb-action>
-        <nb-action icon="log-out-outline" badgePosition="right" (click)="userService.logout()" badgeStatus="info" title="Logout" size="giant"></nb-action>
+        <nb-action badgePosition="right" (click)="addPatient()" badgeStatus="info" title="Add New Patient" size="giant" class="action-icon">
+          <nb-icon class="action-icon" icon="person-add"></nb-icon>
+          <span>Add New Patient</span>
+        </nb-action>
+        <nb-action badgePosition="right" (click)="userService.logout()" badgeStatus="info" title="Logout" size="giant" class="action-icon">
+          <nb-icon class="action-icon" icon="log-out-outline"></nb-icon>
+          <span>Logout</span>
+        </nb-action>
       </nb-actions>
     </div>
   </nb-layout-header>
 
   <nb-layout-column>
-    <nb-card accent="success">
+    <nb-card accent="info">
       <nb-card-header><h3>Patients</h3></nb-card-header>
       <nb-list *ngIf="patients?.length">
         <nb-list-item *ngFor="let patient of patients" [routerLink]="['/patient/', patient.id]" class="patientItem">
@@ -75,7 +81,7 @@
       </nb-list>
       <nb-list>
         <nb-list-item>
-          <button nbButton fullWidth shape="semi-round" status="success" (click)="addPatient()">
+          <button nbButton fullWidth shape="semi-round" status="info" (click)="addPatient()">
             Add New Patient <nb-icon icon="person-add-outline"></nb-icon>
           </button>
         </nb-list-item>
