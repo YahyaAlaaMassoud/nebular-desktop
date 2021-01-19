@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { NbCardBodyComponent, NbCardComponent, NbThemeModule, NbDatepickerModule } from '@nebular/theme';
-import { NbSidebarModule, NbLayoutModule, NbButtonModule, NbDialogModule } from '@nebular/theme';
+import { NbSidebarModule, NbLayoutModule, NbButtonModule, NbDialogModule, NbToastrModule } from '@nebular/theme';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 
@@ -20,6 +20,7 @@ import { ChartsModule } from 'ng2-charts';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RouterModule } from '@angular/router';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,7 +50,9 @@ export function createTranslateLoader(http: HttpClient) {
     NbLayoutModule,
     NbEvaIconsModule,
     NbDatepickerModule.forRoot(),
-    NbDialogModule.forRoot()
+    NbDialogModule.forRoot(),
+    NbToastrModule.forRoot(),
+    NgxSpinnerModule,
   ],
   providers: [IonicRouteStrategy],
   bootstrap: [AppComponent]
