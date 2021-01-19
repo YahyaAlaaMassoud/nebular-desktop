@@ -5,6 +5,8 @@ import {
   AlertController
 } from '@ionic/angular';
 import { ConfigService } from '../config/config.service';
+import { NbGlobalLogicalPosition, NbToastRef, NbToastrService, NbDialogService } from '@nebular/theme';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,9 @@ export class HelperService {
               private loadingController: LoadingController,
               private alertController: AlertController,
               private toastController: ToastController,
-              configService: ConfigService
+              configService: ConfigService,
+              private nbToastService: NbToastrService,
+              private ngSpinner: NgxSpinnerService
   ) {
     configService.getConfig().then((config) => {
       this.config = config;
@@ -26,7 +30,8 @@ export class HelperService {
 
   async showToast(message: string, position: 'bottom' | 'middle' | 'top' = 'bottom') {
 
-    await this.removeLoading();
+    // await this.removeLoading();
+    await this.removeNgLoading();
 
     const toast = await this.toastController.create({
       message,
@@ -40,11 +45,31 @@ export class HelperService {
     return await toast.present();
   }
 
+  async showNbToast(message: string) {
+
+    // await this.removeLoading();
+    await this.removeNgLoading();
+
+    const toastRef: NbToastRef = this.nbToastService.show(
+      '',
+      message,
+      { 
+        destroyByClick: true,
+        hasIcon: true,
+        icon: 'info-outline',
+        duration: 5000,
+        position: NbGlobalLogicalPosition.TOP_END,
+        status: 'success'
+      });
+
+  }
+
   async showAlert(message: string, header?: string,
                   buttons?: any[], backdropDismiss = true, inputs = []) {
     buttons = buttons || [this.translate('OK')];
 
-    await this.removeLoading();
+    // await this.removeLoading();
+    await this.removeNgLoading();
 
     const alert = await this.alertController.create({
       message,
@@ -58,6 +83,36 @@ export class HelperService {
 
     await alert.present();
     return alert;
+  }
+
+  async showNgLoading(message?) {
+    if (this.loading) { 
+      return; 
+    }
+
+    this.loading = true;
+    this.ngSpinner.show(
+      undefined,
+      {
+        type: 'square-jelly-box',//'ball-atom',
+        size: 'large',
+        bdColor: '#F5F5F5',
+        color: '#45a8c8',
+        fullScreen: true
+      }
+    );
+  }
+
+  async removeNgLoading() {
+    if (!this.loading) { 
+      return; 
+    }
+
+    this.loading = false;
+    // this.ngSpinner.hide();
+    setTimeout(() => {
+      this.ngSpinner.hide();
+    }, 500);
   }
 
   async showLoading(message?) {
