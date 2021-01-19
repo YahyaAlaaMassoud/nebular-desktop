@@ -1,5 +1,5 @@
 import { ChartsService } from './../../services/charts/charts.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user/user.service';
 import { HelperService } from './../../services/helper/helper.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -37,14 +37,16 @@ export class ChartsComponent implements OnInit {
     private userService: UserService,
     private helperService: HelperService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private _cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
     this.patientId = this.route.snapshot.paramMap.get('patient_id');
     this.moduleId = this.route.snapshot.paramMap.get('module_id');
     this.sessionsScopes = this.chartsService.sessionsScopes;
-    // this.initDefaultChartData();
+    // this.loadPatient(this.patientId);
+    this.initDefaultChartData();
   }
 
   async initDefaultChartData() {
@@ -56,6 +58,8 @@ export class ChartsComponent implements OnInit {
         this.moduleId
       )) as any[];
       this.changeSessionScope();
+      this._cdr.detectChanges()
+      console.log(this.sessions)
     } catch (err) {
       this.helperService.showError(err);
     }
@@ -74,6 +78,8 @@ export class ChartsComponent implements OnInit {
         this.getSessionsStatisticsWithinDates(this.datePickerOptions.startDate, this.datePickerOptions.endDate);
         break;
     }
+    console.log(this.sessions)
+    this._cdr.detectChanges()
   }
 
   async getStatistics() {
@@ -89,7 +95,8 @@ export class ChartsComponent implements OnInit {
         this.selectedSession.id
       )) as any[];
       this.showStats = true;
-      this.helperService.removeLoading();
+      // this.helperService.removeLoading();
+      this.helperService.removeNgLoading();
     } catch (err) {
       this.helperService.showError(err);
     }
@@ -128,7 +135,8 @@ export class ChartsComponent implements OnInit {
         params
       )) as any[];
       this.showStats = true;
-      this.helperService.removeLoading();
+      // this.helperService.removeLoading();
+      this.helperService.removeNgLoading();
       return result;
     } catch (err) {
       this.helperService.showError(err);
