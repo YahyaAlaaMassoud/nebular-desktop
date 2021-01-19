@@ -37,10 +37,12 @@ export class EditPatientComponent implements OnInit {
 
   async save() {
     try {
-      this.helperService.showLoading();
+      // this.helperService.showLoading();
+      this.helperService.showNgLoading();
       const result: any = await this.userService.editPatient(this.patient.id, this.patientForm.value);
       if (result) {
-        this.helperService.showToast(this.helperService.translate('PATIENT.EDIT_PATEINT_MSG'));
+        // this.helperService.showToast(this.helperService.translate('PATIENT.EDIT_PATEINT_MSG'));
+        this.helperService.showNbToast(this.helperService.translate('PATIENT.EDIT_PATEINT_MSG'));
         this.dismiss(result);
       }
     } catch (err) {

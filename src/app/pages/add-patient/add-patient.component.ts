@@ -40,10 +40,12 @@ export class AddPatientComponent implements OnInit {
 
   async save() {
     try {
-      this.helperService.showLoading();
+      // this.helperService.showLoading();
+      this.helperService.showNgLoading();
       const result: any = await this.userService.addPatient(this.patientForm.value);
       if (result) {
-        this.helperService.showToast(this.helperService.translate('PATIENT.Add_PATEINT_MSG'));
+        // this.helperService.showToast(this.helperService.translate('PATIENT.Add_PATEINT_MSG'));
+        this.helperService.showNbToast(this.helperService.translate('PATIENT.Add_PATEINT_MSG'));
         this.dismiss(result);
       }
 

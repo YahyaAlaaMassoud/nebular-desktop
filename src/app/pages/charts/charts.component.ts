@@ -48,7 +48,8 @@ export class ChartsComponent implements OnInit {
 
   async initDefaultChartData() {
     try {
-      await this.helperService.showLoading();
+      // await this.helperService.showLoading();
+      await this.helperService.showNgLoading();
       this.sessions = (await this.userService.getPatientModuleSessions(
         this.patientId,
         this.moduleId
@@ -80,7 +81,8 @@ export class ChartsComponent implements OnInit {
     }
 
     try {
-      await this.helperService.showLoading();
+      // await this.helperService.showLoading();
+      await this.helperService.showNgLoading();
       this.showStats = false;
       this.sessionStatistics = (await this.chartsService.loadSessionStatistics(
         this.selectedSession.id
@@ -114,7 +116,8 @@ export class ChartsComponent implements OnInit {
     // groupedBy null will get all sessions in one array
     try {
       this.showStats = false;
-      await this.helperService.showLoading();
+      // await this.helperService.showLoading();
+      await this.helperService.showNgLoading();
       const params = {
         patient_id: this.patientId,
         vr_module_id: this.moduleId,

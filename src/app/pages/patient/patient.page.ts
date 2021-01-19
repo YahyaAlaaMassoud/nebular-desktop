@@ -44,6 +44,7 @@ export class PatientPage implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.mainEventsService.isProdEnv())
     this.id = this.route.snapshot.paramMap.get('id');
     this.loadPatient();
     // wait for userdoc before setting up page
@@ -101,7 +102,8 @@ export class PatientPage implements OnInit {
 
   async loadPatient() {
     try {
-      await this.helperService.showLoading();
+      // await this.helperService.showLoading();
+      await this.helperService.showNgLoading();
       this.patient = await this.userService.getPatient(this.id) as any[];
       this.modules = await this.userService.getPatientModules(this.id) as any[];
       this.headsets = await this.userService.getCenterHeadsets();
@@ -109,7 +111,8 @@ export class PatientPage implements OnInit {
       this.mainEventsService.sendEventAsync('authorized-devices-changed', {
         authorized_devices: this.headsets
       });
-      this.helperService.removeLoading();
+      // this.helperService.removeLoading();
+      this.helperService.removeNgLoading();
     } catch (err) {
       this.helperService.showError(err);
     }
@@ -164,7 +167,8 @@ export class PatientPage implements OnInit {
     const selectionIdx = this.onlineHeadsets.findIndex(el => el.headsetSerial == e)
     this.selectedOnlineHeadset = this.onlineHeadsets[selectionIdx].headsetSerial;
 
-    this.helperService.showToast('Headset with Serial Number: ' + this.selectedOnlineHeadset + ' has been selected');
+    // this.helperService.showToast('Headset with Serial Number: ' + this.selectedOnlineHeadset + ' has been selected');
+    this.helperService.showNbToast('Headset with Serial Number: ' + this.selectedOnlineHeadset + ' has been selected');
     // console.log(this.headsets.find((h) => h.serial === this.selectedOnlineHeadset.headsetSerial).id)
     
     console.log(this.isOnlineHeadsetSelected, this.selectedOnlineHeadset)

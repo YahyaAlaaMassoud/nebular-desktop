@@ -28,10 +28,12 @@ export class LoginComponent implements OnInit {
 
   async save() {
     try {
-      await this.helperService.showLoading();
+      // await this.helperService.showLoading();
+      await this.helperService.showNgLoading();
       const result: any = await this.userService.login(this.loginForm.value);
       this.userService.updateAndSaveCarrentUser(result);
-      this.helperService.removeLoading();
+      // this.helperService.removeLoading();
+      this.helperService.removeNgLoading();
     } catch (err) {
       this.helperService.showError(err);
     }
