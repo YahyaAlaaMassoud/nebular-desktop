@@ -109,7 +109,7 @@
             {{ headset.headsetName }} - Serial Number: {{ headset.headsetSerial }}
           </nb-option>
         </nb-select>
-        <nb-badge *ngIf="!onlineHeadsets.length" text="No Active Headsets Available" status="danger" position="top right"></nb-badge>
+        <nb-badge *ngIf="!onlineHeadsets.length" text="No Active Headsets Available" status="basic" position="top right"></nb-badge>
         <nb-badge *ngIf="onlineHeadsets.length" text="{{ onlineHeadsets.length }} Headset(s) Found" status="success" position="top right"></nb-badge>
       </nb-card-body>
     </nb-card>
@@ -143,7 +143,7 @@
 
             <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading">
               <br>
-              <nb-progress-bar size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round" status="danger" [displayValue]="true">
+              <nb-progress-bar size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round_percent" [status]="progressStatus" [displayValue]="true">
               </nb-progress-bar>
               <br>
               <div class="center-div" style="display: flex; align-items: center; justify-content: center; flex-direction: row;">
@@ -167,7 +167,7 @@
             </div>
 
             <div *ngIf="!mainEventsService.trackedModules[module.id]?.downloading && !mainEventsService.trackedModules[module.id]?.installing" 
-            class="center-div">
+            class="new-version">
               <span *ngIf="mainEventsService.trackedModules[module.id]?.new_version">
                 Version <b>{{mainEventsService.trackedModules[module.id]?.new_version}}</b> is available.
               </span>
@@ -180,9 +180,10 @@
               <span *ngIf="mainEventsService.trackedModules[module.id]?.new_version_not_installed">
                 Version <b>{{mainEventsService.trackedModules[module.id]?.new_version}}</b> is not installed.
               </span>
-              <button nbButton fullWidth shape="semi-round" class="" outline status="info"
+              <button nbButton shape="semi-round" class="" outline status="info"
                       *ngIf="mainEventsService.trackedModules[module.id]?.new_version_not_installed" (click)="installLatestVersion(module)">
-                Install. <nb-icon icon="download-outline"></nb-icon>
+                <!-- Install.  -->
+                <nb-icon icon="download-outline"></nb-icon>
               </button>
             </div>
 
@@ -225,7 +226,7 @@
     </ul>
   </nb-layout-column>
 
-  <nb-layout-footer *ngIf="!mainEventsService.isProdEnv()">
+  <nb-layout-footer>
     <nb-card class="center-div">
       <nb-card-body class="row module-controls">
           <button nbButton fullWidth shape="semi-round" outline status="info" size="large" class="module-control" (click)="toggleConsole()">
