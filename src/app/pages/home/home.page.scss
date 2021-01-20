@@ -2,11 +2,6 @@
     height: 100px;
 }
 
-ion-card {
-    border: 1px solid var(--ion-color-primary);
-    border-radius: 1rem
-}
-
 .UserimgSection{
     position: relative;
 }
@@ -26,9 +21,9 @@ ion-card {
     color:  var(--ion-color-medium);
     font-size: 16px;
 }
-ion-img{
-    width: 90%;
-    height: 90%;
+img{
+    width: 80%;
+    height: 80%;
 }
 .listSection{
     display: flex;
@@ -54,9 +49,6 @@ h5{
     margin-top: 12px;
     font-size: 16px;
 }
-ion-note{
-    font-size: 14px;
-}
 
 .patientItem {
     cursor: pointer;
@@ -67,82 +59,82 @@ ion-note{
     background-color: #F5F5F5;
 }
 
-@import '~@nebular/theme/styles/global/breakpoints';
-@import '../../../themes';
+// @import '~@nebular/theme/styles/global/breakpoints';
+// @import '../../../themes';
 
-@include nb-install-component() {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+// @include nb-install-component() {
+//   // display: flex;
+//   // justify-content: space-between;
+//   // width: 100%;
 
-  .logo-container {
-    display: flex;
-    align-items: center;
-    width: calc(#{nb-theme(sidebar-width)} - #{nb-theme(header-padding)});
-  }
+//   // .logo-container {
+//   //   display: flex;
+//   //   align-items: center;
+//   //   width: calc(#{nb-theme(sidebar-width)} - #{nb-theme(header-padding)});
+//   // }
 
-  nb-action {
-    height: auto;
-    display: flex;
-    align-content: center;
-  }
+//   // nb-action {
+//   //   height: auto;
+//   //   display: flex;
+//   //   align-content: center;
+//   // }
 
-  nb-user {
-    cursor: pointer;
-  }
+//   // nb-user {
+//   //   cursor: pointer;
+//   // }
 
-  ::ng-deep nb-search button {
-    padding: 0!important;
-  }
+//   // ::ng-deep nb-search button {
+//   //   padding: 0!important;
+//   // }
 
-  .header-container {
-    display: flex;
-    align-items: center;
-    width: auto;
+//   // .header-container {
+//   //   display: flex;
+//   //   align-items: center;
+//   //   width: auto;
 
-    .sidebar-toggle {
-      @include nb-ltr(padding-right, 1.25rem);
-      @include nb-rtl(padding-left, 1.25rem);
-      text-decoration: none;
-      color: nb-theme(text-hint-color);
-      nb-icon {
-        font-size: 1.75rem;
-      }
-    }
+//   //   .sidebar-toggle {
+//   //     @include nb-ltr(padding-right, 1.25rem);
+//   //     @include nb-rtl(padding-left, 1.25rem);
+//   //     text-decoration: none;
+//   //     color: nb-theme(text-hint-color);
+//   //     nb-icon {
+//   //       font-size: 1.75rem;
+//   //     }
+//   //   }
 
-    .logo {
-      padding: 0 1.25rem;
-      font-size: 1.75rem;
-      @include nb-ltr(border-left, 1px solid nb-theme(divider-color));
-      @include nb-rtl(border-right, 1px solid nb-theme(divider-color));
-      white-space: nowrap;
-      text-decoration: none;
-    }
-  }
+//   //   .logo {
+//   //     padding: 0 1.25rem;
+//   //     font-size: 1.75rem;
+//   //     @include nb-ltr(border-left, 1px solid nb-theme(divider-color));
+//   //     @include nb-rtl(border-right, 1px solid nb-theme(divider-color));
+//   //     white-space: nowrap;
+//   //     text-decoration: none;
+//   //   }
+//   // }
 
-  @include media-breakpoint-down(sm) {
-    .control-item {
-      display: none;
-    }
-    .user-action {
-      border: none;
-      padding: 0;
-    }
-  }
+//   // @include media-breakpoint-down(sm) {
+//   //   .control-item {
+//   //     display: none;
+//   //   }
+//   //   .user-action {
+//   //     border: none;
+//   //     padding: 0;
+//   //   }
+//   // }
 
-  @include media-breakpoint-down(is) {
-    nb-select {
-      display: none;
-    }
-  }
+//   // @include media-breakpoint-down(is) {
+//   //   nb-select {
+//   //     display: none;
+//   //   }
+//   // }
 
-  .action-icon {
-    @include nb-ltr(margin-right, 0.5rem);
-    @include nb-rtl(margin-left, 0.5rem);
-    cursor: pointer;
-    font-size: larger;
-  }
-  .action-icon:hover {
-    background-color: whitesmoke;
-  }
-}
+//   // .action-icon {
+//   //   @include nb-ltr(margin-right, 0.5rem);
+//   //   @include nb-rtl(margin-left, 0.5rem);
+//   //   cursor: pointer;
+//   //   font-size: larger;
+//   // }
+//   // .action-icon:hover {
+//   //   background-color: whitesmoke;
+//   // }
+// }

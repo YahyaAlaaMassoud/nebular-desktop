@@ -64,56 +64,55 @@ ion-img {
     background-color: #F5F5F5;
 }
 
-@import '~@nebular/theme/styles/global/breakpoints';
-@import '../../../themes';
+// @import '../../../themes';
 
-@include nb-install-component() {
-  // display: flex;
-  // justify-content: space-between;
-  // width: 100%;
+// @include nb-install-component() {
+//   // display: flex;
+//   // justify-content: space-between;
+//   // width: 100%;
 
-  // nb-action {
-  //   height: auto;
-  //   display: flex;
-  //   align-content: center;
-  // }
+//   // nb-action {
+//   //   height: auto;
+//   //   display: flex;
+//   //   align-content: center;
+//   // }
 
-  // nb-user {
-  //   cursor: pointer;
-  // }
+//   // nb-user {
+//   //   cursor: pointer;
+//   // }
 
-  .header-container {
-    display: flex;
-    align-items: center;
-    width: auto;
-  }
+//   // .header-container {
+//   //   display: flex;
+//   //   align-items: center;
+//   //   width: auto;
+//   // }
 
-  .buttons-row {
-    align-items: center;
-    margin: -0.5rem;
-  }
+//   // .buttons-row {
+//   //   align-items: center;
+//   //   margin: -0.5rem;
+//   // }
 
-  button[nbButton] {
-    margin: 0.5rem;
-  }
+//   // button[nbButton] {
+//   //   margin: 0.5rem;
+//   // }
 
-  button[nbButton]:hover:enabled {
-    // color: #45a8c8;
-    // background-color: white;
-    // border-color: #45a8c8;
-  }
+//   // button[nbButton]:hover:enabled {
+//   //   // color: #45a8c8;
+//   //   // background-color: white;
+//   //   // border-color: #45a8c8;
+//   // }
 
-  .action-icon {
-    @include nb-ltr(margin-right, 0.5rem);
-    @include nb-rtl(margin-left, 0.5rem);
-    cursor: pointer;
-    font-size: larger;
-  }
-  .action-icon:hover {
-    background-color: whitesmoke;
-  }
+//   // .action-icon {
+//   //   @include nb-ltr(margin-right, 0.5rem);
+//   //   @include nb-rtl(margin-left, 0.5rem);
+//   //   cursor: pointer;
+//   //   font-size: larger;
+//   // }
+//   // .action-icon:hover {
+//   //   background-color: whitesmoke;
+//   // }
 
-}
+// }
 
 *,
 *::before,

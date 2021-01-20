@@ -1,4 +1,4 @@
-@import '../../../themes';
+// @import '../../../themes';
 
 
 div.chart {
@@ -115,16 +115,16 @@ datatable-scroller {
   }
 }
 
-@include nb-install-component {
+// @include nb-install-component {
 
-  .table-header {
-    color: nb-theme(color-info-600);
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-  }
+//   .table-header {
+//     color: nb-theme(color-info-600);
+//     font-size: 1rem;
+//     font-weight: bold;
+//     text-align: center;
+//   }
   
-}
+// }
 
 ::ng-deep .datatable-body-row {
   color: red !important;
