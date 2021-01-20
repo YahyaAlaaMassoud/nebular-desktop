@@ -25,7 +25,9 @@
 // @nebular out of the box themes
 @import '~@nebular/theme/styles/themes';
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
-
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/material.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
 
 $nb-themes: nb-register-theme((
   font-family-primary: unquote('Quicksand, sans-serif'),
