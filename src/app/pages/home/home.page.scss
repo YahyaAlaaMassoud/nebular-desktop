@@ -140,6 +140,7 @@ ion-note{
     @include nb-ltr(margin-right, 0.5rem);
     @include nb-rtl(margin-left, 0.5rem);
     cursor: pointer;
+    font-size: larger;
   }
   .action-icon:hover {
     background-color: whitesmoke;
