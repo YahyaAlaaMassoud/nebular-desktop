@@ -10,7 +10,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { EditPatientComponent } from '../edit-patient/edit-patient.component';
 import { ComponentsModule } from '../../components/components.module';
 import { ProgressBarModule } from "angular-progress-bar"
-import { RoundPipe } from '../../pipes/round.pipe';
+import { RoundPercentPipe } from '../../pipes/round_percent.pipe';
+import { RoundFloatPipe } from '../../pipes/round-float.pipe';
 import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, 
   NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
   NbRadioModule, NbCheckboxModule, NbDialogModule, NbAccordionModule, NbSelectModule,
@@ -60,7 +61,8 @@ const pages = [
   ],
   declarations: [
     PatientPage,
-    RoundPipe,
+    RoundPercentPipe,
+    RoundFloatPipe,
     ...pages
   ],
   entryComponents: [...pages]
