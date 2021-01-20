@@ -4,6 +4,7 @@ import { UserService } from '../../services/user/user.service';
 import { HelperService } from './../../services/helper/helper.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-charts',
@@ -24,6 +25,10 @@ export class ChartsComponent implements OnInit {
     startDate: moment().subtract(29, 'days').format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD')
   };
+  nbDatePickerOptions = {
+    start: new Date(2019, 1),
+    end: new Date()
+  };
   datePickerSettings = {
     type: 'daily',
     timePicker: false,
@@ -38,7 +43,8 @@ export class ChartsComponent implements OnInit {
     private helperService: HelperService,
     private route: ActivatedRoute,
     private router: Router,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private datepipe: DatePipe
   ) { }
 
   ngOnInit() {
@@ -47,6 +53,7 @@ export class ChartsComponent implements OnInit {
     this.sessionsScopes = this.chartsService.sessionsScopes;
     // this.loadPatient(this.patientId);
     this.initDefaultChartData();
+    console.log(this.nbDatePickerOptions)
   }
 
   async initDefaultChartData() {
@@ -103,7 +110,16 @@ export class ChartsComponent implements OnInit {
   }
 
   onDateFilterChange(ev) {
-    this.getSessionsStatisticsWithinDates(ev.startDate, ev.endDate);
+    if ( ev.start ) {
+      this.nbDatePickerOptions.start = ev.start
+    }
+    if ( ev.end ) {
+      this.nbDatePickerOptions.end = ev.end
+    }
+    var start = this.datepipe.transform(this.nbDatePickerOptions.start, 'yyyy-MM-dd')
+    var end = this.datepipe.transform(this.nbDatePickerOptions.end, 'yyyy-MM-dd')
+    console.log(start, end)
+    this.getSessionsStatisticsWithinDates(start, end);
   }
 
   async getAllSessionsStatistics() {

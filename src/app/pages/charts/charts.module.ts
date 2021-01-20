@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -17,6 +17,8 @@ import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputM
   NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
   NbRadioModule, NbCheckboxModule, NbDialogModule, NbAccordionModule, NbSelectModule,
   NbTooltipModule, NbProgressBarModule, NbSpinnerModule, NbBadgeModule } from '@nebular/theme';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { RoundFloatPipe } from '../../pipes/round-float.pipe';
 
 const routes: Routes = [
 
@@ -56,8 +58,13 @@ const routes: Routes = [
     NbTooltipModule,
     NbProgressBarModule,
     NbSpinnerModule,
-    NbBadgeModule
+    NbBadgeModule,
+    NgxDatatableModule,
   ],
   declarations: [ChartsComponent, StatsComponent],
+  providers: [
+    TitleCasePipe,
+    RoundFloatPipe
+  ]
 })
 export class ChartsComponentModule {}

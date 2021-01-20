@@ -45,6 +45,13 @@
           </nb-option>
         </nb-select>
       </div>
+
+      <div style="flex: row;" *ngIf="selectedSessionsScope == 'Within Dates'">
+        <label class="label filter-label">Pick Dates</label>
+        <br>
+        <input nbInput placeholder="" shape="semi-round" [nbDatepicker]="rangePicker" class="date-picker">
+        <nb-rangepicker #rangePicker (rangeChange)="onDateFilterChange($event)" [(min)]="nbDatePickerOptions.start" [(max)]="nbDatePickerOptions.end"></nb-rangepicker>
+      </div>
     </div>
 
     <div class="empty-content" *ngIf="!sessions?.length">
@@ -54,6 +61,7 @@
       <div class="empty-text">No Sessions Available</div>
     </div>
     
+
     <br>
 
     <app-stats *ngIf="showStats && sessions?.length"
@@ -66,11 +74,11 @@
 
 <!-- 
 <ion-content class="ion-padding">
-<div *ngIf="selectedSessionsScope == 'Within Dates'">
-  <ngx-datetime-range-picker name="date" [options]="datePickerOptions" [settings]="datePickerSettings"
-   (dateRangeChanged)="onDateFilterChange($event)" required>
-  </ngx-datetime-range-picker>
-</div>
+  <div *ngIf="selectedSessionsScope == 'Within Dates'">
+    <ngx-datetime-range-picker name="date" [options]="datePickerOptions" [settings]="datePickerSettings"
+    (dateRangeChanged)="onDateFilterChange($event)" required>
+    </ngx-datetime-range-picker>
+  </div>
 
   <ion-list class="sessions-list ion-no-padding" *ngIf="selectedSessionsScope == 'One Session'">
     <ion-item *ngIf="sessions?.length" color='secondary' size="small" slot="start">

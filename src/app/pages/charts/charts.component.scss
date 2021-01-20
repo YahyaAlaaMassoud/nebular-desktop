@@ -53,9 +53,17 @@ ion-item {
     @include nb-ltr(margin-right, 0.5rem);
     @include nb-rtl(margin-left, 0.5rem);
     cursor: pointer;
+    font-size: larger;
   }
   .action-icon:hover {
     background-color: whitesmoke;
+  }
+
+  .date-picker {
+    background-color: nb-theme(color-info-500);
+    font-weight: bolder;
+    color: white;
+    width: fit-content;
   }
 
 }
