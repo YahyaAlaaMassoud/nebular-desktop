@@ -107,6 +107,7 @@ ion-img {
     @include nb-ltr(margin-right, 0.5rem);
     @include nb-rtl(margin-left, 0.5rem);
     cursor: pointer;
+    font-size: larger;
   }
   .action-icon:hover {
     background-color: whitesmoke;
@@ -202,11 +203,17 @@ img {
 }
 
 .module-control {
-  width: 15%;
+  // width: 15%;
 }
 
 
 .center-div {
   margin: auto; 
   width: 55%;
+}
+
+.new-version {
+  margin: auto;
+  font-weight: bolder;
+  padding: 0.5rem;
 }

@@ -6,7 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { EditPatientComponent } from '../edit-patient/edit-patient.component';
 import { ElectronService } from 'ngx-electron';
-import { RoundPipe } from '../../pipes/round.pipe';
+import { RoundPercentPipe } from '../../pipes/round_percent.pipe';
+import { RoundFloatPipe } from '../../pipes/round-float.pipe';
 
 @Component({
   selector: 'app-patient',
@@ -27,7 +28,7 @@ export class PatientPage implements OnInit {
   isOnlineHeadsetSelected = false;
   logger: any;
   showPatientInfo: boolean = false;
-  downloadStatus: string = 'danger';
+  progressStatus: string = 'danger';
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
@@ -40,6 +41,7 @@ export class PatientPage implements OnInit {
     if (this.electronService.isElectronApp) {
       this.logger = this.electronService.remote.require('electron-log');
       console.log = this.logger.log;
+      console.log("HAMO")
     }
   }
 
@@ -301,13 +303,13 @@ export class PatientPage implements OnInit {
   getDownloadStatus () {
     var prog = this.getDownloadingProgress(this.mainEventsService.trackedModules[module.id]?.ratio);
     if ( prog <= 25 ) {
-      return 'danger'
+      this.progressStatus = 'danger'
     } else if ( prog <= 50 ) {
-      return 'warning'
+      this.progressStatus = 'warning'
     } else if ( prog <= 75 ) {
-      return 'info'
+      this.progressStatus = 'info'
     } else if ( prog <= 100 ) {
-      return 'success'
+      this.progressStatus = 'success'
     } 
   }
 }
