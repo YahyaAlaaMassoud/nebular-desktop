@@ -1,3 +1,6 @@
+@import '../../../themes';
+
+
 div.chart {
   /* width: 74vw; */
   /* height: 100vh; */
@@ -89,4 +92,48 @@ td {
   padding: 0.3rem;
   font-weight: bold;
   font-size: 2vw;
+}
+
+.ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
+  text-transform: capitalize !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+datatable-scroller {
+  width: 100% !important;
+}
+
+:host ::ng-deep ngx-datatable {
+  .datatable-scroller {
+    width: 100% !important;
+  }
+  .datatable-scroll {
+    width: 100% !important;
+  }
+}
+
+@include nb-install-component {
+
+  .table-header {
+    color: nb-theme(color-info-600);
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+}
+
+::ng-deep .datatable-body-row {
+  color: red !important;
+  font-weight: bolder !important;
+  font-size: larger !important;
+  border: 1px solid nb-theme(color-info-200);
+}
+
+
+.ngx-datatable.material {
+  overflow-wrap: normal;
 }

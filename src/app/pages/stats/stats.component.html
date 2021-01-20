@@ -47,10 +47,35 @@
     </nb-layout-column>
 </div>
 
+
 <div class="chart" *ngIf="validData?.length">
     <canvas [id]="selectedChart"></canvas>
 </div>
 
+<ngx-datatable *ngIf="selectedChartConfigs && validData?.length" 
+            style="overflow-x: scroll;"
+            class="material"
+            rowHeight="auto"
+            [rows]="ngxRows"
+            [loadingIndicator]="false"
+            [rowClass]="rowClass"
+            [columnMode]="'force'"
+            [headerHeight]="$any('auto')">
+    <ngx-datatable-column *ngFor="let col of ngxColumns" [name]="col.name" [prop]="col.prop" >
+        <ng-template ngx-datatable-header-template>
+            <span class="table-header">{{ col.shownName }}</span>
+        </ng-template>
+    </ngx-datatable-column>
+</ngx-datatable>
+
+<br>
+
+<div class="center-div" style="display: flex; align-items: center; justify-content: center; flex-direction: row;" *ngIf="selectedChartConfigs && validData?.length" >
+    <button nbButton shape="round" status="success" size="medium" (click)="export()">
+      Export Excel
+      <nb-icon icon="save-outline"></nb-icon>
+    </button>
+</div>
 <!-- 
 <table *ngIf="selectedChartConfigs" mat-table  matSort [dataSource]="sortedData" (matSortChange)="reSort($event)" class="mat-elevation-z8">
     <ng-container [matColumnDef]="field.key" *ngFor="let field of fieldsConfig  | keyvalue" >

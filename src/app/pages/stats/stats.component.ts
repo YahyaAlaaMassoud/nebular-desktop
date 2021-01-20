@@ -6,6 +6,10 @@ import { ChartsConfig } from './chartsConfig';
 import { MatTableDataSource } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 
+import { ColumnMode, TableColumn } from '@swimlane/ngx-datatable';
+import { TitleCasePipe } from '@angular/common';
+import { RoundFloatPipe } from '../../pipes/round-float.pipe';
+
 // Important link
 // https://codepen.io/jordanwillis/pen/xqrjGp
 // https://stackoverflow.com/questions/42839551/how-to-show-multiple-values-in-point-hover-using-chart-js
@@ -24,6 +28,8 @@ export class StatsComponent implements OnInit, OnDestroy {
   @ViewChild('canvas', { static: true }) canvas: ElementRef;
   public context: CanvasRenderingContext2D;
 
+  ColumnMode = ColumnMode;
+
   curModuleName: string;
   fieldsConfig: any;
   validData: any[];
@@ -32,10 +38,14 @@ export class StatsComponent implements OnInit, OnDestroy {
   selectedChart;
   selectedChartConfigs: ChartsConfig;
   displayedColumns: string[];
+  ngxColumns: any[];
+  ngxRows: any[];
   acceptableYFields: string[];
   emptyChart = false;
   colorsPool = ['gray', 'black', 'green', 'red', 'blue'];
-  constructor() {
+  constructor(
+    private titleCasePipe: TitleCasePipe,
+    private roundFloatPipe: RoundFloatPipe) {
   }
 
   ngOnInit() {
@@ -63,6 +73,46 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.validData = this.validateAndFilterData(this.allData);
     this.sortedData = this.validData.slice();
     this.emptyChart = !this.validData.length;
+
+    this.ngxColumns = this.getNgxCols(this.displayedColumns);
+
+    this.ngxRows = []
+    this.validData.forEach((row) => {
+      var newRow = {}
+      this.ngxColumns.forEach((col) => {
+        if ( typeof row[col.name] == 'number' ) {
+          row[col.name] = this.roundFloatPipe.transform(row[col.name]);
+        } else if ( typeof row[col.name] == 'string' ) {
+          row[col.name] = this.titleCasePipe.transform(row[col.name]);
+        }
+        newRow[col.name] = row[col.name]
+      })
+      this.ngxRows.push(newRow)
+    })
+
+    console.log(this.ngxRows)
+
+  }
+
+  removeUnderScore(str) {
+    str = str.replaceAll('_', ' ');
+    str = this.titleCasePipe.transform(str);
+    return str;
+  }
+
+  getNgxCols(columns) {
+
+    var newColumns = [];
+    
+    for ( var i = 0; i < columns.length; i++ ) {
+      newColumns.push({
+        name: columns[i],
+        prop: columns[i],
+        shownName: this.removeUnderScore(columns[i])
+      })
+    }
+
+    return newColumns
   }
 
   validateAndFilterData(allData) {
@@ -164,11 +214,11 @@ export class StatsComponent implements OnInit, OnDestroy {
           displayColors: false,
           callbacks: {
             label: (tooltipItems: Chart.ChartTooltipItem, data: Chart.ChartData) => {
-              const tooltipDataArr = [`${this.selectedChartConfigs.fieldNameY.split('_').join(' ') }: ${tooltipItems.yLabel }`];
+              const tooltipDataArr = [`${this.titleCasePipe.transform(this.selectedChartConfigs.fieldNameY.split('_').join(' ')) }: ${tooltipItems.yLabel }`];
               this.selectedChartConfigs.tooltipFields.forEach((tooltipField: string, index: number) => {
                 const tooltip = this.selectedChartConfigs.tooltipData[tooltipItems.datasetIndex][tooltipField][tooltipItems.index];
                 if (tooltip.length) {
-                  tooltipDataArr.push(tooltipField.split('_').join(' ')  + ': ' + tooltip);
+                  tooltipDataArr.push(this.titleCasePipe.transform(tooltipField.split('_').join(' ')  + ': ' + tooltip));
                 }
               });
               return tooltipDataArr;
@@ -227,6 +277,7 @@ export class StatsComponent implements OnInit, OnDestroy {
       this.colorsPool = ['gray', 'black', 'green', 'red', 'blue'];
       this.buildCharts();
     }, 400);
+
   }
 
   reSort(sort) {
@@ -263,5 +314,9 @@ export class StatsComponent implements OnInit, OnDestroy {
 
     /* save to file */
     XLSX.writeFile(wb, `${this.curModuleName}(${this.sessionName}).xlsx`);
+  }
+
+  rowClass () {
+    return 'datatable-body-row'
   }
 }
