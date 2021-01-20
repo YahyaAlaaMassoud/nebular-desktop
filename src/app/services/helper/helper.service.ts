@@ -94,7 +94,7 @@ export class HelperService {
     this.ngSpinner.show(
       undefined,
       {
-        type: 'square-jelly-box',//'ball-atom',
+        type: 'ball-grid-pulse',//'ball-atom',
         size: 'large',
         bdColor: '#F5F5F5',
         color: '#45a8c8',
