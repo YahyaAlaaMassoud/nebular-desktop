@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'round'
+  name: 'round_percent'
 })
-export class RoundPipe implements PipeTransform {
+export class RoundPercentPipe implements PipeTransform {
 
   transform(value: number, ...args: any[]): any {
     if ( !isNaN(value) ) {
