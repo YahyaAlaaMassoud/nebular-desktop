@@ -22,6 +22,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { RouterModule } from '@angular/router';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { CommonModule } from '@angular/common';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -55,6 +56,7 @@ export function createTranslateLoader(http: HttpClient) {
     NbDialogModule.forRoot(),
     NbToastrModule.forRoot(),
     NgxSpinnerModule,
+    NgxDatatableModule,
   ],
   providers: [IonicRouteStrategy],
   bootstrap: [AppComponent]
