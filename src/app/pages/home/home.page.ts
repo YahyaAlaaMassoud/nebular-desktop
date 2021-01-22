@@ -48,13 +48,12 @@ currentUser: any;
       await this.helperService.showNgLoading();
       const result: any = await this.userService.getPatients();
       this.patients = result;
+      const headsets: any[] = await this.userService.getCenterHeadsets() as any[];
+      this.mainEventsService.sendEventAsync('authorized-devices', headsets.map((h) => h.serial));
       this._cdr.detectChanges();
-      console.log(this.patients)
       this.loading = false;
       // await this.helperService.removeLoading();
       await this.helperService.removeNgLoading();
-      const headsets: any[] = await this.userService.getCenterHeadsets() as any[];
-      this.mainEventsService.sendEventAsync('authorized-devices', headsets.map((h) => h.serial));
     } catch (err) {
       console.log('loadPatients err', err);
       this.loading = false;

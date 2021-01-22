@@ -96,8 +96,8 @@ export class HelperService {
       {
         type: 'ball-grid-pulse',//'ball-atom',
         size: 'large',
-        bdColor: '#F5F5F5',
-        color: '#45a8c8',
+        bdColor: 'rgb(245, 245, 245, 0.85)',
+        color: 'rgb(0, 149, 255, 1)',
         fullScreen: true
       }
     );
