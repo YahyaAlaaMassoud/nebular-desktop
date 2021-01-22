@@ -90,12 +90,10 @@ export class StatsComponent implements OnInit, OnDestroy {
       this.ngxRows.push(newRow)
     })
 
-    console.log(this.ngxRows)
-
   }
 
   removeUnderScore(str) {
-    str = str.replaceAll('_', ' ');
+    str = str.split('_').join(' ');
     str = this.titleCasePipe.transform(str);
     return str;
   }
@@ -109,6 +107,7 @@ export class StatsComponent implements OnInit, OnDestroy {
         name: columns[i],
         prop: columns[i],
         shownName: this.removeUnderScore(columns[i])
+        // shownName: columns[i]
       })
     }
 
