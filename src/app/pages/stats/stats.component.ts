@@ -6,7 +6,7 @@ import { ChartsConfig } from './chartsConfig';
 import { MatTableDataSource } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 
-import { ColumnMode, TableColumn } from '@swimlane/ngx-datatable';
+import { ColumnMode, TableColumn, SelectionType } from '@swimlane/ngx-datatable';
 import { TitleCasePipe } from '@angular/common';
 import { RoundFloatPipe } from '../../pipes/round-float.pipe';
 
@@ -29,6 +29,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   public context: CanvasRenderingContext2D;
 
   ColumnMode = ColumnMode;
+  SelectionType = SelectionType;
 
   curModuleName: string;
   fieldsConfig: any;
@@ -39,6 +40,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   selectedChartConfigs: ChartsConfig;
   displayedColumns: string[];
   ngxColumns: any[];
+  allNgxColumns: any[];
   ngxRows: any[];
   acceptableYFields: string[];
   emptyChart = false;
@@ -75,6 +77,7 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.emptyChart = !this.validData.length;
 
     this.ngxColumns = this.getNgxCols(this.displayedColumns);
+    this.allNgxColumns = this.ngxColumns;
 
     this.ngxRows = []
     this.validData.forEach((row) => {
@@ -144,7 +147,7 @@ export class StatsComponent implements OnInit, OnDestroy {
         if (y < 0) { return; }
         const dataGroup = sessionData[chart.groupBy] || chart.fieldNameY;
         chart.dataY[dataGroup] = chart.dataY[dataGroup] || [];
-        chart.dataY[dataGroup].push({ x, y});
+        chart.dataY[dataGroup].push({ x, y });
         chart.dataX.push(x);
         chart.tooltipFields.forEach((tooltipField: string) => {
           tooltipData[dataGroup] = tooltipData[dataGroup] || {};
@@ -315,7 +318,50 @@ export class StatsComponent implements OnInit, OnDestroy {
     XLSX.writeFile(wb, `${this.curModuleName}(${this.sessionName}).xlsx`);
   }
 
-  rowClass () {
-    return 'datatable-body-row'
+  getRowClass (row) {
+    return {
+      'datatable-body-row': true
+    } 
+  }
+
+  isChecked(col) {
+    return (
+      this.ngxColumns.find(c => {
+        return c.name === col.name;
+      }) !== undefined
+    );
+  }
+
+  sortColsFunc(cols) {
+    var newCols: any[] = []
+    this.allNgxColumns.forEach((orgCol) => {
+      var found = false;
+      var items = cols.filter((ngxCol) => {
+          if (!found && ngxCol.name == orgCol.name) {
+            newCols.push(ngxCol);
+              found = true;
+              return false;
+          } else {
+            return true;
+          }
+      });
+    });
+    return newCols
+  }
+
+  toggle(col) {
+    const isChecked = this.isChecked(col);
+    console.log(isChecked)
+
+    if (isChecked) {
+      this.ngxColumns = this.ngxColumns.filter(c => {
+        return c.name !== col.name;
+      });
+    } else {
+      this.ngxColumns = [...this.ngxColumns, col];
+    }
+
+    this.ngxColumns = this.sortColsFunc(this.ngxColumns)
+    console.log(this.ngxColumns)
   }
 }

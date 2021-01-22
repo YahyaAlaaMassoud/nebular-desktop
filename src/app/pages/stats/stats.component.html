@@ -36,6 +36,7 @@
 </div>
 
 <br>
+<br>
 
 <div class="center-div row module-controls">
     <nb-layout-column *ngIf="emptyChart">
@@ -52,30 +53,54 @@
     <canvas [id]="selectedChart"></canvas>
 </div>
 
-<ngx-datatable *ngIf="selectedChartConfigs && validData?.length" 
-            style="overflow-x: scroll;"
-            class="material"
-            rowHeight="auto"
-            [rows]="ngxRows"
-            [loadingIndicator]="false"
-            [rowClass]="rowClass"
-            [columnMode]="'force'"
-            [headerHeight]="$any('auto')">
-    <ngx-datatable-column *ngFor="let col of ngxColumns" [name]="col.name" [prop]="col.prop" >
-        <ng-template ngx-datatable-header-template>
-            <span class="table-header">{{ col.shownName }}</span>
-        </ng-template>
-    </ngx-datatable-column>
-</ngx-datatable>
-
+<br>
 <br>
 
-<div class="center-div" style="display: flex; align-items: center; justify-content: center; flex-direction: row;" *ngIf="selectedChartConfigs && validData?.length" >
+<nb-accordion *ngIf="selectedChartConfigs && validData?.length">
+    <nb-accordion-item class="card_title_accordion">
+        <nb-accordion-item-header>
+            <div class="accord-title">
+                <span>Statistics Data in Tabular Format</span>
+                <button nbButton shape="round" status="success" size="medium" (click)="export()" style="margin-left: 3rem;">
+                    Export Excel
+                    <nb-icon icon="save-outline"></nb-icon>
+                </button>
+            </div>
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+            <div>
+                <nb-checkbox *ngFor="let col of allNgxColumns" [checked]="isChecked(col)" class="filter-checkbox" (checkedChange)="toggle(col)">
+                    {{ col.shownName }}
+                </nb-checkbox>
+            </div>
+            <br>
+            <ngx-datatable
+                        class="material"
+                        [rowHeight]="$any('auto')"
+                        [limit]="5"
+                        [rows]="ngxRows"
+                        [loadingIndicator]="false"
+                        [rowClass]="getRowClass"
+                        [selectionType]="SelectionType.multiClick"
+                        [columnMode]="'force'"
+                        [headerHeight]="$any('auto')"
+                        [footerHeight]="$any('auto')">
+                <ngx-datatable-column *ngFor="let col of ngxColumns" [name]="col.name" [prop]="col.prop" >
+                    <ng-template ngx-datatable-header-template>
+                        <span class="table-header">{{ col.shownName }}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </nb-accordion-item-body>
+    </nb-accordion-item>
+</nb-accordion>
+
+<!-- <div class="center-div" style="display: flex; align-items: center; justify-content: center; flex-direction: row;" *ngIf="selectedChartConfigs && validData?.length" >
     <button nbButton shape="round" status="success" size="medium" (click)="export()">
       Export Excel
       <nb-icon icon="save-outline"></nb-icon>
     </button>
-</div>
+</div> -->
 <!-- 
 <table *ngIf="selectedChartConfigs" mat-table  matSort [dataSource]="sortedData" (matSortChange)="reSort($event)" class="mat-elevation-z8">
     <ng-container [matColumnDef]="field.key" *ngFor="let field of fieldsConfig  | keyvalue" >

@@ -133,7 +133,39 @@ datatable-scroller {
   border: 1px solid nb-theme(color-info-200);
 }
 
+::ng-deep .datatable-body-row.active .datatable-row-group {
+  background-color:	#c7e2ff !important;
+}
+
 
 .ngx-datatable.material {
   overflow-wrap: normal;
+}
+
+.card_title_accordion:hover {
+  background-color: #F5F5F5;
+}
+
+
+.accord-title {
+  margin: auto;
+  font-size: larger;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+}
+
+.filter-checkbox {
+  flex-direction: column; 
+  padding: 1rem;
+  font-size: 4rem;
+}
+
+@media (min-width: 56rem) {
+  .filter-checkbox {
+    width: 15%;
+  }
 }
