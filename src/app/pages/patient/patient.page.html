@@ -24,7 +24,7 @@
         <nb-action size="giant" (click)="editPatient()" title="Edit Patient" class="action-icon"
                     badgePosition="right" badgeStatus="info" class="action-icon">
           <nb-icon class="action-icon" icon="edit-2-outline"></nb-icon>
-          <span>Edit Patient Profile</span>
+          <span style="font-size: large;">Edit Patient Profile</span>
         </nb-action>
         <!-- <nb-action icon="edit-2-outline" badgePosition="right" badgeStatus="info" title="Edit Patient" size="giant" (click)="editPatient()"></nb-action> -->
       </nb-actions>
@@ -121,6 +121,8 @@
           nbSpinnerSize="giant" nbSpinnerMessage="" class="cards_item" *ngFor="let module of modules">
           
         <div class="card">
+          <nb-badge *ngIf="mainEventsService.trackedModules[module.id]?.new_version" text="New Version Available" status="success" position="top right">
+          </nb-badge>
           <div class="card_image">
             <img src="{{module?.image || 'assets/imgs/vr_logo.jpeg'}}"/>
           </div>
@@ -129,8 +131,8 @@
               <nb-accordion-item>
                 <nb-accordion-item-header class="card_title_accordion">
                   <h1 class="card_title">{{module?.name}}</h1>
-                  <nb-badge *ngIf="mainEventsService.trackedModules[module.id]?.new_version" text="New Version Available" status="success" position="top right">
-                  </nb-badge>
+                  <!-- <nb-badge text="New Version Available" status="success" position="top right">
+                  </nb-badge> -->
                 </nb-accordion-item-header>
 
                 <nb-accordion-item-body>
