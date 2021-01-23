@@ -97,7 +97,7 @@
 
       <div style="margin-left: auto!important;">
         <nb-actions>
-          <nb-action icon="close-circle-outline" badgePosition="right" badgeStatus="danger" title="Add New Patient" size="giant" (click)="dismiss()"></nb-action>
+          <nb-action icon="close-circle-outline" badgePosition="right" badgeStatus="danger" title="Close Form" size="giant" (click)="dismiss()"></nb-action>
         </nb-actions>
       </div>
     </div>
@@ -175,9 +175,16 @@
         <br>
 
         <div class="form-group">
-          <label class="label">Has Guardian</label>
           <nb-checkbox formControlName="has_guardian">Has Guardian</nb-checkbox>
           <app-control-error-message [control]="patientForm['controls']['has_guardian']"></app-control-error-message>
+        </div>
+
+        <br>
+
+        <div class="form-group" *ngIf="patientForm.controls.has_guardian.value">
+          <label class="label">Guardion Name</label>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Guardian Name" formControlName="guardian_name">
+          <app-control-error-message [control]="patientForm['controls']['guardian_name']"></app-control-error-message>
         </div>
 
         <br>
