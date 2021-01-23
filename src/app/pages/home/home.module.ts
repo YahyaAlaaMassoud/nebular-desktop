@@ -12,7 +12,6 @@ import { ComponentsModule } from '../../components/components.module';
 import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, 
          NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
          NbRadioModule, NbCheckboxModule, NbDialogModule } from '@nebular/theme';
-import { NgxSmartModalModule } from 'ngx-smart-modal';
 
 const routes: Routes = [
   {
@@ -43,7 +42,6 @@ const routes: Routes = [
     NbRadioModule,
     NbCheckboxModule,
     NbDialogModule.forChild(),
-    NgxSmartModalModule.forChild(),
   ],
   declarations: [HomePage, AddPatientComponent],
   entryComponents: [AddPatientComponent]

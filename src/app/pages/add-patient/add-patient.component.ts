@@ -5,7 +5,6 @@ import { HelperService } from './../../services/helper/helper.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Validation } from '../../utils/validations';
 import { NbDialogRef } from '@nebular/theme';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-add-patient',

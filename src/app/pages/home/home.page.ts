@@ -6,7 +6,6 @@ import { ModalController } from '@ionic/angular';
 import { AddPatientComponent } from './../add-patient/add-patient.component';
 import { MainEventsService } from '../../services/main-events/main-events.service';
 import { NbDialogService, NbDialogRef } from '@nebular/theme';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +29,6 @@ currentUser: any;
       private mainEventsService: MainEventsService,
       private _cdr: ChangeDetectorRef,
       private nbDialogService: NbDialogService,
-      public ngxSmartModalService: NgxSmartModalService
     ) {
       this.events.subscribe('userUpdate', (user) => {
         this.currentUser = user;
