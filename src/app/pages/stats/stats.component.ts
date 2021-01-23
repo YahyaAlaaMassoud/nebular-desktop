@@ -10,6 +10,9 @@ import { ColumnMode, TableColumn, SelectionType } from '@swimlane/ngx-datatable'
 import { TitleCasePipe } from '@angular/common';
 import { RoundFloatPipe } from '../../pipes/round-float.pipe';
 
+import { StateService } from '../../services/helper/state.service';
+import { $ } from 'protractor';
+
 // Important link
 // https://codepen.io/jordanwillis/pen/xqrjGp
 // https://stackoverflow.com/questions/42839551/how-to-show-multiple-values-in-point-hover-using-chart-js
@@ -31,6 +34,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   ColumnMode = ColumnMode;
   SelectionType = SelectionType;
 
+  state: any = {};
   curModuleName: string;
   fieldsConfig: any;
   validData: any[];
@@ -47,7 +51,9 @@ export class StatsComponent implements OnInit, OnDestroy {
   colorsPool = ['gray', 'black', 'green', 'red', 'blue'];
   constructor(
     private titleCasePipe: TitleCasePipe,
-    private roundFloatPipe: RoundFloatPipe) {
+    private roundFloatPipe: RoundFloatPipe,
+    private stateService: StateService,
+    ) {
   }
 
   ngOnInit() {
@@ -76,13 +82,36 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.sortedData = this.validData.slice();
     this.emptyChart = !this.validData.length;
 
-    this.ngxColumns = this.getNgxCols(this.displayedColumns);
-    this.allNgxColumns = this.ngxColumns;
+    var savedState = this.stateService.state$.getValue()
+    console.log('currentState', savedState)
+    if ( savedState && savedState[this.moduleId] ) {
+      this.ngxColumns = savedState[this.moduleId]
+      console.log('LOADED', this.ngxColumns)
+    } else {
+      this.ngxColumns = this.getNgxCols(this.displayedColumns);
+
+      this.state = savedState || {}
+      // var newPair = {
+      //   [this.moduleId]: this.ngxColumns
+      // }
+      // this.state = {
+      //   ...newPair,
+      //   savedState
+      // };
+      Object.assign(this.state, {
+        [this.moduleId]: this.ngxColumns
+      })
+      
+      console.log(this.moduleId)
+      console.log('this.state', this.state)
+      this.stateService.state$.next(this.state)
+    }
+    this.allNgxColumns = this.getNgxCols(this.displayedColumns);
 
     this.ngxRows = []
     this.validData.forEach((row) => {
       var newRow = {}
-      this.ngxColumns.forEach((col) => {
+      this.allNgxColumns.forEach((col) => {
         if ( typeof row[col.name] == 'number' ) {
           row[col.name] = this.roundFloatPipe.transform(row[col.name]);
         } else if ( typeof row[col.name] == 'string' ) {
@@ -92,6 +121,8 @@ export class StatsComponent implements OnInit, OnDestroy {
       })
       this.ngxRows.push(newRow)
     })
+
+    console.log('this.ngxRows', this.ngxRows)
 
   }
 
@@ -299,7 +330,9 @@ export class StatsComponent implements OnInit, OnDestroy {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  export() {
+  export(e) {
+    e.stopPropagation();
+    e.preventDefault();
     const rowData = this.sortedData.map((data) => {
       const row = [];
       this.displayedColumns.forEach((field) => {
@@ -351,7 +384,6 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   toggle(col) {
     const isChecked = this.isChecked(col);
-    console.log(isChecked)
 
     if (isChecked) {
       this.ngxColumns = this.ngxColumns.filter(c => {
@@ -362,6 +394,15 @@ export class StatsComponent implements OnInit, OnDestroy {
     }
 
     this.ngxColumns = this.sortColsFunc(this.ngxColumns)
-    console.log(this.ngxColumns)
+    // var newPair = {
+    //   [this.moduleId]: this.ngxColumns
+    // }
+    // this.state = {
+    //   ...newPair
+    // };
+    Object.assign(this.state, {
+      [this.moduleId]: this.ngxColumns
+    })
+    this.stateService.state$.next(this.state)
   }
 }
