@@ -92,3 +92,11 @@ ion-item {
   // justify-content: space-around;
   padding: 0.3rem;
 }
+
+.empty-chart {
+  display: flex; 
+  justify-content: space-around;
+  padding: 0.3rem;
+  font-weight: bold;
+  font-size: 2vw;
+}

@@ -59,11 +59,20 @@
       </div>
     </div>
 
-    <div class="empty-content" *ngIf="!sessions?.length">
+    <!-- <div class="empty-content" *ngIf="!sessions?.length">
       <div class="illustration-wrapper">
         <nb-icon name="trending-up-outline"></nb-icon>
       </div>
       <div class="empty-text">No Sessions Available</div>
+    </div> -->
+    <div class="center-div row module-controls">
+      <nb-layout-column *ngIf="!sessions?.length">
+          <nb-card>
+              <nb-card-body class="empty-chart">
+                  <span><nb-icon icon="trending-up-outline"></nb-icon> No Data Available For This Chart</span>
+              </nb-card-body>
+          </nb-card>
+      </nb-layout-column>
     </div>
     
 
