@@ -29,6 +29,11 @@
         <!-- <nb-action icon="edit-2-outline" badgePosition="right" badgeStatus="info" title="Edit Patient" size="giant" (click)="editPatient()"></nb-action> -->
       </nb-actions>
     </div>
+    <div style="margin-left: auto!important; float: right;">
+      <nb-actions>
+        <nb-action icon="info-outline" badgePosition="right" badgeStatus="danger" title="Information" size="giant"></nb-action>
+      </nb-actions>
+    </div>
   </nb-layout-header>
 
   <nb-layout-column>
@@ -116,6 +121,14 @@
 
     <br>
 
+    <div class="center-div row module-controls">
+        <nb-card *ngIf="!modules.length">
+            <nb-card-body class="empty-chart">
+                <span><nb-icon icon="trending-up-outline"></nb-icon> No Modules Available For This Patient</span>
+            </nb-card-body>
+        </nb-card>
+  </div>
+
     <ul class="cards">
       <li [nbSpinner]="mainEventsService.trackedModules[module.id]?.installing" nbSpinnerStatus="info" 
           nbSpinnerSize="giant" nbSpinnerMessage="" class="cards_item" *ngFor="let module of modules">
@@ -145,7 +158,7 @@
 
             <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading">
               <br>
-              <nb-progress-bar size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round_percent" [status]="progressStatus" [displayValue]="true">
+              <nb-progress-bar size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round_percent" status="success" [displayValue]="true">
               </nb-progress-bar>
               <br>
               <div class="center-div" style="display: flex; align-items: center; justify-content: center; flex-direction: row;">
@@ -189,7 +202,7 @@
               </button>
             </div>
 
-            <div class="row module-controls">
+            <div class="row module-controls" style="background-color: whitesmoke; border-radius: 1rem;">
               <button nbButton shape="semi-round" class=""  status="success" size="large" class="module-control"
               nbTooltip="Run Module" nbTooltipPlacement="bottom" 
               nbTooltipTrigger="hint" nbTooltipStatus="success"
