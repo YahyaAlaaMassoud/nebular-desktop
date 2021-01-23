@@ -58,33 +58,31 @@ export class ChartsComponent implements OnInit {
 
   async initDefaultChartData() {
     try {
-      // await this.helperService.showLoading();
-      await this.helperService.showNgLoading();
       this.sessions = (await this.userService.getPatientModuleSessions(
         this.patientId,
         this.moduleId
       )) as any[];
       this.changeSessionScope();
-      this._cdr.detectChanges()
-      console.log(this.sessions)
     } catch (err) {
       this.helperService.showError(err);
     }
   }
 
   async changeSessionScope() {
+    await this.helperService.showNgLoading();
     switch (this.selectedSessionsScope) {
       case 'One Session':
         this.selectedSession = this.sessions[0];
-        this.getStatistics();
+        await this.getStatistics();
         break;
       case 'All Sessions':
-        this.getAllSessionsStatistics();
+        await this.getAllSessionsStatistics();
         break;
       case 'Within Dates':
-        this.getSessionsStatisticsWithinDates(this.datePickerOptions.startDate, this.datePickerOptions.endDate);
+        await this.getSessionsStatisticsWithinDates(this.datePickerOptions.startDate, this.datePickerOptions.endDate);
         break;
     }
+    this.helperService.removeNgLoading();
     console.log(this.sessions)
     this._cdr.detectChanges()
   }
@@ -96,14 +94,14 @@ export class ChartsComponent implements OnInit {
 
     try {
       // await this.helperService.showLoading();
-      await this.helperService.showNgLoading();
+      // await this.helperService.showNgLoading();
       this.showStats = false;
       this.sessionStatistics = (await this.chartsService.loadSessionStatistics(
         this.selectedSession.id
       )) as any[];
       this.showStats = true;
       // this.helperService.removeLoading();
-      this.helperService.removeNgLoading();
+      // this.helperService.removeNgLoading();
     } catch (err) {
       this.helperService.showError(err);
     }
@@ -141,7 +139,7 @@ export class ChartsComponent implements OnInit {
     try {
       this.showStats = false;
       // await this.helperService.showLoading();
-      await this.helperService.showNgLoading();
+      // await this.helperService.showNgLoading();
       const params = {
         patient_id: this.patientId,
         vr_module_id: this.moduleId,
@@ -152,7 +150,7 @@ export class ChartsComponent implements OnInit {
       )) as any[];
       this.showStats = true;
       // this.helperService.removeLoading();
-      this.helperService.removeNgLoading();
+      // this.helperService.removeNgLoading();
       return result;
     } catch (err) {
       this.helperService.showError(err);
