@@ -8,6 +8,7 @@ import { EditPatientComponent } from '../edit-patient/edit-patient.component';
 import { ElectronService } from 'ngx-electron';
 import { RoundPercentPipe } from '../../pipes/round_percent.pipe';
 import { RoundFloatPipe } from '../../pipes/round-float.pipe';
+import { NbDialogService } from '@nebular/theme';
 
 @Component({
   selector: 'app-patient',
@@ -17,13 +18,14 @@ import { RoundFloatPipe } from '../../pipes/round-float.pipe';
 })
 export class PatientPage implements OnInit {
   patient: any;
-  modules: any[];
+  modules: any[] = [];
   headsets;
   showConsole = false;
   id: any;
   production: boolean;
   wirelessHeadset;
   onlineHeadsets: any[] = []
+  trackedModules: {} = {}
   selectedOnlineHeadset: any = null;
   isOnlineHeadsetSelected = false;
   logger: any;
@@ -36,7 +38,8 @@ export class PatientPage implements OnInit {
     public mainEventsService: MainEventsService,
     public modalController: ModalController,
     private electronService: ElectronService,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private nbDialogService: NbDialogService,
   ) {
     if (this.electronService.isElectronApp) {
       this.logger = this.electronService.remote.require('electron-log');
@@ -50,6 +53,9 @@ export class PatientPage implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.loadPatient();
     // wait for userdoc before setting up page
+    this.mainEventsService.trackedModulesObserver.subscribe(trackedModules => {
+      this.trackedModules = trackedModules
+    })
     this.onlineHeadsets = this.mainEventsService.onlineHeadsets
     this.mainEventsService.onlineHeadsetObserver.subscribe(onlineHeadsets => {
       // console.log('HAMO', onlineHeadsets)
@@ -193,17 +199,31 @@ export class PatientPage implements OnInit {
   }
 
   async editPatient() {
-    const modal = await this.modalController.create({
-      component: EditPatientComponent,
-      componentProps: { patient: this.patient },
-      animated: true,
-      backdropDismiss: true,
-      keyboardClose: true,
-      showBackdrop: true
-    });
-    await modal.present();
-    const { data } = await modal.onDidDismiss();
-    if (data.patient) { this.patient = data.patient; }
+    this.nbDialogService.open(
+      EditPatientComponent,
+      {
+        context: {
+          patient: this.patient
+        },
+        hasBackdrop: true,
+        closeOnBackdropClick: false,
+        autoFocus: false,
+      }).onClose.subscribe((patient) => {
+        if ( patient ) {
+          this.patient = patient
+        }
+      });
+    // const modal = await this.modalController.create({
+    //   component: EditPatientComponent,
+    //   componentProps: { patient: this.patient },
+    //   animated: true,
+    //   backdropDismiss: true,
+    //   keyboardClose: true,
+    //   showBackdrop: true
+    // });
+    // await modal.present();
+    // const { data } = await modal.onDidDismiss();
+    // if (data.patient) { this.patient = data.patient; }
   }
 
   downloadLatestVersion(vrModule) {
@@ -300,8 +320,8 @@ export class PatientPage implements OnInit {
     this.showPatientInfo = !this.showPatientInfo
   }
 
-  getDownloadStatus () {
-    var prog = this.getDownloadingProgress(this.mainEventsService.trackedModules[module.id]?.ratio);
+  getDownloadStatus (module) {
+    var prog = this.getDownloadingProgress(this.trackedModules[module.id]?.ratio);
     if ( prog <= 25 ) {
       this.progressStatus = 'danger'
     } else if ( prog <= 50 ) {
