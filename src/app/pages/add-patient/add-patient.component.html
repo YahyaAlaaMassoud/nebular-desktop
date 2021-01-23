@@ -85,7 +85,119 @@
   </form>
 </ion-content> -->
 
-<nb-layout style="width: 100%;">
+<nb-card style="max-width: 800px; width: 700px; max-height: 800px;">
+  <nb-card-header>
+    <div class="header-container">
+      <div class="logo-container">
+        <a class="sidebar-toggle">
+          <nb-icon icon="person-add-outline"></nb-icon>
+        </a>
+        <span class="logo" style="font-size: large;">{{'PATIENT.ADD_PATIENT' | translate }}</span>
+      </div>
+
+      <div style="margin-left: auto!important;">
+        <nb-actions>
+          <nb-action icon="close-circle-outline" badgePosition="right" badgeStatus="danger" title="Add New Patient" size="giant" (click)="dismiss()"></nb-action>
+        </nb-actions>
+      </div>
+    </div>
+  </nb-card-header>
+  
+  <nb-card-body style="overflow: auto; overflow-y:scroll">
+    <form [formGroup]="patientForm">
+        <div class="form-group">
+          <label class="label">Name</label>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Name" formControlName="name">
+          <app-control-error-message [control]="patientForm['controls']['name']"></app-control-error-message>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <label class="label">Email</label>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Email" formControlName="email">
+          <app-control-error-message [control]="patientForm['controls']['email']"></app-control-error-message>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <label class="label">Phone</label>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Phone" formControlName="phone">
+          <app-control-error-message [control]="patientForm['controls']['phone']"></app-control-error-message>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <label class="label">Date of Birth</label>
+          <input type="text" nbInput 
+                 fullWidth fieldSize="medium" 
+                 shape="semi-round" placeholder="Date of birth" 
+                 formControlName="date_of_birth" [nbDatepicker]="dateTimePicker">
+          <nb-datepicker #dateTimePicker></nb-datepicker>
+          <app-control-error-message [control]="patientForm['controls']['date_of_birth']"></app-control-error-message>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <label class="label">Gender</label>
+          <nb-radio-group formControlName="gender">
+            <nb-radio
+              [value]="'female'">
+              {{'PATIENT.FEMALE' | translate }}
+            </nb-radio>
+            <nb-radio
+              [value]="'male'">
+              {{'PATIENT.MALE' | translate }}
+            </nb-radio>
+          </nb-radio-group>
+          <app-control-error-message [control]="patientForm['controls']['gender']"></app-control-error-message>
+        </div>
+
+        <br>
+        
+        <div class="form-group">
+          <label class="label">Address</label>
+          <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Address" formControlName="address">
+          <app-control-error-message [control]="patientForm['controls']['address']"></app-control-error-message>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <label class="label">Diagnosis</label>
+          <textarea rows="3" type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Diagnosis" formControlName="diagnosis"></textarea>
+          <app-control-error-message [control]="patientForm['controls']['diagnosis']"></app-control-error-message>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <label class="label">Has Guardian</label>
+          <nb-checkbox formControlName="has_guardian">Has Guardian</nb-checkbox>
+          <app-control-error-message [control]="patientForm['controls']['has_guardian']"></app-control-error-message>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <label class="label">Notes</label>
+          <textarea rows="3" type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Notes" formControlName="notes"></textarea>
+          <app-control-error-message [control]="patientForm['controls']['notes']"></app-control-error-message>
+        </div>
+    </form>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <button nbButton fullWidth shape="semi-round" status="info" type="submit" [disabled]="!patientForm.valid" (click)="save()">
+      Add New Patient <nb-icon icon="person-add-outline"></nb-icon>
+    </button>
+  </nb-card-footer>
+</nb-card>
+
+<!-- <nb-layout style="width: 100%;">
   <nb-layout-header>
     <div class="header-container">
       <div class="logo-container">
@@ -164,4 +276,4 @@
       </nb-list>
     </form>
   </nb-layout-column>
-</nb-layout>
+</nb-layout> -->

@@ -5,6 +5,7 @@ import { HelperService } from './../../services/helper/helper.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Validation } from '../../utils/validations';
 import { NbDialogRef } from '@nebular/theme';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-add-patient',
@@ -19,7 +20,7 @@ export class AddPatientComponent implements OnInit {
     private modalController: ModalController,
     private helperService: HelperService,
     private userService: UserService,
-    // protected dialogRef: NbDialogRef<AddPatientComponent>
+    protected dialogRef: NbDialogRef<AddPatientComponent>
     ) 
   { }
 
@@ -55,10 +56,10 @@ export class AddPatientComponent implements OnInit {
   }
 
   dismiss(patient = null) {
-    this.modalController.dismiss({
-      patient
-    });
-    // this.dialogRef.close(patient);
+    // this.modalController.dismiss({
+    //   patient
+    // });
+    this.dialogRef.close(patient);
   }
 
 }
