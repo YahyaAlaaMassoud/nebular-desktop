@@ -4,6 +4,7 @@ import { UserService } from '../../services/user/user.service';
 import { HelperService } from './../../services/helper/helper.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Validation } from '../../utils/validations';
+import { NbDialogRef } from '@nebular/theme';
 
 @Component({
   selector: 'app-edit-patient',
@@ -18,13 +19,16 @@ export class EditPatientComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalController: ModalController,
     private helperService: HelperService,
-    private userService: UserService) { }
+    private userService: UserService,
+    protected dialogRef: NbDialogRef<EditPatientComponent>
+    ) { }
 
   ngOnInit() {
+    console.log(this.patient)
     this.patientForm = this.formBuilder.group({
       email: [this.patient.email, Validators.compose([Validation.emailValidator])],
-      name: [this.patient.address, Validators.compose([Validators.minLength(3), Validators.maxLength(100), Validators.required])],
-      address: [this.patient.name, Validators.compose([Validators.minLength(3), Validators.maxLength(200), Validators.required])],
+      name: [this.patient.name, Validators.compose([Validators.minLength(3), Validators.maxLength(100), Validators.required])],
+      address: [this.patient.address, Validators.compose([Validators.minLength(3), Validators.maxLength(200), Validators.required])],
       phone: [this.patient.phone, Validators.compose([Validation.phoneValidator, Validators.required])],
       gender: [this.patient.gender, Validators.compose([Validators.required])],
       date_of_birth: [this.patient.date_of_birth, Validators.compose([Validators.required])],
@@ -51,9 +55,10 @@ export class EditPatientComponent implements OnInit {
   }
 
   dismiss(patient = null) {
-    this.modalController.dismiss({
-      patient
-    });
+    // this.modalController.dismiss({
+    //   patient
+    // });
+    this.dialogRef.close(patient);
   }
 
 }
