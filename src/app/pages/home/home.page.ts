@@ -6,6 +6,7 @@ import { ModalController } from '@ionic/angular';
 import { AddPatientComponent } from './../add-patient/add-patient.component';
 import { MainEventsService } from '../../services/main-events/main-events.service';
 import { NbDialogService, NbDialogRef } from '@nebular/theme';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +30,7 @@ currentUser: any;
       private mainEventsService: MainEventsService,
       private _cdr: ChangeDetectorRef,
       private nbDialogService: NbDialogService,
+      public ngxSmartModalService: NgxSmartModalService
     ) {
       this.events.subscribe('userUpdate', (user) => {
         this.currentUser = user;
@@ -62,21 +64,28 @@ currentUser: any;
   }
 
   async addPatient() {
-    // this.nbDialogService.open(
-    //   AddPatientComponent,
-    //   {
-    //     context: 'hola',
-    //   });
-    const modal = await this.modalController.create({
-      component: AddPatientComponent,
-      animated: true,
-      backdropDismiss: false,
-      keyboardClose: true,
-      showBackdrop: true,
-    });
-    await modal.present();
-    const { data } = await modal.onDidDismiss();
-    if (data.patient) { this.patients.push(data.patient); }
+    this.nbDialogService.open(
+      AddPatientComponent,
+      {
+        context: 'hola',
+        hasBackdrop: true,
+        closeOnBackdropClick: false,
+        autoFocus: false,
+      }).onClose.subscribe((patient) => {
+        if ( patient ) {
+          this.patients.push(patient);
+        }
+      });
+    // const modal = await this.modalController.create({
+    //   component: AddPatientComponent,
+    //   animated: true,
+    //   backdropDismiss: false,
+    //   keyboardClose: true,
+    //   showBackdrop: true,
+    // });
+    // await modal.present();
+    // const { data } = await modal.onDidDismiss();
+    // if (data.patient) { this.patients.push(data.patient); }
   }
 
 }
