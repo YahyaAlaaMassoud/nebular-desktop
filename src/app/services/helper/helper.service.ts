@@ -45,7 +45,7 @@ export class HelperService {
     return await toast.present();
   }
 
-  async showNbToast(message: string) {
+  async showNbToast(message: string, status: 'warning' | 'danger' | 'success' = 'success') {
 
     // await this.removeLoading();
     await this.removeNgLoading();
@@ -59,7 +59,7 @@ export class HelperService {
         icon: 'info-outline',
         duration: 5000,
         position: NbGlobalLogicalPosition.TOP_END,
-        status: 'success'
+        status: status
       });
 
   }
@@ -96,7 +96,7 @@ export class HelperService {
       {
         type: 'ball-grid-pulse',//'ball-atom',
         size: 'large',
-        bdColor: 'rgb(245, 245, 245, 0.85)',
+        bdColor: 'rgb(245, 245, 245, 0.90)',
         color: 'rgb(0, 149, 255, 1)',
         fullScreen: true
       }
