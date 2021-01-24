@@ -1,7 +1,20 @@
 {
-  "name": "neb-desktop",
-  "version": "0.0.0",
+  "name": "vrapeutic-desktop",
+  "productName": "VRapeutic Desktop",
+  "description": "VRapeutic desktop app for managing modules",
+  "version": "0.4.0-pre",
+  "author": "Yahya Alaa Massoud <yahyaalaamassoud@gmail.com> (https://github.com/YahyaAlaaMassoud)",
+  "copyright": "All rights reserved © VRapeutic",
+  "license": "APACHE2",
+  "bugs": {
+    "url": "https://github.com/YahyaAlaaMassoud/nebular-desktop/issues"
+  },
+  "keywords": [
+    "vr",
+    "VRapeutic"
+  ],
   "assetsPath": "assets",
+  "homepage": "https://github.com/YahyaAlaaMassoud/nebular-desktop",
   "main": "electron/dist/main.js",
   "scripts": {
     "ng": "ng",
@@ -10,9 +23,71 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "cross-env NODE_ENV=production ng build --prod --base-href ./ && tsc --p electron  && electron ."
+    "electron": "cross-env NODE_ENV=production ng build --prod --base-href ./ && tsc --p electron  && electron .",
+    "release": "electron-builder",
+    "build-electron": "NODE_ENV=production ng build  --prod --base-href ./ && tsc --p electron",
+    "package-linux": "electron-packager . Vrapeutic --overwrite --asar=true --platform=linux --arch=x64 --icon=1024x1024.png --prune=true --out=release-builds --extraResource=dist/vrapeutic-desktop/assets/modules/ --ignore=release-builds/",
+    "package-win": "electron-packager . Vrapeutic --overwrite --asar=false --platform=win32 --arch=x64 --icon=icon.png.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vrapeutic Desktop App \" "
   },
-  "private": true,
+  "repository": "https://github.com/YahyaAlaaMassoud/nebular-desktop",
+  "build": {
+    "appId": "com.myvrapeutic.vrapeutic-desktop",
+    "productName": "VRapeutic Desktop",
+    "copyright": "All rights reserved © VRapeutic",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "YahyaAlaaMassoud",
+        "repo": "nebular-desktop",
+        "vPrefixedTagName": true
+      }
+    ],
+    "asar": true,
+    "directories": {
+      "buildResources": "build",
+      "output": "release-builds"
+    },
+    "dmg": {
+      "artifactName": "${productName}-mac-${version}.${ext}",
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "appImage": {
+      "license": "LICENSE"
+    },
+    "win": {
+      "artifactName": "${productName}-windows-${version}.${ext}",
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.png.png"
+    },
+    "nsisWeb": {
+      "oneClick": false,
+      "deleteAppDataOnUninstall": true
+    },
+    "nsis": {
+      "oneClick": false
+    },
+    "linux": {
+      "artifactName": "${productName}-linux-${version}.${ext}",
+      "target": [
+        "AppImage"
+      ],
+      "category": "Development"
+    }
+  },
   "dependencies": {
     "@angular/animations": "^10.2.4",
     "@angular/cdk": "^10.2.1",
