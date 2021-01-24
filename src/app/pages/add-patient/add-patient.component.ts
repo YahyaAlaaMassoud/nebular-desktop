@@ -33,7 +33,7 @@ export class AddPatientComponent implements OnInit {
       date_of_birth: ['', Validators.compose([Validators.required])],
       diagnosis: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(200)])],
       has_guardian: [true, Validators.compose([Validators.required])],
-      guardian_name: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(100), Validators.required])],
+      guardian_name: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       notes: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(200)])]
     });
     console.log(this.patientForm)
@@ -46,7 +46,8 @@ export class AddPatientComponent implements OnInit {
       const result: any = await this.userService.addPatient(this.patientForm.value);
       if (result) {
         // this.helperService.showToast(this.helperService.translate('PATIENT.Add_PATEINT_MSG'));
-        this.helperService.showNbToast(this.helperService.translate('PATIENT.Add_PATEINT_MSG'));
+        // this.helperService.showNbToast(this.helperService.translate('PATIENT.Add_PATEINT_MSG'));
+        this.helperService.showNbToast('New patient has been added');
         this.dismiss(result);
       }
 

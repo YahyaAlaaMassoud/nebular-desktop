@@ -34,7 +34,7 @@ export class EditPatientComponent implements OnInit {
       date_of_birth: [this.patient.date_of_birth, Validators.compose([Validators.required])],
       diagnosis: [this.patient.diagnosis, Validators.compose([Validators.minLength(6), Validators.maxLength(200), Validators.required])],
       has_guardian: [this.patient.has_guardian, Validators.compose([Validators.required])],
-      guardian_name: [this.patient.guardian_name, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      guardian_name: [this.patient.guardian_name, Validators.compose([Validators.minLength(3), Validators.maxLength(100)])],
       notes: [this.patient.notes, Validators.compose([Validators.minLength(6), Validators.maxLength(200)])]
     });
   }
