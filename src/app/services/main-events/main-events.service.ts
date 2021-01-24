@@ -19,6 +19,8 @@ export class MainEventsService {
   wirelessHeadsetSelected;
   logger: any;
   onlineHeadsetObserver: EventEmitter<any[]> = new EventEmitter<any[]>();
+  preparedUSBHeadsetsObserver: EventEmitter<any[]> = new EventEmitter<any[]>();
+  trackedModulesObserver: EventEmitter<{}> = new EventEmitter<{}>();
   constructor(
     private electronService: ElectronService,
     private events: Events,
@@ -139,6 +141,7 @@ export class MainEventsService {
       this.headsetsPrepared.push({
         id: device.id
       });
+      this.preparedUSBHeadsetsObserver.emit(this.headsetsPrepared);
       // this.preparingConnectedHeadset();
     });
 
@@ -151,7 +154,7 @@ export class MainEventsService {
     this.events.subscribe('unauthorized-device-connected', (device) => {
       this.headsetConnectedState = this.headsetStates.unauthorized;
       // this.helperService.showToast('The Device you just connected is not authorized!');
-      this.helperService.showNbToast('The Device you just connected is not authorized!');
+      this.helperService.showNbToast('The Device you just connected is not authorized!', 'danger');
     });
 
     this.events.subscribe('offline-headset-ready', (options) => {
@@ -249,6 +252,7 @@ export class MainEventsService {
 
     this.sendEventAsync('reset-installed-module', module.id);
     this.trackedModules[module.id] = null;
+    this.trackedModulesObserver.emit(this.trackedModules)
     this.zone.run(() => {
       this.updateOneTrackedModule(module);
     });
@@ -280,24 +284,28 @@ export class MainEventsService {
   downloadNewVersion(version) {
     const currentModule = this.trackedModules[version.vr_module_id];
     currentModule.downloading = true;
+    this.trackedModulesObserver.emit(this.trackedModules)
     this.sendEventAsync('download-new-module-version', version);
   }
 
   installNewVersion(version) {
     const currentModule = this.trackedModules[version.vr_module_id];
     currentModule.installing = true;
+    this.trackedModulesObserver.emit(this.trackedModules)
     this.sendEventAsync('install-new-module-version', version);
   }
 
   pauseDownloadNewVersion(version) {
     const currentModule = this.trackedModules[version.vr_module_id];
     currentModule.paused = true;
+    this.trackedModulesObserver.emit(this.trackedModules)
     this.sendEventAsync('module-version-pause-downloading', version);
   }
 
   resumeDownloadNewVersion(version) {
     const currentModule = this.trackedModules[version.vr_module_id];
     currentModule.paused = false;
+    this.trackedModulesObserver.emit(this.trackedModules)
     this.sendEventAsync('module-version-resume-downloading', version);
   }
 
@@ -306,6 +314,7 @@ export class MainEventsService {
     currentModule.downloading = false;
     currentModule.paused = false;
     currentModule.ratio = 0;
+    this.trackedModulesObserver.emit(this.trackedModules)
     this.sendEventAsync('module-version-cancel-downloading', version);
   }
 
@@ -323,6 +332,9 @@ export class MainEventsService {
       this.zone.run(() => {
         const currentModule = this.trackedModules[versionData.vr_module_id];
         currentModule.new_version = versionData.name;
+        currentModule.downloading = false
+        currentModule.installing = false
+        this.trackedModulesObserver.emit(this.trackedModules)
       });
     });
 
@@ -330,6 +342,9 @@ export class MainEventsService {
       this.zone.run(() => {
         const currentModule = this.trackedModules[versionData.vr_module_id];
         currentModule.new_version_not_installed = versionData.name;
+        currentModule.downloading = false
+        currentModule.installing = false
+        this.trackedModulesObserver.emit(this.trackedModules)
       });
     });
 
@@ -339,6 +354,7 @@ export class MainEventsService {
         currentModule.size = versionData.size;
         currentModule.downloaded_size = 0;
         currentModule.ratio = 0;
+        this.trackedModulesObserver.emit(this.trackedModules)
       });
     });
 
@@ -347,6 +363,7 @@ export class MainEventsService {
         const currentModule = this.trackedModules[versionData.vr_module_id];
         currentModule.downloaded_size += versionData.data;
         currentModule.ratio = (currentModule.downloaded_size / currentModule.size);
+        this.trackedModulesObserver.emit(this.trackedModules)
       });
     });
 
@@ -356,6 +373,7 @@ export class MainEventsService {
         currentModule.ratio = 1;
         currentModule.new_version = null;
         currentModule.downloading = false;
+        this.trackedModulesObserver.emit(this.trackedModules)
         // this.helperService.showToast(`The version ${versionData.name} is downloaded successfully`);
         this.helperService.showNbToast(`The version ${versionData.name} is downloaded successfully`);
       });
@@ -366,6 +384,7 @@ export class MainEventsService {
         const currentModule = this.trackedModules[versionData.vr_module_id];
         currentModule.new_version_not_installed = null;
         currentModule.installing = false;
+        this.trackedModulesObserver.emit(this.trackedModules)
         // this.helperService.showToast(`The version ${versionData.name} is installed successfully`);
         this.helperService.showNbToast(`The version ${versionData.name} is installed successfully`);
       });
@@ -375,6 +394,7 @@ export class MainEventsService {
       this.zone.run(() => {
         const currentModule = this.trackedModules[versionData.vr_module_id];
         currentModule.downloading = false;
+        this.trackedModulesObserver.emit(this.trackedModules)
         this.helperService.showError(`An error while downloading the version ${versionData.name}`);
       });
     });
@@ -383,6 +403,7 @@ export class MainEventsService {
       this.zone.run(() => {
         const currentModule = this.trackedModules[versionData.vr_module_id];
         currentModule.installing = false;
+        this.trackedModulesObserver.emit(this.trackedModules)
         this.helperService.showError(`An error while installing the version ${versionData.name}`);
       });
     });
