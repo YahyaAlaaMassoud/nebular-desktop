@@ -55,7 +55,7 @@
         <label class="label filter-label">Pick Dates</label>
         <br>
         <input nbInput placeholder="" shape="semi-round" [nbDatepicker]="rangePicker" class="date-picker">
-        <nb-rangepicker #rangePicker (rangeChange)="onDateFilterChange($event)" [(min)]="nbDatePickerOptions.start" [(max)]="nbDatePickerOptions.end"></nb-rangepicker>
+        <nb-rangepicker #rangePicker (rangeChange)="onDateFilterChange($event)" [(min)]="nbDatePickerOptions.orgStart" [(max)]="nbDatePickerOptions.orgEnd"></nb-rangepicker>
       </div>
     </div>
 

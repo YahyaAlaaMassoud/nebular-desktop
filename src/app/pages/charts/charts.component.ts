@@ -26,7 +26,9 @@ export class ChartsComponent implements OnInit {
     endDate: moment().format('YYYY-MM-DD')
   };
   nbDatePickerOptions = {
+    orgStart: new Date(2019, 1),
     start: new Date(2019, 1),
+    orgEnd: new Date(),
     end: new Date()
   };
   datePickerSettings = {
