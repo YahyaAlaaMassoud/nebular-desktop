@@ -50,7 +50,8 @@ export class EditPatientComponent implements OnInit {
         this.dismiss(result);
       }
     } catch (err) {
-      this.helperService.showError(err);
+      // this.helperService.showError(err);
+      this.helperService.showNbToast('Error happened when editing the patient. Please Try again.', 'danger');
     }
   }
 

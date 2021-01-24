@@ -58,7 +58,8 @@ export class AppComponent {
 
   trackMainEventsErrors() {
     this.events.subscribe('main-error', (err) => {
-      this.helperService.showError(JSON.stringify(err));
+      // this.helperService.showError(JSON.stringify(err));
+      this.helperService.showNbToast('Error happened when tracking module versions', 'danger');
     });
   }
 }

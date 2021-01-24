@@ -64,7 +64,8 @@ export class ChartsComponent implements OnInit {
       )) as any[];
       this.changeSessionScope();
     } catch (err) {
-      this.helperService.showError(err);
+      // this.helperService.showError(err);
+      this.helperService.showNbToast('Error happened when loading charts. Please Try again.', 'danger');
     }
   }
 
@@ -103,7 +104,8 @@ export class ChartsComponent implements OnInit {
       // this.helperService.removeLoading();
       // this.helperService.removeNgLoading();
     } catch (err) {
-      this.helperService.showError(err);
+      // this.helperService.showError(err);
+      this.helperService.showNbToast('Error happened when loading statistics. Please Try again.', 'danger');
     }
   }
 
@@ -153,7 +155,8 @@ export class ChartsComponent implements OnInit {
       // this.helperService.removeNgLoading();
       return result;
     } catch (err) {
-      this.helperService.showError(err);
+      // this.helperService.showError(err);
+      this.helperService.showNbToast('Error happened when loading statistics. Please Try again.', 'danger');
     }
   }
 

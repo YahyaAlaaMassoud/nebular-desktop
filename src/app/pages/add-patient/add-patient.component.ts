@@ -51,7 +51,8 @@ export class AddPatientComponent implements OnInit {
       }
 
     } catch (err) {
-      this.helperService.showError(err);
+      // this.helperService.showError(err);
+      this.helperService.showNbToast('Error happened when saving the new patient. Please Try again.', 'danger');
     }
   }
 

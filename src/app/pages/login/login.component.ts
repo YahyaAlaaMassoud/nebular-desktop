@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit {
       // this.helperService.removeLoading();
       this.helperService.removeNgLoading();
     } catch (err) {
-      this.helperService.showError(err);
+      // this.helperService.showError(err);
+      this.helperService.showNbToast('Error happened when logging in. Please Try again.', 'danger');
     }
   }
 }

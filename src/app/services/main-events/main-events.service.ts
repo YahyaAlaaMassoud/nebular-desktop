@@ -121,15 +121,19 @@ export class MainEventsService {
 
   setupHeadsetEvents() {
     this.events.subscribe('installing-android-module', (options) => {
+      console.log('SHOW LOADING')
       // this.helperService.showLoading(options.msg);
       this.helperService.showNgLoading(options.msg);
     });
 
     this.events.subscribe('install-android-module-ready', (options) => {
       if (!options.ready) {
-        return this.helperService.showError(options.err);
+        // return this.helperService.showError(options.err);
+        return this.helperService.showNbToast('Error happened when installing VR module on Headset. Please Try again.', 'danger');
       }
 
+      console.log('REMOVE LOADING')
+      this.helperService.removeNgLoading();
       // this.helperService.showToast(options.msg);
       this.helperService.showNbToast(options.msg);
     });
@@ -148,7 +152,7 @@ export class MainEventsService {
     this.events.subscribe('device-disconnected', () => {
       this.headsetConnectedState = this.headsetStates.none;
       // this.helperService.showToast('The device is disconnected.');
-      this.helperService.showNbToast('The device is disconnected.');
+      this.helperService.showNbToast('The device is disconnected.', 'warning');
     });
 
     this.events.subscribe('unauthorized-device-connected', (device) => {
@@ -160,7 +164,8 @@ export class MainEventsService {
     this.events.subscribe('offline-headset-ready', (options) => {
       if (!options.ready) {
         if (options.headsetDevice) { this.headsetConnectedState = this.headsetStates.not_ready; }
-        return this.helperService.showError(options.err);
+        // return this.helperService.showError(options.err);
+        return this.helperService.showNbToast('Error happened connecting to headset via USB. Please Try again.', 'danger');
       }
 
       if (!this.headsetsPrepared.some((h) => h.id === options.headsetDevice.id)) {
@@ -168,7 +173,7 @@ export class MainEventsService {
       }
       this.headsetConnectedState = this.headsetStates.ready;
       // this.helperService.showToast('The Connected Headset is ready now, you can unplug it safely');
-      this.helperService.showNbToast('The Connected Headset is ready now, you can unplug it safely');
+      // this.helperService.showNbToast('The Connected Headset is ready now, you can unplug it safely');
     });
 
     this.events.subscribe('finding-selected-headset', (options) => {
@@ -179,7 +184,8 @@ export class MainEventsService {
     });
 
     this.events.subscribe('wrong-module-detected', (options) => {
-      this.helperService.showError(options.msg);
+      // this.helperService.showError(options.msg);
+      this.helperService.showNbToast('Wrong module was detected. Please Try again.', 'danger');
     });
 
     this.events.subscribe('online-devices-changed', (options) => {
@@ -208,7 +214,8 @@ export class MainEventsService {
   setupRunningModulesEvents() {
     this.events.subscribe('desktop-module-ready', (options) => {
       if (!options.ready) {
-        return this.helperService.showError(options.err);
+        // return this.helperService.showError(options.err);
+        return this.helperService.showNbToast('Error happened when starting VR Modules on desktop. Please Try again.', 'danger');
       }
 
       // this.helperService.showToast('The Desktop Module is ready now');
@@ -217,7 +224,8 @@ export class MainEventsService {
 
     this.events.subscribe('headset-module-ready', (options) => {
       if (!options.ready) {
-        return this.helperService.showError(options.msg);
+        // return this.helperService.showError(options.msg);
+        return this.helperService.showNbToast('Error happened preparing VR Module on headset. Please Try again.', 'danger');
       }
 
       // this.helperService.showToast('The VR Module is ready now on the headset');
@@ -395,7 +403,8 @@ export class MainEventsService {
         const currentModule = this.trackedModules[versionData.vr_module_id];
         currentModule.downloading = false;
         this.trackedModulesObserver.emit(this.trackedModules)
-        this.helperService.showError(`An error while downloading the version ${versionData.name}`);
+        // this.helperService.showError(`An error while downloading the version ${versionData.name}`);
+        this.helperService.showNbToast(`An error while downloading the version ${versionData.name}`, 'danger');
       });
     });
 
@@ -404,7 +413,8 @@ export class MainEventsService {
         const currentModule = this.trackedModules[versionData.vr_module_id];
         currentModule.installing = false;
         this.trackedModulesObserver.emit(this.trackedModules)
-        this.helperService.showError(`An error while installing the version ${versionData.name}`);
+        // this.helperService.showError(`An error while installing the version ${versionData.name}`);
+        this.helperService.showNbToast(`An error while installing the version ${versionData.name}`, 'danger');
       });
     });
   }

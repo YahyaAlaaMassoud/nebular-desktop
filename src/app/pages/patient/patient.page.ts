@@ -133,7 +133,8 @@ export class PatientPage implements OnInit {
       this.createNgxColumns();
       this.createNgxRows();
     } catch (err) {
-      this.helperService.showError(err);
+      // this.helperService.showError(err);
+      this.helperService.showNbToast('Error happened when loading patient info. Please Try again.', 'danger');
     }
   }
 
@@ -158,7 +159,10 @@ export class PatientPage implements OnInit {
 
   async runModuleOnWirelessHeadset(module) {
     const wirelessHeadsetSelected = this.mainEventsService.wirelessHeadsetSelected;
-    if (!wirelessHeadsetSelected) { return this.helperService.showError('No Headset Selected'); }
+    if (!wirelessHeadsetSelected) { 
+      // return this.helperService.showError('No Headset Selected'); 
+      return this.helperService.showNbToast('Error happened when trying to run module. Please Try again.', 'danger');
+    }
     this.mainEventsService.reconnectHeadsetWirelesslyToRunModule(module.name, module.id, module.package_name);
     this.getNewSessionId(
       module,
@@ -176,7 +180,8 @@ export class PatientPage implements OnInit {
       );
       // this.helperService.showToast('Running ' + module.name + ' Module');
     } else { 
-      return this.helperService.showError('No Headset Selected');
+      // return this.helperService.showError('No Headset Selected');
+      return this.helperService.showNbToast('Error happened when trying to run module. Please Try again.', 'danger');
     }
   }
 
@@ -204,7 +209,8 @@ export class PatientPage implements OnInit {
       return await this.userService.getPatientSessionId(this.id, module.id, headset);
     } catch (err) {
       console.log('getNewSessionId err', err);
-      this.helperService.showError(err);
+      // this.helperService.showError(err);
+      this.helperService.showNbToast('Error happened when creating new session. Please Try again.', 'danger');
       return false;
     }
   }
@@ -297,7 +303,8 @@ export class PatientPage implements OnInit {
 
   resetModules() {
     if (this.mainEventsService.isDownloadingModules() || this.mainEventsService.isInstallingModules()) {
-      return this.helperService.showError('We cannot clear modules while downloading or installing modules');
+      // return this.helperService.showError('We cannot clear modules while downloading or installing modules');
+      return this.helperService.showNbToast('We cannot clear modules while downloading or installing modules.', 'danger');
     }
 
     this.helperService.showAlert(

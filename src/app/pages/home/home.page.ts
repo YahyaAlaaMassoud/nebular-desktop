@@ -57,7 +57,8 @@ currentUser: any;
     } catch (err) {
       console.log('loadPatients err', err);
       this.loading = false;
-      this.helperService.showError(err);
+      // this.helperService.showError(err);
+      this.helperService.showNbToast('Error happened when loading patient info. Please Try again.', 'danger');
     }
   }
 
