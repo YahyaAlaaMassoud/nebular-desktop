@@ -279,6 +279,7 @@ export class PatientPage implements OnInit {
   installAndroid(module) {
     console.log(this.usbHeadsets)
     if ( this.usbHeadsets.length > 0 ) {
+      this.helperService.showNbToast('Installing the VR Module on the Headset', 'warning')
       this.mainEventsService.installAndroidModule(module);
     } else if ( this.usbHeadsets.length == 0 ) {
       this.helperService.showNbToast('No headsets found connceted using USB', 'danger');

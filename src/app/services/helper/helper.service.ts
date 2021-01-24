@@ -57,7 +57,7 @@ export class HelperService {
         destroyByClick: true,
         hasIcon: true,
         icon: 'info-outline',
-        duration: 5000,
+        duration: 8000,
         position: NbGlobalLogicalPosition.TOP_END,
         status: status
       });
@@ -104,9 +104,9 @@ export class HelperService {
   }
 
   async removeNgLoading() {
-    if (!this.loading) { 
-      return; 
-    }
+    // if (!this.loading) { 
+    //   return; 
+    // }
 
     this.loading = false;
     // this.ngSpinner.hide();
