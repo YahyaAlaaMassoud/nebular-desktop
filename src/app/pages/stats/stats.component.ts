@@ -83,27 +83,16 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.emptyChart = !this.validData.length;
 
     var savedState = this.stateService.state$.getValue()
-    console.log('currentState', savedState)
     if ( savedState && savedState[this.moduleId] ) {
       this.ngxColumns = savedState[this.moduleId]
-      console.log('LOADED', this.ngxColumns)
     } else {
       this.ngxColumns = this.getNgxCols(this.displayedColumns);
 
       this.state = savedState || {}
-      // var newPair = {
-      //   [this.moduleId]: this.ngxColumns
-      // }
-      // this.state = {
-      //   ...newPair,
-      //   savedState
-      // };
       Object.assign(this.state, {
         [this.moduleId]: this.ngxColumns
       })
       
-      console.log(this.moduleId)
-      console.log('this.state', this.state)
       this.stateService.state$.next(this.state)
     }
     this.allNgxColumns = this.getNgxCols(this.displayedColumns);
@@ -121,9 +110,6 @@ export class StatsComponent implements OnInit, OnDestroy {
       })
       this.ngxRows.push(newRow)
     })
-
-    console.log('this.ngxRows', this.ngxRows)
-
   }
 
   removeUnderScore(str) {
@@ -174,11 +160,13 @@ export class StatsComponent implements OnInit, OnDestroy {
       this.validData.forEach((sessionData: any) => {
         const y = sessionData[chart.fieldNameY].toFixed(2);
         let x: any = (new Date(sessionData[chart.fieldNameX]));
-        x = this.sessionsScope === 'One Session' ?  x.toLocaleTimeString() : x.toLocaleString();
+        x = this.sessionsScope === 'One Session' ?  x.toLocaleTimeString() : x.toLocaleDateString();
         if (y < 0) { return; }
         const dataGroup = sessionData[chart.groupBy] || chart.fieldNameY;
+        // console.log('dataGroup', dataGroup)
         chart.dataY[dataGroup] = chart.dataY[dataGroup] || [];
         chart.dataY[dataGroup].push({ x, y });
+        // console.log('chart.dataY', chart.dataY)
         chart.dataX.push(x);
         chart.tooltipFields.forEach((tooltipField: string) => {
           tooltipData[dataGroup] = tooltipData[dataGroup] || {};
@@ -186,6 +174,7 @@ export class StatsComponent implements OnInit, OnDestroy {
           tooltipData[dataGroup][tooltipField].push(sessionData[tooltipField].toString());
         });
       });
+      console.log(tooltipData)
 
       chart.tooltipFields.forEach((tooltipField: string) => {
         chart.tooltipData = tooltipData;
@@ -254,6 +243,7 @@ export class StatsComponent implements OnInit, OnDestroy {
                   tooltipDataArr.push(this.titleCasePipe.transform(tooltipField.split('_').join(' ')  + ': ' + tooltip));
                 }
               });
+              console.log(tooltipDataArr)
               return tooltipDataArr;
             }
           },
