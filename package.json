@@ -2,7 +2,7 @@
   "name": "vrapeutic-desktop",
   "productName": "VRapeutic Desktop",
   "description": "VRapeutic desktop app for managing modules",
-  "version": "0.4.0-pre",
+  "version": "0.4.0",
   "author": "Yahya Alaa Massoud <yahyaalaamassoud@gmail.com> (https://github.com/YahyaAlaaMassoud)",
   "copyright": "All rights reserved © VRapeutic",
   "license": "APACHE2",
