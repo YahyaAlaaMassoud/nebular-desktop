@@ -19,7 +19,7 @@
   <nb-layout-header fixed>
     <div class="header-container">
       <nb-actions size="small">
-        <nb-action routerLink="/home" icon="arrow-back-outline" badgePosition="right" class="action-icon"
+        <nb-action (click)="goBack()" icon="arrow-back-outline" badgePosition="right" class="action-icon"
                    badgeStatus="info" title="Back to Home Page" size="giant"></nb-action>
         <nb-action size="giant" (click)="editPatient()" title="Edit Patient" class="action-icon"
                     badgePosition="right" badgeStatus="info" class="action-icon">
@@ -74,7 +74,7 @@
               <td>{{patient?.notes}}</td>
             </tr>
           </table> -->
-          <nb-list>
+          <!-- <nb-list>
             <nb-list-item>
               {{'PATIENT.DIAGNOSIS' | translate }}: {{patient?.diagnosis}}
             </nb-list-item>
@@ -96,7 +96,21 @@
             <nb-list-item>
               {{'PATIENT.NOTES' | translate }}: {{patient?.notes}}
             </nb-list-item>
-          </nb-list>
+          </nb-list> -->
+          <ngx-datatable
+                        class="material"
+                        [rowHeight]="$any('auto')"
+                        [rows]="ngxRows"
+                        [loadingIndicator]="false"
+                        [columnMode]="'force'"
+                        [selectionType]="SelectionType.single"
+                        [headerHeight]="0">
+              <ngx-datatable-column *ngFor="let col of ngxCols" [name]="col.name" [prop]="col.prop" [width]="col.width" [sortable]="col.sortable">
+                  <ng-template ngx-datatable-header-template>
+                      <span class="table-header">{{ col.shownName }}</span>
+                  </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
         </nb-accordion-item-body>
       </nb-accordion-item>
     </nb-accordion>
@@ -152,8 +166,6 @@
                 </nb-accordion-item-body>
               </nb-accordion-item>
             </nb-accordion>
-
-            <br>
 
             <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading" class="round-bg">
               <nb-progress-bar style="padding-top: 0.7rem;" size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round_percent" status="success" [displayValue]="true">

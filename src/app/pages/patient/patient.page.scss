@@ -221,3 +221,7 @@ img {
   background-color: 		#f7f9fc; 
   border-radius: 1rem;
 }
+
+::ng-deep .datatable-body-row.active .datatable-row-group {
+  background-color:	#c7e2ff !important;
+}

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -16,6 +16,7 @@ import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputM
   NbIconModule, NbActionsModule, NbListModule, NbUserModule, NbDatepickerModule, 
   NbRadioModule, NbCheckboxModule, NbDialogModule, NbAccordionModule, NbSelectModule,
   NbTooltipModule, NbProgressBarModule, NbSpinnerModule, NbBadgeModule } from '@nebular/theme';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 const routes: Routes = [
 
@@ -57,7 +58,8 @@ const pages = [
     NbTooltipModule,
     NbProgressBarModule,
     NbSpinnerModule,
-    NbBadgeModule
+    NbBadgeModule,
+    NgxDatatableModule
   ],
   declarations: [
     PatientPage,
@@ -65,6 +67,7 @@ const pages = [
     RoundFloatPipe,
     ...pages
   ],
-  entryComponents: [...pages]
+  entryComponents: [...pages],
+  providers: [TitleCasePipe]
 })
 export class PatientPageModule {}
