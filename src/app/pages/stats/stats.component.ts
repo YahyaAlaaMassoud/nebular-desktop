@@ -155,6 +155,10 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.validateAndResetData();
     if (!this.validData.length) { return; }
 
+    this.validData.sort(function(a,b){
+      return new Date(a.attempt_start_time).getTime() - new Date(b.attempt_start_time).getTime();
+    });
+
     this.chartsSettings.forEach((chart: ChartsConfig) => {
       const tooltipData = {};
       this.validData.forEach((sessionData: any) => {
@@ -163,10 +167,8 @@ export class StatsComponent implements OnInit, OnDestroy {
         x = this.sessionsScope === 'One Session' ?  x.toLocaleTimeString() : x.toLocaleDateString();
         if (y < 0) { return; }
         const dataGroup = sessionData[chart.groupBy] || chart.fieldNameY;
-        // console.log('dataGroup', dataGroup)
         chart.dataY[dataGroup] = chart.dataY[dataGroup] || [];
         chart.dataY[dataGroup].push({ x, y });
-        // console.log('chart.dataY', chart.dataY)
         chart.dataX.push(x);
         chart.tooltipFields.forEach((tooltipField: string) => {
           tooltipData[dataGroup] = tooltipData[dataGroup] || {};
@@ -174,7 +176,9 @@ export class StatsComponent implements OnInit, OnDestroy {
           tooltipData[dataGroup][tooltipField].push(sessionData[tooltipField].toString());
         });
       });
-      console.log(tooltipData)
+      // console.log(tooltipData)
+      // console.log('chart.dataY', chart.dataY)
+      // console.log('chart.dataX', chart.dataX)
 
       chart.tooltipFields.forEach((tooltipField: string) => {
         chart.tooltipData = tooltipData;
@@ -188,10 +192,16 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.collectStatsData();
     if (!this.validData.length) { return; }
 
-    const datasets: ChartDataSets[] = Object.entries(this.selectedChartConfigs.dataY).map((entry, index) => {
+    // console.log(this.selectedChartConfigs.dataY)
+    // console.log(this.selectedChartConfigs.dataX)
+    // console.log(this.selectedChartConfigs.tooltipData)
 
+    const datasets: ChartDataSets[] = Object.entries(this.selectedChartConfigs.dataY).map((entry, index) => {
+      // console.log('entry', entry)
+      // console.log(this.selectedChartConfigs.tooltipData[entry[0]])
       indexedTooltipData.push(this.selectedChartConfigs.tooltipData[entry[0]]);
       const color = this.colorsPool.pop();
+      // console.log('data', entry[1])
       return {
         label: `${this.selectedChartConfigs.groupBy.split('_').join(' ') || ''} ${entry[0].split('_').join(' ')}`,
         data: entry[1],
@@ -203,6 +213,7 @@ export class StatsComponent implements OnInit, OnDestroy {
         pointHoverRadius: 10,
       } as ChartDataSets;
     });
+    // console.log('indexedTooltipData', indexedTooltipData)
     this.selectedChartConfigs.tooltipData = indexedTooltipData;
     const options = {
         responsive: true,
@@ -236,14 +247,15 @@ export class StatsComponent implements OnInit, OnDestroy {
           displayColors: false,
           callbacks: {
             label: (tooltipItems: Chart.ChartTooltipItem, data: Chart.ChartData) => {
+              // console.log('tooltipItems', tooltipItems)
+              // console.log('tooltipData', data)
               const tooltipDataArr = [`${this.titleCasePipe.transform(this.selectedChartConfigs.fieldNameY.split('_').join(' ')) }: ${tooltipItems.yLabel }`];
               this.selectedChartConfigs.tooltipFields.forEach((tooltipField: string, index: number) => {
                 const tooltip = this.selectedChartConfigs.tooltipData[tooltipItems.datasetIndex][tooltipField][tooltipItems.index];
-                if (tooltip.length) {
+                if (tooltip && tooltip.length) {
                   tooltipDataArr.push(this.titleCasePipe.transform(tooltipField.split('_').join(' ')  + ': ' + tooltip));
                 }
               });
-              console.log(tooltipDataArr)
               return tooltipDataArr;
             }
           },
