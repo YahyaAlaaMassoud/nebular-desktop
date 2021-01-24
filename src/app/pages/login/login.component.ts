@@ -12,6 +12,7 @@ import { HelperService } from '../../services/helper/helper.service';
 })
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
+  showPassword: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private userService: UserService,
@@ -38,5 +39,16 @@ export class LoginComponent implements OnInit {
       // this.helperService.showError(err);
       this.helperService.showNbToast('Error happened when logging in. Please Try again.', 'danger');
     }
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  getInputType() {
+    if (this.showPassword) {
+      return 'text';
+    }
+    return 'password';
   }
 }
