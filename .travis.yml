@@ -24,7 +24,7 @@ matrix:
 
 branches:
   only:
-  - master
+  - prod
   # - dev
   # - prod
 
@@ -70,7 +70,7 @@ deploy:
   skip_cleanup: true
   on:
     # all_branches: true
-    branch: master
+    branch: prod
     
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
