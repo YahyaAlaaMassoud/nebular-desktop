@@ -2,13 +2,15 @@ import { Component, OnInit, OnChanges, ChangeDetectorRef, ChangeDetectionStrateg
 import { UserService } from '../../services/user/user.service';
 import { HelperService } from '../../services/helper/helper.service';
 import { MainEventsService } from '../../services/main-events/main-events.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { EditPatientComponent } from '../edit-patient/edit-patient.component';
 import { ElectronService } from 'ngx-electron';
 import { RoundPercentPipe } from '../../pipes/round_percent.pipe';
 import { RoundFloatPipe } from '../../pipes/round-float.pipe';
 import { NbDialogService } from '@nebular/theme';
+import { ColumnMode, TableColumn, SelectionType } from '@swimlane/ngx-datatable';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-patient',
@@ -31,6 +33,7 @@ export class PatientPage implements OnInit {
   logger: any;
   showPatientInfo: boolean = false;
   progressStatus: string = 'danger';
+  usbHeadsets: any[] = []
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
@@ -40,6 +43,8 @@ export class PatientPage implements OnInit {
     private electronService: ElectronService,
     private _cdr: ChangeDetectorRef,
     private nbDialogService: NbDialogService,
+    private router: Router,
+    private titleCasePipe: TitleCasePipe,
   ) {
     if (this.electronService.isElectronApp) {
       this.logger = this.electronService.remote.require('electron-log');
@@ -55,6 +60,9 @@ export class PatientPage implements OnInit {
     // wait for userdoc before setting up page
     this.mainEventsService.trackedModulesObserver.subscribe(trackedModules => {
       this.trackedModules = trackedModules
+    })
+    this.mainEventsService.preparedUSBHeadsetsObserver.subscribe(usbHeadsets => {
+      this.usbHeadsets = usbHeadsets
     })
     this.onlineHeadsets = this.mainEventsService.onlineHeadsets
     this.mainEventsService.onlineHeadsetObserver.subscribe(onlineHeadsets => {
@@ -121,6 +129,9 @@ export class PatientPage implements OnInit {
       });
       // this.helperService.removeLoading();
       this.helperService.removeNgLoading();
+
+      this.createNgxColumns();
+      this.createNgxRows();
     } catch (err) {
       this.helperService.showError(err);
     }
@@ -260,7 +271,12 @@ export class PatientPage implements OnInit {
   }
 
   installAndroid(module) {
-    this.mainEventsService.installAndroidModule(module);
+    console.log(this.usbHeadsets)
+    if ( this.usbHeadsets.length > 0 ) {
+      this.mainEventsService.installAndroidModule(module);
+    } else if ( this.usbHeadsets.length == 0 ) {
+      this.helperService.showNbToast('No headsets found connceted using USB', 'danger');
+    }
   }
 
   resetModule(module) {
@@ -331,5 +347,64 @@ export class PatientPage implements OnInit {
     } else if ( prog <= 100 ) {
       this.progressStatus = 'success'
     } 
+  }
+
+  goBack() {
+    // check if currently downloading before navigating
+    // var allKeys = Object.keys(this.mainEventsService.trackedModules)
+    // for ( var i = 0; i < allKeys.length; i++ ) {
+    //   console.log(allKeys[i])
+    //   if ( this.mainEventsService.trackedModules[allKeys[i]].downloading ) {
+    //     this.cancelDownloading(allKeys[i])
+    //   }
+    // }
+    this.router.navigate(['/home']);
+  }
+
+  ColumnMode = ColumnMode;
+  SelectionType = SelectionType;
+  ngxCols = []
+  ngxRows = []
+
+  createNgxColumns () {
+    this.ngxCols = [
+      {
+        name: 'field',
+        prop: 'field',
+        shownName: 'Field',
+        sortable: false,
+        width: 20
+      },
+      {
+        name: 'value',
+        prop: 'value',
+        shownName: 'Value',
+        sortable: false
+      }
+    ]
+  }
+
+  removeUnderScore(str) {
+    str = str.split('_').join(' ');
+    str = this.titleCasePipe.transform(str);
+    return str;
+  }
+
+  createNgxRows() {
+    this.ngxRows = []
+    Object.keys(this.patient).forEach(key => {
+      console.log(key)
+      if ( [ 'diagnosis', 'phone', 'email', 'date_of_birth', 'has_guardian', 'guardian_name', 'notes' ].indexOf(key) >= 0 ) {
+        let value = this.patient[key];
+        this.ngxRows.push({
+          field: this.removeUnderScore(key),
+          value: value
+        })
+      }
+    });
+
+    this._cdr.detectChanges()
+
+    console.log(this.ngxRows, this.ngxCols)
   }
 }
