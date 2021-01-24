@@ -129,6 +129,7 @@ async function createWindow() {
   mainWindowBounds.webPreferences = { nodeIntegration: true };
   mainWindowBounds.icon = path.join(__dirname, '/../../dist/neb-desktop/assets/icons/win/icon.png.png');
   win = new BrowserWindow(mainWindowBounds);
+  win.webContents.setZoomFactor(1.0);
   win.maximize();
   win.show();
   win.loadURL(
