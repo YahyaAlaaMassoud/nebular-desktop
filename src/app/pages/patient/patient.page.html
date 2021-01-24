@@ -147,8 +147,8 @@
       <li class="cards_item" *ngFor="let module of modules">
           
         <div class="card">
-          <nb-badge *ngIf="mainEventsService.trackedModules[module.id]?.new_version" text="New Version Available" status="success" position="top right">
-          </nb-badge>
+          <!-- <nb-badge *ngIf="mainEventsService.trackedModules[module.id]?.new_version" text="New Version Available" status="success" position="top right">
+          </nb-badge> -->
           <div class="card_image">
             <img src="{{module?.image || 'assets/imgs/vr_logo.jpeg'}}"/>
           </div>
@@ -166,6 +166,8 @@
                 </nb-accordion-item-body>
               </nb-accordion-item>
             </nb-accordion>
+
+            <br>
 
             <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading" class="round-bg">
               <nb-progress-bar style="padding-top: 0.7rem;" size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round_percent" status="success" [displayValue]="true">
@@ -191,8 +193,11 @@
 
             <br>
 
-            <div *ngIf="!mainEventsService.trackedModules[module.id]?.downloading && !mainEventsService.trackedModules[module.id]?.installing" 
+            <div *ngIf="!mainEventsService.trackedModules[module.id]?.downloading 
+                        && !mainEventsService.trackedModules[module.id]?.installing
+                        && mainEventsService.trackedModules[module.id]?.new_version"
             class="new-version round-bg">
+              <!-- downloading {{mainEventsService.trackedModules[module.id]?.downloading}} instalaling {{mainEventsService.trackedModules[module.id]?.installing}} -->
               <span *ngIf="mainEventsService.trackedModules[module.id]?.new_version">
                 Version <b>{{mainEventsService.trackedModules[module.id]?.new_version}}</b> is available.
               </span>
@@ -215,8 +220,9 @@
             <br>
 
             <div class="row module-controls round-bg">
+              <br>
               <button nbButton shape="semi-round" class=""  status="success" size="large" class="module-control"
-              nbTooltip="Run Module" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="warning"
+              nbTooltip="Run Module" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="success"
               nbTooltipTrigger="hint" nbTooltipStatus="success"
                (click)="runModuleV2(module)" [disabled]="!isOnlineHeadsetSelected || mainEventsService.trackedModules[module.id]?.downloading">
                 <!-- {{'PATIENT.START_MODULE' | translate}}  -->
@@ -224,7 +230,7 @@
               </button>
               <button nbButton shape="semi-round" class=""  status="info" size="large" class="module-control"
               nbTooltip="Show Statistics" nbTooltipPlacement="bottom"  [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
-              [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="warning"
+              [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="success"
               nbTooltipTrigger="hint" nbTooltipStatus="info"
               [routerLink]="['/patient/', patient.id, 'modules', module.id, 'charts']">
                 <!-- Show Statistics  -->
@@ -234,13 +240,16 @@
             <br>
             <div class="row"> -->
               <button nbButton shape="semi-round" class=""  status="danger" size="large" class="module-control"
-              nbTooltip="Remove Module from Disk" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="warning"
-              nbTooltipTrigger="hint" nbTooltipStatus="danger" [disabled]="mainEventsService.trackedModules[module.id]?.downloading">
+              nbTooltip="Remove Module from Disk" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" 
+              nbSpinnerStatus="success" (click)="resetModule(module)"
+              nbTooltipTrigger="hint" nbTooltipStatus="danger" [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
+              >
                 <!-- Remove Module  -->
                 <nb-icon icon="trash-2-outline"></nb-icon>
               </button>
               <button nbButton shape="semi-round" class=""  status="warning" size="large" class="module-control"
-              nbTooltip="Install Module on Headset" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="warning"
+              nbTooltip="Install Module on Headset" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" 
+              nbSpinnerStatus="success"
               nbTooltipTrigger="hint" nbTooltipStatus="warning" [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
                (click)="installAndroid(module)">
                 <!-- Install on Headset  -->
@@ -256,11 +265,8 @@
   <nb-layout-footer>
     <nb-card class="center-div">
       <nb-card-body class="row module-controls">
-          <button nbButton fullWidth shape="semi-round" outline status="info" size="large" class="module-control" (click)="toggleConsole()">
-                Show Console
-          </button>
           <button nbButton fullWidth shape="semi-round" outline status="warning" size="large" class="module-control" (click)="toggleConsole()">
-                Hide Console
+                Show & Hide Console
           </button>
       </nb-card-body>
       <nb-card-footer class="row module-controls">
@@ -273,12 +279,12 @@
 </nb-layout>
 
 
-<ion-content class="ion-padding">
+<!-- <ion-content class="ion-padding">
   <ion-list>
     <ion-grid>
       <ion-row class="ion-align-items-start ion-justify-content-center">
         <ion-col size="4" *ngFor="let module of modules">
-          <ion-card [ngClass]="{'has-updates': mainEventsService.trackedModules[module.id]?.new_version}" class="module-card">
+          <ion-card [ngClass]="{'has-updates': mainEventsService.trackedModules[module.id]?.new_version}" class="module-card"> -->
             <!-- <img [src]="module?.image ||'assets/imgs/vr_logo.jpeg'"/>
             <ion-card-header>
               <ion-text color="secondary" style="text-align:center;">
@@ -289,8 +295,8 @@
                 {{module?.description}}
             </ion-card-subtitle>
             </ion-card-header> -->
-            <ion-card-content>
-              <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading">
+            <!-- <ion-card-content>
+              <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading"> -->
                 <!-- <ion-progress-bar [value]="mainEventsService.trackedModules[module.id]?.ratio"
                 [buffer]="mainEventsService.trackedModules[module.id]?.ratio"
                 class="my-buffer-progress"
@@ -301,9 +307,9 @@
                 </progress-bar> -->
                 <!-- Downloading Updates... {{ mainEventsService.trackedModules[module.id]?.ratio | round }} % -->
 
-                <ion-grid>
+                <!-- <ion-grid>
                   <ion-row>
-                    <ion-col>
+                    <ion-col> -->
 
                       <!-- <ion-button *ngIf="!mainEventsService.trackedModules[module.id]?.paused"
                       expand="full" shape="round" fill="outline"
@@ -316,9 +322,9 @@
                         color="primary" size='small' (click)="resumeDownloading(module)">
                         <ion-icon name="play"></ion-icon>
                       </ion-button> -->
-                    
+<!--                     
                     </ion-col>
-                    <ion-col>
+                    <ion-col> -->
 
                       <!-- <ion-button
                         color="primary" size='small' (click)="cancelDownloading(module)"
@@ -327,10 +333,10 @@
                         <ion-icon name="close-circle"></ion-icon>
                       </ion-button> -->
 
-                    </ion-col>
+                    <!-- </ion-col>
                   </ion-row>
                 </ion-grid>
-              </div>
+              </div> -->
 
               <!-- <div *ngIf="mainEventsService.trackedModules[module.id]?.installing">
                 <ion-progress-bar
@@ -389,7 +395,7 @@
                 </ion-button>
                 </ion-row>
               </ion-grid> -->
-            </ion-card-content>
+            <!-- </ion-card-content>
           </ion-card>
         </ion-col>
         <div class="empty-content" *ngIf="!modules?.length">
@@ -409,4 +415,4 @@
       (click)="resetModules()" >
       Clear Downloaded Modules
     </ion-button>
-</ion-content>
+</ion-content> -->
