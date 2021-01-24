@@ -351,6 +351,27 @@ export class StatsComponent implements OnInit, OnDestroy {
     XLSX.writeFile(wb, `${this.curModuleName}(${this.sessionName}).xlsx`);
   }
 
+  exportV2(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const rowData = this.sortedData.map((data) => {
+      const row = [];
+      this.ngxColumns.forEach((field) => {
+        row.push(data[field.name]);
+      });
+      return row;
+    }
+    );
+    rowData.unshift(this.ngxColumns.map((f) => f.name.split('_').join(' ')));
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(rowData);
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, `${this.curModuleName}(${this.sessionName}).xlsx`);
+  }
+
   getRowClass (row) {
     return {
       'datatable-body-row': true
