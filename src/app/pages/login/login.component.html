@@ -40,7 +40,7 @@
           <br>
           <div class="form-group">
             <label class="label">Password</label>
-            <nb-form-field>
+            <nb-form-field (keypress)="whichKey($event)">
               <input [type]="getInputType()" nbInput fullWidth fieldSize="medium" placeholder="Password" formControlName="password" type="password">
               <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
                 <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"

@@ -51,4 +51,10 @@ export class LoginComponent implements OnInit {
     }
     return 'password';
   }
+
+  whichKey(e) {
+    if ( e.key == 'Enter' ) {
+      e.preventDefault();
+    }
+  }
 }
