@@ -28,12 +28,16 @@ let ClientType = {
 };
 
 exports.closeLocalServer = (logMsg) => {
-    console.log('CLOSING SERVER')
-    localServer.close();
-    // Destroy all open sockets
-    for (var socketId in openSockets) {
-        console.log('socket', socketId, 'destroyed');
-        openSockets[socketId].destroy();
+    try { 
+        console.log('CLOSING SERVER')
+        localServer.close();
+        // Destroy all open sockets
+        for (var socketId in openSockets) {
+            console.log('socket', socketId, 'destroyed');
+            openSockets[socketId].destroy();
+        }
+    } catch {
+        console.log('something went wrong when trying to close the server')
     }
 }
 
