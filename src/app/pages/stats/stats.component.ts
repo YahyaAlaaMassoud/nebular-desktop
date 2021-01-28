@@ -257,6 +257,9 @@ export class StatsComponent implements OnInit, OnDestroy {
                 }
               });
               return tooltipDataArr;
+            },
+            title: (item: Chart.ChartTooltipItem[], data: Chart.ChartData) => {
+              return '';
             }
           },
         },

@@ -89,11 +89,14 @@ ipcMain.on(MAIN_EVENTS.send_console_log, (event, msg) => {
 
 ipcMain.on(MAIN_EVENTS.close_main_win, (event, msg) => {
   console.log('close_main_win....');
+  console.log('closing server...')
+  server.closeLocalServer(logMsg);
   win.close();
 });
 
 app.on('window-all-closed', () => {
   console.log('window-all-closed.....');
+  console.log('closing server...')
   server.closeLocalServer(logMsg);
   app.quit();
 });
