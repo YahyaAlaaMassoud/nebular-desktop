@@ -8,7 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { LoginComponent } from './login.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ComponentsModule } from '../../components/components.module';
-import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, NbIconModule, NbFormFieldModule } from '@nebular/theme';
+import { NbButtonModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbInputModule, NbIconModule, NbFormFieldModule, NbAutocompleteModule, NbOptionModule } from '@nebular/theme';
 
 const routes: Routes = [
   {
@@ -32,7 +32,9 @@ const routes: Routes = [
     NbButtonModule,
     NbCardModule,
     NbIconModule,
-    NbFormFieldModule
+    NbFormFieldModule,
+    NbAutocompleteModule,
+    NbOptionModule
   ],
   declarations: [LoginComponent],
 })
