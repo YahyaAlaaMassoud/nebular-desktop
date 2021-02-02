@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { NbCardBodyComponent, NbCardComponent, NbThemeModule, NbDatepickerModule } from '@nebular/theme';
+import { NbCardBodyComponent, NbCardComponent, NbThemeModule, NbDatepickerModule, NbMenuModule } from '@nebular/theme';
 import { NbSidebarModule, NbLayoutModule, NbButtonModule, NbDialogModule, NbToastrModule } from '@nebular/theme';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
@@ -57,6 +57,7 @@ export function createTranslateLoader(http: HttpClient) {
     NbToastrModule.forRoot(),
     NgxSpinnerModule,
     NgxDatatableModule,
+    NbMenuModule.forRoot(),
   ],
   providers: [IonicRouteStrategy],
   bootstrap: [AppComponent]

@@ -34,14 +34,21 @@
         <nb-card-body>
           <div class="form-group">
             <label class="label">Email</label>
-            <input type="text" nbInput fullWidth fieldSize="medium" placeholder="Email" formControlName="email">
+            <input #autoInput type="text" nbInput fullWidth fieldSize="medium" placeholder="Email" formControlName="email" [nbAutocomplete]="auto">
+            <nb-autocomplete #auto>
+              <nb-option *ngFor="let email of allUsersEmails.sort()" [value]="email">
+                {{ email }}
+              </nb-option>
+            </nb-autocomplete>
             <app-control-error-message [control]="loginForm['controls']['email']"></app-control-error-message>
           </div>
           <br>
           <div class="form-group">
             <label class="label">Password</label>
             <nb-form-field (keypress)="whichKey($event)">
-              <input [type]="getInputType()" nbInput fullWidth fieldSize="medium" placeholder="Password" formControlName="password" type="password">
+              <input [type]="getInputType()" nbInput fullWidth 
+                     fieldSize="medium" placeholder="Password" formControlName="password" 
+                     type="password">
               <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
                 <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
                           pack="eva"

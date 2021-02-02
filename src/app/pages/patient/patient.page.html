@@ -19,19 +19,23 @@
   <nb-layout-header fixed>
     <div class="header-container">
       <nb-actions size="small">
-        <nb-action (click)="goBack()" icon="arrow-back-outline" badgePosition="right" class="action-icon"
-                   badgeStatus="info" title="Back to Home Page" size="giant"></nb-action>
+        <nb-action (click)="goBack()" badgePosition="right" class="action-icon"
+                   badgeStatus="info" title="Back to Home Page" size="giant">
+          <nb-icon class="action-icon" icon="arrow-back-outline"></nb-icon>
+        </nb-action>
         <nb-action size="giant" (click)="editPatient()" title="Edit Patient" class="action-icon"
                     badgePosition="right" badgeStatus="info" class="action-icon">
           <nb-icon class="action-icon" icon="edit-2-outline"></nb-icon>
-          <span style="font-size: large;">Edit Patient Profile</span>
+          <span style="font-size: medium; font-weight: lighter;">Edit Patient Profile</span>
         </nb-action>
         <!-- <nb-action icon="edit-2-outline" badgePosition="right" badgeStatus="info" title="Edit Patient" size="giant" (click)="editPatient()"></nb-action> -->
       </nb-actions>
     </div>
     <div style="margin-left: auto!important; float: right;">
       <nb-actions>
-        <nb-action icon="info-outline" badgePosition="right" badgeStatus="danger" title="Information" size="giant"></nb-action>
+        <nb-action badgePosition="right" badgeStatus="danger" title="Information" size="giant">
+          <nb-icon class="action-icon" icon="info-outline"></nb-icon>
+        </nb-action>
       </nb-actions>
     </div>
   </nb-layout-header>

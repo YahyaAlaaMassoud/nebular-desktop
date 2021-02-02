@@ -11,18 +11,22 @@
   <nb-layout-header fixed>
     <div class="header-container">
       <nb-actions size="small">
-        <nb-action icon="arrow-back-outline" badgePosition="right" class="action-icon" (click)="goBack()"
-                   badgeStatus="info" title="Back to Patient Profile" size="giant"></nb-action>
+        <nb-action badgePosition="right" class="action-icon" (click)="goBack()"
+                   badgeStatus="info" title="Back to Patient Profile" size="giant">
+          <nb-icon class="action-icon" icon="arrow-back-outline"></nb-icon>
+        </nb-action>
         <nb-action size="giant" title="Statistics" class="action-icon"
                    badgePosition="right" badgeStatus="info" class="action-icon">
          <nb-icon class="action-icon" icon="trending-up-outline"></nb-icon>
-         <span style="font-size: large;">Statistics</span>
+         <span style="font-size: medium; font-weight: lighter;">Statistics</span>
        </nb-action>
       </nb-actions>
     </div>
     <div style="margin-left: auto!important; float: right;">
       <nb-actions>
-        <nb-action icon="info-outline" badgePosition="right" badgeStatus="danger" title="Information" size="giant"></nb-action>
+        <nb-action badgePosition="right" badgeStatus="danger" title="Information" size="giant">
+          <nb-icon class="action-icon" icon="info-outline"></nb-icon>
+        </nb-action>
       </nb-actions>
     </div>
   </nb-layout-header>
