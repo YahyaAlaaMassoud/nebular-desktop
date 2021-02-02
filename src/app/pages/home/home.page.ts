@@ -5,7 +5,8 @@ import { HelperService } from '../../services/helper/helper.service';
 import { ModalController } from '@ionic/angular';
 import { AddPatientComponent } from './../add-patient/add-patient.component';
 import { MainEventsService } from '../../services/main-events/main-events.service';
-import { NbDialogService, NbDialogRef } from '@nebular/theme';
+import { NbDialogService, NbDialogRef, NbMenuService } from '@nebular/theme';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,18 @@ currentUser: any;
   patients: any[];
   connected: boolean;
   loading: boolean;
-    constructor(
+  userMenu = [ 
+    { 
+      title: 'Profile',
+      icon: 'person-outline'
+    }, 
+    { 
+      title: 'Log out',
+      icon: 'log-out-outline'
+    } 
+  ];
+
+  constructor(
       private platform: Platform,
       public userService: UserService,
       private helperService: HelperService,
@@ -29,6 +41,7 @@ currentUser: any;
       private mainEventsService: MainEventsService,
       private _cdr: ChangeDetectorRef,
       private nbDialogService: NbDialogService,
+      private nbMenuService: NbMenuService
     ) {
       this.events.subscribe('userUpdate', (user) => {
         this.currentUser = user;
@@ -39,6 +52,18 @@ currentUser: any;
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
     this.loadPatients();
+    this.nbMenuService.onItemClick()
+                      .pipe(
+                        map(({ item: { title } }) => title)
+                      )
+                      .subscribe(title => {
+                        console.log(title)
+                        if ( title == 'Log out' ) {
+                          this.userService.logout()
+                        } else if ( title == 'Profile' ) {
+
+                        }
+                      })
   }
 
   async loadPatients() {

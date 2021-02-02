@@ -56,11 +56,18 @@
       <nb-actions>
         <nb-action badgePosition="right" (click)="addPatient()" badgeStatus="info" title="Add New Patient" size="giant" class="action-icon">
           <nb-icon class="action-icon" icon="person-add"></nb-icon>
-          <span style="font-size: large;">Add New Patient</span>
+          <span style="font-size: medium; font-weight: lighter;">Add New Patient</span>
         </nb-action>
-        <nb-action badgePosition="right" (click)="userService.logout()" badgeStatus="info" title="Logout" size="giant" class="action-icon">
+        <!-- <nb-action badgePosition="right" (click)="userService.logout()" badgeStatus="info" title="Logout" size="giant" class="action-icon">
           <nb-icon class="action-icon" icon="log-out-outline"></nb-icon>
-          <span style="font-size: large;">Logout</span>
+          <span style="font-size: large; font-weight: lighter;">Logout</span>
+        </nb-action> -->
+        <nb-action size="giant">
+          <nb-user [name]="currentUser?.name"
+                   [nbContextMenu]="userMenu"
+                   nbContextMenuAdjustment="counterclockwise"
+                   title="Doctor">
+          </nb-user>
         </nb-action>
       </nb-actions>
     </div>

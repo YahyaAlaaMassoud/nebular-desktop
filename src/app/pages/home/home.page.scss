@@ -52,11 +52,13 @@ h5{
 
 .patientItem {
     cursor: pointer;
-
 }
-
 .patientItem:hover {
     background-color: #F5F5F5;
+}
+
+.userButton {
+    font-weight: bolder;
 }
 
 // @import '~@nebular/theme/styles/global/breakpoints';
