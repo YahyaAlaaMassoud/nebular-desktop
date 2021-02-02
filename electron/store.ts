@@ -8,6 +8,8 @@ import * as http from 'http';
 import * as  rimraf from 'rimraf';
 
 class Store {
+  self = this;
+  sendEvToWin;
   userDataPath: string;
   configPath: string;
   data: any;
@@ -16,6 +18,7 @@ class Store {
     // Renderer process has to get `app` module via `remote.app`, whereas the main process can get it directly
     // app.getPath('userData') will return a string of the user's app data directory path.
     this.log = opts.logMsg;
+    this.sendEvToWin = opts.sendEvToWin;
     this.userDataPath = app.getPath('userData');
     console.log('userDataPath', this.userDataPath)
     // We'll use the `configName` property to set the file name and path.join to bring it all together as a string
@@ -25,6 +28,10 @@ class Store {
     this.data = this.parseDataFile(this.configPath, opts.defaults);
     this.log(`Saved Data is loaded... ${JSON.stringify(this.data)}`);
   }
+
+  STORE_EVENTS = {
+    all_users_list_changed: 'all-users-list-changed',
+  };
 
   // This will just return the property on the `data` object
   get(key) {
@@ -65,6 +72,53 @@ class Store {
   writeUserFile(filePath, data) {
     const userFilePath = path.join(this.userDataPath, filePath);
     fs.writeFileSync(userFilePath, JSON.stringify(data));
+  }
+
+  async getUsersEmails() {
+    var usersEmailsFilePath = path.join(this.userDataPath, 'allUsers.json')
+    if ( fs.existsSync(usersEmailsFilePath) ) {
+      try {
+        const data = await fs.promises.readFile(usersEmailsFilePath, 'utf-8');
+        var users = JSON.parse(data);
+        console.log('all users', users);
+        console.log('SENDING', this.STORE_EVENTS.all_users_list_changed)
+        this.sendEvToWin(this.STORE_EVENTS.all_users_list_changed, users)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  async addUserToFile(userEmail) {
+    var usersEmailsFilePath = path.join(this.userDataPath, 'allUsers.json')
+    if ( fs.existsSync(usersEmailsFilePath) ) {
+      try {
+        const data = await fs.promises.readFile(usersEmailsFilePath, 'utf-8');
+        var users = JSON.parse(data); //now it an object
+        console.log('before checking', users)
+        if ( !users.some(e => e.email === userEmail) ) {
+          users.push({
+            email: userEmail
+          }); //add some data
+          console.log('after adding', users)
+          this.sendEvToWin(this.STORE_EVENTS.all_users_list_changed, users)
+          fs.writeFile(usersEmailsFilePath, JSON.stringify(users), 'utf8', () => {
+            console.log('done')
+          }); // write it back 
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      var users: any = [
+        {
+          email: userEmail,
+        }
+      ]
+      fs.writeFile(usersEmailsFilePath, JSON.stringify(users), 'utf8', () => {
+        console.log('done')
+      });
+    }
   }
 
   getFullUserFilePath(filePath) {

@@ -29,6 +29,9 @@ const MAIN_EVENTS = {
   send_console_log: 'send-console-log',
   close_main_win: 'close-main-win',
   online_devices_changed: 'online-devices-changed',
+  add_user_email: 'add-user-email',
+  all_users_list_changed: 'all-users-list-changed',
+  all_users_list_received: 'all-users-list-received'
 };
 const appVersion = app.getVersion();
 let client;
@@ -45,6 +48,7 @@ let authorizedHeadsets = [];
 let win: BrowserWindow;
 let consoleWin: BrowserWindow;
 let logWinOpen: boolean = false;
+let sendAllUsersEmails: boolean = true;
 let storeHelper: any;
 let vrModuleRunnerHelper: any;
 let socketClientHelper: any;
@@ -60,6 +64,14 @@ const sendEvToWin = (evName, options) => {
 
   win.webContents.send(evName, options);
 };
+
+ipcMain.on(MAIN_EVENTS.add_user_email, (event, userEmail) => {
+  storeHelper.addUserToFile(userEmail);
+})
+
+ipcMain.on(MAIN_EVENTS.all_users_list_received, (event, data) => {
+  sendAllUsersEmails = false
+})
 
 ipcMain.on(MAIN_EVENTS.authorized_devices, (event, newAuthorizedHeadsets) => {
   authorizedHeadsets = newAuthorizedHeadsets;
@@ -164,6 +176,16 @@ async function createWindow() {
     modulesUpdate.windowWillClose(ev);
   });
 
+  sendUserEmails()
+}
+
+function sendUserEmails() {
+  if ( sendAllUsersEmails ) {
+    storeHelper.getUsersEmails();
+    setTimeout(() => {
+      sendUserEmails()
+    }, 100);
+  }
 }
 
 function createConsoleWindow() {
@@ -194,11 +216,12 @@ function createNeededHelpers() {
 
 function createStoreHelper() {
   storeHelper = new Store({
-    logMsg,
+    logMsg: logMsg,
     configName: 'user-preferences',
     defaults: {
       mainWindowBounds: { width: 800, height: 700, center: true, show: false }
-    }
+    },
+    sendEvToWin: sendEvToWin
   });
 }
 

@@ -18,15 +18,18 @@ export class MainEventsService {
   wirelessMode;
   wirelessHeadsetSelected;
   logger: any;
+  allUsersEmails: any[] = []
   onlineHeadsetObserver: EventEmitter<any[]> = new EventEmitter<any[]>();
   preparedUSBHeadsetsObserver: EventEmitter<any[]> = new EventEmitter<any[]>();
   trackedModulesObserver: EventEmitter<{}> = new EventEmitter<{}>();
+  allUsersEmailsObserver: EventEmitter<any[]> = new EventEmitter<any[]>();
   constructor(
     private electronService: ElectronService,
     private events: Events,
     private helperService: HelperService,
     private zone: NgZone
   ) {
+    console.log('WILL SETUP MAIN EVENTS NOW')
     this.setupHeadsetEvents();
     this.setupRunningModulesEvents();
     this.trackDownloadProgress();
@@ -70,7 +73,7 @@ export class MainEventsService {
       'module-version-downloaded', 'module-version-installed', 'module-version-install-error',
       'module-version-download-error', 'install-android-module-ready', 'installing-android-module',
       'some-headsets-found', 'finding-selected-headset', 'wrong-module-detected', 'no-headset-selected', 'headset-module-ready',
-      'online-devices-changed'
+      'online-devices-changed', 'all-users-list-changed'
     ];
 
     mainEvents.forEach((evName) => {
@@ -120,6 +123,15 @@ export class MainEventsService {
   }
 
   setupHeadsetEvents() {
+    this.events.subscribe('all-users-list-changed', (usersList) => {
+      this.allUsersEmails = [] // usersEmailsList
+      usersList.forEach((item) => {
+        this.allUsersEmails.push(item.email)
+      })
+      console.log('THE LIST IS HERE', usersList)
+      this.allUsersEmailsObserver.emit(usersList)
+    });
+
     this.events.subscribe('installing-android-module', (options) => {
       console.log('SHOW LOADING')
       // this.helperService.showLoading(options.msg);
