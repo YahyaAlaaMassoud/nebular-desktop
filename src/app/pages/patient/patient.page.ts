@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, TemplateRef, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { UserService } from '../../services/user/user.service';
 import { HelperService } from '../../services/helper/helper.service';
 import { MainEventsService } from '../../services/main-events/main-events.service';
@@ -27,6 +27,7 @@ export class PatientPage implements OnInit {
   production: boolean;
   wirelessHeadset;
   onlineHeadsets: any[] = []
+  accentColor: string = 'info'
   trackedModules: {} = {}
   selectedOnlineHeadset: any = null;
   isOnlineHeadsetSelected = false;
@@ -65,6 +66,9 @@ export class PatientPage implements OnInit {
       this.usbHeadsets = usbHeadsets
     })
     this.onlineHeadsets = this.mainEventsService.onlineHeadsets
+    if ( this.onlineHeadsets.length > 0 ) {
+      this.accentColor = 'success'
+    }
     this.mainEventsService.onlineHeadsetObserver.subscribe(onlineHeadsets => {
       // console.log('HAMO', onlineHeadsets)
       // console.log('-----------------------')
@@ -86,6 +90,10 @@ export class PatientPage implements OnInit {
           console.log(this.isOnlineHeadsetSelected, this.selectedOnlineHeadset);
           console.log('------------------');
         }
+      }
+
+      if ( onlineHeadsets.length > 0 ) {
+        this.accentColor = 'success'
       }
 
       this._cdr.detectChanges();
@@ -414,5 +422,16 @@ export class PatientPage implements OnInit {
     this._cdr.detectChanges()
 
     console.log(this.ngxRows, this.ngxCols)
+  }
+
+  open2(dialog: TemplateRef<any>, moduleName: string, moduleDesciption: string) {
+    this.nbDialogService.open(
+      dialog,
+      { 
+        context: {
+          name: moduleName,
+          desc: moduleDesciption
+        }
+      });
   }
 }

@@ -121,7 +121,7 @@
 
     <br>
 
-    <nb-card class="center-div" accent="info">
+    <nb-card class="center-div" accent="{{accentColor}}">
       <!-- <nb-card-header>Active Headsets: {{ onlineHeadsets.length }}</nb-card-header> -->
       <nb-card-body>
         <nb-select nbTooltip="Start a module on your VR headset to connect, then press 'Play' button" nbTooltipPlacement="top"
@@ -132,7 +132,7 @@
             {{ headset.headsetName }} - Serial Number: {{ headset.headsetSerial }}
           </nb-option>
         </nb-select>
-        <nb-badge *ngIf="!onlineHeadsets.length" text="No Active Headsets Available" status="basic" position="top right"></nb-badge>
+        <nb-badge *ngIf="!onlineHeadsets.length" text="No Active Headsets Available" status="info" position="top right"></nb-badge>
         <nb-badge *ngIf="onlineHeadsets.length" text="{{ onlineHeadsets.length }} Headset(s) Found" status="success" position="top right"></nb-badge>
       </nb-card-body>
     </nb-card>
@@ -158,11 +158,10 @@
           </div>
           <div class="card_content">
             <nb-accordion>
-              <nb-accordion-item>
+              <nb-accordion-item disabled="true">
                 <nb-accordion-item-header class="card_title_accordion">
                   <h1 class="card_title">{{module?.name}}</h1>
-                  <!-- <nb-badge text="New Version Available" status="success" position="top right">
-                  </nb-badge> -->
+                  <nb-icon class="module-desc" status="info" icon="info-outline" (click)="open2(dialog, module?.name, module?.description)"></nb-icon>
                 </nb-accordion-item-header>
 
                 <nb-accordion-item-body>
@@ -171,94 +170,105 @@
               </nb-accordion-item>
             </nb-accordion>
 
-            <br>
 
-            <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading" class="round-bg">
-              <nb-progress-bar style="padding-top: 0.7rem;" size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round_percent" status="success" [displayValue]="true">
-              </nb-progress-bar>
-              <div class="center-div" style="display: flex; align-items: center; justify-content: center; flex-direction: row;">
-                <button nbButton shape="round" class="" status="info" size="medium"
-                        *ngIf="!mainEventsService.trackedModules[module.id]?.paused" (click)="pauseDownloading(module)">
+            <div *ngIf="mainEventsService.trackedModules[module.id]?.downloading">
+              <br>
+              <div class="round-bg">
+                <nb-progress-bar style="padding-top: 0.7rem;" size="giant" [value]="mainEventsService.trackedModules[module.id]?.ratio | round_percent" status="success" [displayValue]="true">
+                </nb-progress-bar>
+                <div class="center-div" style="display: flex; align-items: center; justify-content: center; flex-direction: row;">
+                  <button nbButton shape="round" class="" status="info" size="medium"
+                          *ngIf="!mainEventsService.trackedModules[module.id]?.paused" (click)="pauseDownloading(module)">
+                    <!-- Download New Version.  -->
+                    <nb-icon icon="pause-circle-outline"></nb-icon>
+                  </button>
+                  <button nbButton shape="round" class="" status="info" size="medium"
+                          *ngIf="mainEventsService.trackedModules[module.id]?.paused" (click)="resumeDownloading(module)">
+                    <!-- Download New Version.  -->
+                    <nb-icon icon="play-circle-outline"></nb-icon>
+                  </button>
+                  <button nbButton shape="round" class="" status="danger" size="medium"
+                          (click)="cancelDownloading(module)">
+                    <!-- Download New Version.  -->
+                    <nb-icon icon="close-circle-outline"></nb-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            
+
+            <div *ngIf="!mainEventsService.trackedModules[module.id]?.new_version">
+              <br>
+              <div  class="new-version round-bg">
+                The latest version has been installed.
+              </div>
+            </div>
+
+            <div *ngIf="!mainEventsService.trackedModules[module.id]?.downloading 
+                        && !mainEventsService.trackedModules[module.id]?.installing
+                        && mainEventsService.trackedModules[module.id]?.new_version">
+              <br>
+              <div class="new-version round-bg">
+                <!-- downloading {{mainEventsService.trackedModules[module.id]?.downloading}} instalaling {{mainEventsService.trackedModules[module.id]?.installing}} -->
+                <span *ngIf="mainEventsService.trackedModules[module.id]?.new_version">
+                  Version <b>{{mainEventsService.trackedModules[module.id]?.new_version}}</b> is available.
+                </span>
+                <button nbButton shape="semi-round" class="" outline status="info"
+                        *ngIf="mainEventsService.trackedModules[module.id]?.new_version" (click)="downloadLatestVersion(module)">
                   <!-- Download New Version.  -->
-                  <nb-icon icon="pause-circle-outline"></nb-icon>
+                  <nb-icon icon="cloud-download-outline"></nb-icon>
                 </button>
-                <button nbButton shape="round" class="" status="info" size="medium"
-                        *ngIf="mainEventsService.trackedModules[module.id]?.paused" (click)="resumeDownloading(module)">
-                  <!-- Download New Version.  -->
-                  <nb-icon icon="play-circle-outline"></nb-icon>
-                </button>
-                <button nbButton shape="round" class="" status="danger" size="medium"
-                        (click)="cancelDownloading(module)">
-                  <!-- Download New Version.  -->
-                  <nb-icon icon="close-circle-outline"></nb-icon>
+
+                <span *ngIf="mainEventsService.trackedModules[module.id]?.new_version_not_installed">
+                  Version <b>{{mainEventsService.trackedModules[module.id]?.new_version}}</b> is not installed.
+                </span>
+                <button nbButton shape="semi-round" class="" outline status="info"
+                        *ngIf="mainEventsService.trackedModules[module.id]?.new_version_not_installed" (click)="installLatestVersion(module)">
+                  <!-- Install.  -->
+                  <nb-icon icon="download-outline"></nb-icon>
                 </button>
               </div>
             </div>
 
-            <br>
-
-            <div *ngIf="!mainEventsService.trackedModules[module.id]?.downloading 
-                        && !mainEventsService.trackedModules[module.id]?.installing
-                        && mainEventsService.trackedModules[module.id]?.new_version"
-            class="new-version round-bg">
-              <!-- downloading {{mainEventsService.trackedModules[module.id]?.downloading}} instalaling {{mainEventsService.trackedModules[module.id]?.installing}} -->
-              <span *ngIf="mainEventsService.trackedModules[module.id]?.new_version">
-                Version <b>{{mainEventsService.trackedModules[module.id]?.new_version}}</b> is available.
-              </span>
-              <button nbButton shape="semi-round" class="" outline status="info"
-                      *ngIf="mainEventsService.trackedModules[module.id]?.new_version" (click)="downloadLatestVersion(module)">
-                <!-- Download New Version.  -->
-                <nb-icon icon="cloud-download-outline"></nb-icon>
-              </button>
-
-              <span *ngIf="mainEventsService.trackedModules[module.id]?.new_version_not_installed">
-                Version <b>{{mainEventsService.trackedModules[module.id]?.new_version}}</b> is not installed.
-              </span>
-              <button nbButton shape="semi-round" class="" outline status="info"
-                      *ngIf="mainEventsService.trackedModules[module.id]?.new_version_not_installed" (click)="installLatestVersion(module)">
-                <!-- Install.  -->
-                <nb-icon icon="download-outline"></nb-icon>
-              </button>
-            </div>
-
-            <br>
-
-            <div class="row module-controls round-bg">
+            <div>
               <br>
-              <button nbButton shape="semi-round" class=""  status="success" size="large" class="module-control"
-              nbTooltip="Run Module" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="success"
-              nbTooltipTrigger="hint" nbTooltipStatus="success"
-               (click)="runModuleV2(module)" [disabled]="!isOnlineHeadsetSelected || mainEventsService.trackedModules[module.id]?.downloading">
-                <!-- {{'PATIENT.START_MODULE' | translate}}  -->
-                <nb-icon icon="arrow-right-outline"></nb-icon>
-              </button>
-              <button nbButton shape="semi-round" class=""  status="info" size="large" class="module-control"
-              nbTooltip="Show Statistics" nbTooltipPlacement="bottom"  [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
-              [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="success"
-              nbTooltipTrigger="hint" nbTooltipStatus="info"
-              [routerLink]="['/patient/', patient.id, 'modules', module.id, 'charts']">
-                <!-- Show Statistics  -->
-                <nb-icon icon="trending-up-outline"></nb-icon>
-              </button>
-            <!-- </div>
-            <br>
-            <div class="row"> -->
-              <button nbButton shape="semi-round" class=""  status="danger" size="large" class="module-control"
-              nbTooltip="Remove Module from Disk" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" 
-              nbSpinnerStatus="success" (click)="resetModule(module)"
-              nbTooltipTrigger="hint" nbTooltipStatus="danger" [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
-              >
-                <!-- Remove Module  -->
-                <nb-icon icon="trash-2-outline"></nb-icon>
-              </button>
-              <button nbButton shape="semi-round" class=""  status="warning" size="large" class="module-control"
-              nbTooltip="Install Module on Headset" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" 
-              nbSpinnerStatus="success"
-              nbTooltipTrigger="hint" nbTooltipStatus="warning" [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
-               (click)="installAndroid(module)">
-                <!-- Install on Headset  -->
-                <nb-icon icon="download-outline"></nb-icon>
-              </button>
+              <div class="row module-controls round-bg">
+                <button nbButton shape="semi-round" class=""  status="success" size="large" class="module-control"
+                nbTooltip="Run Module" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="success"
+                nbTooltipTrigger="hint" nbTooltipStatus="success"
+                 (click)="runModuleV2(module)" [disabled]="!isOnlineHeadsetSelected || mainEventsService.trackedModules[module.id]?.downloading">
+                  <!-- {{'PATIENT.START_MODULE' | translate}}  -->
+                  <nb-icon icon="arrow-right-outline"></nb-icon>
+                </button>
+                <button nbButton shape="semi-round" class=""  status="info" size="large" class="module-control"
+                nbTooltip="Show Statistics" nbTooltipPlacement="bottom"  [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
+                [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="success"
+                nbTooltipTrigger="hint" nbTooltipStatus="info"
+                [routerLink]="['/patient/', patient.id, 'modules', module.id, 'charts']">
+                  <!-- Show Statistics  -->
+                  <nb-icon icon="trending-up-outline"></nb-icon>
+                </button>
+              <!-- </div>
+              <br>
+              <div class="row"> -->
+                <button nbButton shape="semi-round" class=""  status="danger" size="large" class="module-control"
+                nbTooltip="Remove Module from Disk" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" 
+                nbSpinnerStatus="success" (click)="resetModule(module)"
+                nbTooltipTrigger="hint" nbTooltipStatus="danger" [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
+                >
+                  <!-- Remove Module  -->
+                  <nb-icon icon="trash-2-outline"></nb-icon>
+                </button>
+                <button nbButton shape="semi-round" class=""  status="warning" size="large" class="module-control"
+                nbTooltip="Install Module on Headset" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" 
+                nbSpinnerStatus="success"
+                nbTooltipTrigger="hint" nbTooltipStatus="warning" [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
+                 (click)="installAndroid(module)">
+                  <!-- Install on Headset  -->
+                  <nb-icon icon="download-outline"></nb-icon>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -281,6 +291,29 @@
     </nb-card>
   </nb-layout-footer>
 </nb-layout>
+
+<ng-template #dialog let-data let-ref="dialogRef" style="width: 50%;">
+  <nb-card class="center-div">
+    <nb-card-header class="card_title" style="text-align: center;">
+      <div class="header-container">
+        {{ data.name }}'s Module Description
+
+        <div style="margin-left: auto!important;">
+          <nb-actions>
+            <nb-action badgePosition="right" badgeStatus="danger" title="Close Form" size="giant" (click)="ref.close()">
+              <nb-icon class="close-icon" icon="close-circle-outline"></nb-icon>
+            </nb-action>
+          </nb-actions>
+        </div>
+      </div>
+    </nb-card-header>
+
+    <nb-card-body style="font-size: 1.1rem; line-height: 150%; white-space: pre-line;">
+      {{ data.desc }}
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
 
 
 <!-- <ion-content class="ion-padding">

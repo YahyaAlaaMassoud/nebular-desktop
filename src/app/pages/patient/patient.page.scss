@@ -57,11 +57,15 @@ ion-img {
 }
 
 .patientAccordion {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .patientAccordion:hover {
-    background-color: #F5F5F5;
+  background-color: #F5F5F5;
+}
+
+.module-desc {
+  cursor: pointer;
 }
 
 // @import '../../../themes';
@@ -220,6 +224,7 @@ img {
 .round-bg {
   background-color: 		#f7f9fc; 
   border-radius: 1rem;
+  text-align: center;
 }
 
 ::ng-deep .datatable-body-row.active .datatable-row-group {
