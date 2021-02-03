@@ -22,10 +22,10 @@ currentUser: any;
   connected: boolean;
   loading: boolean;
   userMenu = [ 
-    { 
-      title: 'Profile',
-      icon: 'person-outline'
-    }, 
+    // { 
+    //   title: 'Profile',
+    //   icon: 'person-outline'
+    // }, 
     { 
       title: 'Log out',
       icon: 'log-out-outline'

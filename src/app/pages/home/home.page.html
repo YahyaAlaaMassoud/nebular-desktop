@@ -54,7 +54,7 @@
 
     <div class="header-container" style="margin-left: auto!important;">
       <nb-actions>
-        <nb-action badgePosition="right" (click)="addPatient()" badgeStatus="info" title="Add New Patient" size="giant" class="action-icon">
+        <nb-action badgePosition="right" (click)="addPatient()" badgeStatus="info" title="Add New Patient" size="large" class="action-icon">
           <nb-icon class="action-icon" icon="person-add"></nb-icon>
           <span style="font-size: medium; font-weight: lighter;">Add New Patient</span>
         </nb-action>
@@ -66,7 +66,10 @@
           <nb-user [name]="currentUser?.name"
                    [nbContextMenu]="userMenu"
                    nbContextMenuAdjustment="counterclockwise"
-                   title="Doctor">
+                   title="Doctor"
+                   shape="round"
+                   class="userClass"
+                   size="large">
           </nb-user>
         </nb-action>
       </nb-actions>
