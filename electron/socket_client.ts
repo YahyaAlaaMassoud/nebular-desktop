@@ -57,21 +57,6 @@ class SocketClient {
     this.setFindingIntervalV2();
   }
 
-  tryToConnect(options) {
-    // if (!options.selectedSerial) {
-    //   return this.sendEvToWin(this.CLIENT_EVENTS.no_headset_selected, {
-    //     msg: 'Please, select one of your headsets'
-    //   });
-    // }
-    // if (!this.authorizedHeadsets.includes(options.selectedSerial)) {
-    //   return this.sendEvToWin(this.CLIENT_EVENTS.wrong_headset_selected, {
-    //     msg: `We cannot find this headset in your authorized headsets: ${options.selectedSerial}`,
-    //     selectedSerial: options.selectedSerial
-    //   });
-    // }
-    this.setFindingIntervalV1(options.selectedSerial);
-  }
-
   async findLocalServers(portNumber) {
     try {
       const devices = await find();
@@ -84,51 +69,27 @@ class SocketClient {
           ip: device.ip,
           port: portNumber
         }
-        // console.log(host);
+
+        console.log(this.clients);
+
+        if ( host.ip in this.clients ) {
+          return;
+        }
+
         const client = new Net.Socket();
-        this.clients[host.ip] = client;
         // Create a new TCP client.
         client.connect({ port: portNumber, host: host.ip }, () => { this.onConnect(client); });
         client.on('data', (chunk) => { this.onDataReceivedV2(chunk, client, host); });
-        client.on('end', () => { this.onEnd(client); });
+        client.on('end', () => { this.onEnd(client, host); });
         client.on('error', (err) => { this.onError(err, client, host); });
       });
     } catch (err) {
-      console.log('findLocalServers. error..', err);
+      // console.log('findLocalServers. error..', err);
     }
   }
 
-  async findLocalServersBySerial(selectedSerial) {
-    try {
-      this.selectedSerial = selectedSerial;
-
-      const devices = await find();
-      console.log('findLocalServersBySerial...', this.selectedSerial, devices);
-      this.sendEvToWin(this.CLIENT_EVENTS.online_devices_changed, {
-        newHeadsetFound: false,
-        onlineHeadsetObj: null
-      });
-      /*
-      [
-        { name: '?', ip: '192.168.0.10', mac: '...' },
-      ]
-      */
-      devices.forEach((device) => {
-        const host = device.ip;
-        const client = new Net.Socket();
-        this.clients[host] = client;
-        // Create a new TCP client.
-        client.connect({ port: this.port, host }, () => { this.onConnect(client); });
-        client.on('data', (chunk) => { this.onDataReceivedV1(chunk, client, this.selectedSerial); });
-        client.on('end', () => { this.onEnd(client); });
-        client.on('error', (err) => { this.onError(err, client, host); });
-      });
-    } catch (err) {
-      console.log('findLocalServersBySerial. error..', this.selectedSerial, err);
-    }
-  }
-
-  onEnd(_client) {
+  onEnd(_client, host) {
+    this.clients[host.ip] = null;
     // console.log('Requested an end to the TCP connection');
   }
 
@@ -156,17 +117,6 @@ class SocketClient {
     this.findingServerInterval = setTimeout(() => this.setFindingIntervalV2(), 500);
   }
 
-  setFindingIntervalV1(selectedSerial) {
-    this.connectedIP = null;
-    this.findLocalServersBySerial(selectedSerial);
-    this.findingServerInterval = setInterval(() => this.findLocalServersBySerial(selectedSerial), 5000);
-    setTimeout(() => this.clearFindingInterval(selectedSerial), 15000);
-    this.sendEvToWin(this.CLIENT_EVENTS.finding_selected_headset, {
-      msg: `We are trying to find this headset around...: ${selectedSerial}`,
-      running: true, selectedSerial
-    });
-  }
-
   onConnect(client) {
     // console.log('TCP connection established with the server...');
     // const requestObj = JSON.stringify({
@@ -178,6 +128,7 @@ class SocketClient {
 
   onError(_err, client, host) {
     // console.log('connect error...', _err.stack);
+    // Remove clients that are already there but now we cannot connect with them
     for ( var i = 0; i < this.onlineHeadsets.length; i++) {
       if ( this.onlineHeadsets[i].headsetIP == host.ip ) {
         // console.log('REMOVING', this.onlineHeadsets[i]);
@@ -189,6 +140,7 @@ class SocketClient {
         this.onlineHeadsets.splice(i, 1);
       }
     }
+    this.clients[host.ip] = null;
     client.end();
   }
 
@@ -235,25 +187,6 @@ class SocketClient {
       return;
     }
 
-    // if ( data.type == 'info' && 'serial' in data && 'moduleName' in data ) {
-    //   const authorizedHeadset = this.authorizedHeadsets.some(el => el.serial == data.serial);
-    //   if ( authorizedHeadset ) {
-    //     receivedObj = {
-    //       headsetSerial: data.serial,
-    //       headsetModuleName: data.moduleName,
-    //       headsetIP: host.ip,
-    //       headsetPort: host.port
-    //     };
-    //   } else {
-    //     console.log('UNAUTHORIZED HEADSET', data.serial)
-    //     client.end();
-    //     return;
-    //   }
-    // } else {
-    //   client.end();
-    //   return;
-    // }
-    
     var found = false;
     if ( this.onlineHeadsets.length != 0 ) {
       found = this.onlineHeadsets.some(el => 'headsetSerial' in el && el.headsetSerial == receivedObj.headsetSerial);
@@ -274,6 +207,7 @@ class SocketClient {
       console.log('IP ' + ip.address());
       const ipAddress = this.getWiFiIPAddress();
       if ( ipAddress.length > 0 ) {
+        this.clients[host.ip] = client;
         client.write('IP ' + ipAddress);  
       } else {
         console.log('WIFI IP WAS NOT FOUND!')
