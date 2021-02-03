@@ -86,9 +86,30 @@
     @include nb-rtl(margin-left, 0.5rem);
     cursor: pointer;
     font-size: larger;
+    font-weight: bolder;
   }
   .action-icon:hover {
-    background-color: whitesmoke;
+    color: nb-theme(color-primary-500);
+  }
+
+  .close-icon {
+    @include nb-ltr(margin-right, 0.5rem);
+    @include nb-rtl(margin-left, 0.5rem);
+    cursor: pointer;
+    font-size: larger;
+    font-weight: bolder;
+  }
+  .close-icon:hover {
+    color: nb-theme(color-danger-500);
+  }
+
+  .userClass {
+    font-size: larger !important;
+  }
+  .userClass:hover {
+    // background-color: rebeccapurple !important;
+    font-size: larger !important;
+    color: nb-theme(text-basic-color) !important;
   }
 
   .date-picker {
@@ -99,6 +120,13 @@
   }
 
   .table-header {
+    color: nb-theme(color-info-600);
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .table-footer {
     color: nb-theme(color-info-600);
     font-size: 1rem;
     font-weight: bold;
