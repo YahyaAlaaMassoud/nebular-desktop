@@ -127,8 +127,9 @@ ion-img {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
-  margin: 0;
+  margin: auto; 
   padding: 0;
+  width: 80%;
 }
 
 .cards_item {
@@ -152,16 +153,20 @@ ion-img {
 .card {
   background-color: white;
   border-radius: 0.5rem;
-  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: box-shadow .5s;
+}
+
+.card:hover {
+  box-shadow: 0 10px 20px -7px rgba(0, 0, 0, 0.25);
 }
 
 .cards_item:hover,
 .cards_item:focus {
   --background: #ffffff;
-  transform: scale(1.02);
+  transform: scale(1.001);
 }
 
 .card_content {
@@ -173,7 +178,7 @@ ion-img {
 .card_title {
   // color: #ffffff;
   color: #0095ff;
-  font-size: 1.7rem;
+  font-size: 1.2rem;
   font-weight: bolder;
   // letter-spacing: 1px;
   text-transform: capitalize;
@@ -187,7 +192,7 @@ ion-img {
 .card_text {
   // color: #ffffff;
   color: #45a8c8;
-  font-size: 0.875rem;
+  font-size: 0.675rem;
   line-height: 1.5;
   margin-bottom: 1.25rem;    
   font-weight: 400;

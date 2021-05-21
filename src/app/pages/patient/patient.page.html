@@ -52,55 +52,6 @@
                    size="giant"></nb-user>
         </nb-accordion-item-header>
         <nb-accordion-item-body>
-          <!-- <table>
-            <tr>
-              <th>{{'PATIENT.DIAGNOSIS' | translate }}</th>
-              <td>{{patient?.diagnosis}}</td>
-            </tr>
-            <tr>
-              <th>{{'PATIENT.DATE_OF_BIRTH' | translate }}</th>
-              <td>{{patient?.date_of_birth}}</td>
-            </tr>
-            <tr>
-              <th>{{'PATIENT.PHONE' | translate }}</th>
-              <td>{{patient?.phone}}</td>
-            </tr>
-            <tr>
-              <th>{{'PATIENT.HAS_GUARDIAN' | translate }}</th>
-              <td>{{ (patient?.has_guardian ? 'YES' : 'NO') | translate}}</td>
-            </tr>
-            <tr>
-              <th>{{'PATIENT.GUARDIAN_NAME' | translate }}</th>
-              <td>{{patient?.guardian_name}}</td>
-            </tr>
-            <tr>
-              <th>{{'PATIENT.NOTES' | translate }}</th>
-              <td>{{patient?.notes}}</td>
-            </tr>
-          </table> -->
-          <!-- <nb-list>
-            <nb-list-item>
-              {{'PATIENT.DIAGNOSIS' | translate }}: {{patient?.diagnosis}}
-            </nb-list-item>
-            <nb-list-item>
-              {{'PATIENT.DATE_OF_BIRTH' | translate }}: {{patient?.date_of_birth}}
-            </nb-list-item>
-            <nb-list-item>
-              {{'PATIENT.PHONE' | translate }}: {{patient?.phone}}
-            </nb-list-item>
-            <nb-list-item>
-              {{'PATIENT.HAS_GUARDIAN' | translate }}: {{ (patient?.has_guardian ? 'YES' : 'NO') | translate}}
-            </nb-list-item>
-            <nb-list-item>
-              {{'PATIENT.GUARDIAN_NAME' | translate }}: {{patient?.guardian_name}}
-            </nb-list-item>
-            <nb-list-item>
-              {{'PATIENT.ADDRESS' | translate }}: {{patient?.address}}
-            </nb-list-item>
-            <nb-list-item>
-              {{'PATIENT.NOTES' | translate }}: {{patient?.notes}}
-            </nb-list-item>
-          </nb-list> -->
           <ngx-datatable
                         class="material"
                         [rowHeight]="$any('auto')"
@@ -234,14 +185,14 @@
             <div>
               <br>
               <div class="row module-controls round-bg">
-                <button nbButton shape="semi-round" class=""  status="success" size="large" class="module-control"
+                <button nbButton shape="semi-round" class=""  status="success" size="medium" class="module-control"
                 nbTooltip="Run Module" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="success"
                 nbTooltipTrigger="hint" nbTooltipStatus="success"
                  (click)="runModuleV2(module)" [disabled]="!isOnlineHeadsetSelected || mainEventsService.trackedModules[module.id]?.downloading">
                   <!-- {{'PATIENT.START_MODULE' | translate}}  -->
                   <nb-icon icon="arrow-right-outline"></nb-icon>
                 </button>
-                <button nbButton shape="semi-round" class=""  status="info" size="large" class="module-control"
+                <button nbButton shape="semi-round" class=""  status="info" size="medium" class="module-control"
                 nbTooltip="Show Statistics" nbTooltipPlacement="bottom"  [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
                 [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" nbSpinnerStatus="success"
                 nbTooltipTrigger="hint" nbTooltipStatus="info"
@@ -252,7 +203,7 @@
               <!-- </div>
               <br>
               <div class="row"> -->
-                <button nbButton shape="semi-round" class=""  status="danger" size="large" class="module-control"
+                <button nbButton shape="semi-round" class=""  status="danger" size="medium" class="module-control"
                 nbTooltip="Remove Module from Disk" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" 
                 nbSpinnerStatus="success" (click)="resetModule(module)"
                 nbTooltipTrigger="hint" nbTooltipStatus="danger" [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
@@ -260,7 +211,7 @@
                   <!-- Remove Module  -->
                   <nb-icon icon="trash-2-outline"></nb-icon>
                 </button>
-                <button nbButton shape="semi-round" class=""  status="warning" size="large" class="module-control"
+                <button nbButton shape="semi-round" class=""  status="warning" size="medium" class="module-control"
                 nbTooltip="Install Module on Headset" nbTooltipPlacement="bottom"  [nbSpinner]="mainEventsService.trackedModules[module.id]?.downloading" 
                 nbSpinnerStatus="success"
                 nbTooltipTrigger="hint" nbTooltipStatus="warning" [disabled]="mainEventsService.trackedModules[module.id]?.downloading"
