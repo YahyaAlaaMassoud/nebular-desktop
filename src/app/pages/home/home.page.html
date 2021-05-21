@@ -43,37 +43,40 @@
 
 <nb-layout center style="width: 100%;">
   <nb-layout-header fixed>
-    <div class="header-container">
-      <div class="logo-container">
-        <a routerLink="/home" class="sidebar-toggle">
-          <img src="assets/imgs/logo_1.png"/>
-        </a>
-        <a class="logo">{{'TABS.HOME' | translate }}</a>
+      <div class="header-container" style="padding-left: 250px;">
+        <div class="logo-container">
+          <a routerLink="/home" class="sidebar-toggle">
+            <img src="assets/imgs/logo_1.png"/>
+          </a>
+          <a class="logo">{{'TABS.HOME' | translate }}</a>
+        </div>
       </div>
-    </div>
 
-    <div class="header-container" style="margin-left: auto!important;">
-      <nb-actions>
-        <nb-action badgePosition="right" (click)="addPatient()" badgeStatus="info" title="Add New Patient" size="large" class="action-icon">
-          <nb-icon class="action-icon" icon="person-add"></nb-icon>
-          <span style="font-size: medium; font-weight: lighter;">Add New Patient</span>
-        </nb-action>
-        <!-- <nb-action badgePosition="right" (click)="userService.logout()" badgeStatus="info" title="Logout" size="giant" class="action-icon">
-          <nb-icon class="action-icon" icon="log-out-outline"></nb-icon>
-          <span style="font-size: large; font-weight: lighter;">Logout</span>
-        </nb-action> -->
-        <nb-action size="giant">
-          <nb-user [name]="currentUser?.name"
-                   [nbContextMenu]="userMenu"
-                   nbContextMenuAdjustment="counterclockwise"
-                   title="Doctor"
-                   shape="round"
-                   class="userClass"
-                   size="large">
-          </nb-user>
-        </nb-action>
-      </nb-actions>
-    </div>
+      <div class="header-container" style="margin-left: auto!important; padding-right: 250px;">
+        <nb-actions>
+          <nb-action badgePosition="right" (click)="addPatient()" badgeStatus="info" title="Add New Patient" size="large" class="action-icon">
+            <!-- <nb-icon class="action-icon" icon="person-add"></nb-icon> -->
+            <span style="font-size: medium; font-weight: lighter;">
+              Add New Patient
+            </span>
+            <h1></h1>
+          </nb-action>
+          <!-- <nb-action badgePosition="right" (click)="userService.logout()" badgeStatus="info" title="Logout" size="giant" class="action-icon">
+            <nb-icon class="action-icon" icon="log-out-outline"></nb-icon>
+            <span style="font-size: large; font-weight: lighter;">Logout</span>
+          </nb-action> -->
+          <nb-action size="giant">
+            <nb-user [name]="currentUser?.name"
+                    [nbContextMenu]="userMenu"
+                    nbContextMenuAdjustment="counterclockwise"
+                    [title]="currentUser?.specialty | titlecase"
+                    shape="round"
+                    class="userClass"
+                    size="large">
+            </nb-user>
+          </nb-action>
+        </nb-actions>
+      </div>
   </nb-layout-header>
 
   <nb-layout-column>

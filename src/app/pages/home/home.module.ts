@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -45,6 +45,7 @@ const routes: Routes = [
     NbContextMenuModule
   ],
   declarations: [HomePage, AddPatientComponent],
-  entryComponents: [AddPatientComponent]
+  entryComponents: [AddPatientComponent],
+  providers: [TitleCasePipe]
 })
 export class HomePageModule {}

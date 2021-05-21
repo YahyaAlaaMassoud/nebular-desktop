@@ -7,6 +7,7 @@ import { AddPatientComponent } from './../add-patient/add-patient.component';
 import { MainEventsService } from '../../services/main-events/main-events.service';
 import { NbDialogService, NbDialogRef, NbMenuService } from '@nebular/theme';
 import { filter, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,17 +16,17 @@ import { filter, map } from 'rxjs/operators';
 })
 
 export class HomePage implements OnInit {
-currentUser: any;
+  currentUser: any;
   pusherSocket;
   channel;
   patients: any[];
   connected: boolean;
   loading: boolean;
   userMenu = [ 
-    // { 
-    //   title: 'Profile',
-    //   icon: 'person-outline'
-    // }, 
+    { 
+      title: 'Profile',
+      icon: 'person-outline'
+    }, 
     { 
       title: 'Log out',
       icon: 'log-out-outline'
@@ -41,7 +42,8 @@ currentUser: any;
       private mainEventsService: MainEventsService,
       private _cdr: ChangeDetectorRef,
       private nbDialogService: NbDialogService,
-      private nbMenuService: NbMenuService
+      private nbMenuService: NbMenuService,
+      private router: Router
     ) {
       this.events.subscribe('userUpdate', (user) => {
         this.currentUser = user;
@@ -51,6 +53,7 @@ currentUser: any;
 
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
+    console.log(this.currentUser)
     this.loadPatients();
     this.nbMenuService.onItemClick()
                       .pipe(
@@ -61,7 +64,8 @@ currentUser: any;
                         if ( title == 'Log out' ) {
                           this.userService.logout()
                         } else if ( title == 'Profile' ) {
-
+                          // console.log('hamo')
+                          this.router.navigate(['/edit-profile']);
                         }
                       })
   }
