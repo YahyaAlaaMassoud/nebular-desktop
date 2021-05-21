@@ -212,6 +212,41 @@ exports.runLocalServer = (logMsg) => {
             logMsg(data.functionName + ' fired!');
         });
 
+        socket.on('registerControllerRotation', (data) => {
+            // console.log('registering rotation for ' + data.controllerName);
+            socket.on(data.controllerName + 'Rotation', justSyncControllerRotation);
+            logMsg(`registerControllerRotation::${data.controllerName}: ${JSON.stringify(data)}`);
+        });
+    
+        const justSyncControllerRotation = (data) => {
+            // console.log('Controller Rotation', data);
+            socket.broadcast.emit('updateControllerRotation' + data.controllerName, data);
+            logMsg(`justSyncControllerRotation::${data.controllerName}: ${JSON.stringify(data)}`);
+        };
+    
+        socket.on('registerControllerPosition', (data) => {
+            // console.log('registering position for ' + data.controllerName);
+            socket.on(data.controllerName + 'Position', justSyncControllerPosition);
+            logMsg(`registerControllerPosition::${data.controllerName}: ${JSON.stringify(data)}`);
+        });
+    
+        const justSyncControllerPosition = (data) => {
+            // console.log('Controller Position', data);
+            socket.broadcast.emit('updateControllerPosition' + data.controllerName, data);
+            logMsg(`justSyncControllerPosition::${data.controllerName}: ${JSON.stringify(data)}`);
+        };
+
+        socket.on('registerFunction', (data) => {
+            // console.log('registering function for ' + data.controllerName);
+            socket.on(data.functionName, justSyncFunction)
+            logMsg(`registerFunction::${data.functionName}: ${JSON.stringify(data)}`);
+        });
+    
+        const justSyncFunction = (data) => {
+            io.sockets.emit(data.functionName, data);
+            logMsg(`justSyncFunction::${data.functionName}: ${JSON.stringify(data)}`);
+        }
+
         socket.on('changeControllerRotation', (data) => {
             socket.broadcast.emit('updateControllerRotation' + data.controllerName, data);
             logMsg(`changeControllerRotation::${data.controllerName}: ${JSON.stringify(data)}`);
