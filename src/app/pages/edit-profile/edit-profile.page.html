@@ -1,0 +1,81 @@
+<nb-layout style="width: 100%;">
+    <nb-layout-header fixed>
+      <div class="header-container">
+        <nb-actions size="small">
+          <nb-action (click)="goBack()" badgePosition="right" class="action-icon"
+                     badgeStatus="info" title="Back to Home Page" size="giant">
+            <nb-icon class="action-icon" icon="arrow-back-outline"></nb-icon>
+          </nb-action>
+          <nb-action size="giant" title="Edit Profile" class="action-icon"
+                      badgePosition="right" badgeStatus="info">
+            <!-- <nb-icon class="action-icon" icon="edit-2-outline"></nb-icon> -->
+            <span style="font-size: medium; font-weight: lighter;">Edit Profile</span>
+          </nb-action>
+          <!-- <nb-action icon="edit-2-outline" badgePosition="right" badgeStatus="info" title="Edit Patient" size="giant" (click)="editPatient()"></nb-action> -->
+        </nb-actions>
+      </div>
+      <div style="margin-left: auto!important; float: right;">
+        <nb-actions>
+          <nb-action badgePosition="right" badgeStatus="danger" title="Information" size="giant">
+            <nb-icon class="action-icon" icon="info-outline"></nb-icon>
+          </nb-action>
+        </nb-actions>
+      </div>
+    </nb-layout-header>
+
+    <nb-layout-column>
+      <nb-card style="width: 40%; margin: auto;">
+        <nb-card-body>
+          <form [formGroup]="userForm">
+            <div class="form-group">
+              <label class="label">Name</label>
+              <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Name" formControlName="name">
+              <app-control-error-message [control]="userForm['controls']['name']"></app-control-error-message>
+            </div>
+
+            <br>
+
+            <div class="form-group">
+              <label class="label">Email</label>
+              <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Email" formControlName="email">
+              <app-control-error-message [control]="userForm['controls']['email']"></app-control-error-message>
+            </div>
+      
+            <br>
+      
+            <div class="form-group">
+              <label class="label">Phone</label>
+              <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Phone" formControlName="phone">
+              <app-control-error-message [control]="userForm['controls']['phone']"></app-control-error-message>
+            </div>
+
+            <br>
+
+            <div class="form-group">
+              <label class="label">Address</label>
+              <input type="text" nbInput fullWidth fieldSize="medium" shape="semi-round" placeholder="Address" formControlName="address">
+              <app-control-error-message [control]="userForm['controls']['address']"></app-control-error-message>
+            </div>
+
+            <br>
+
+            <div class="form-group">
+              <label class="label">Speciality</label>
+              <br>
+              <nb-select fullWidth formControlName="specialty" fieldSize="medium" shape="semi-round">
+                <nb-option *ngFor="let spec of specialities" [value]="spec">
+                  {{ spec | titlecase }}
+                </nb-option>
+              </nb-select>
+            </div>
+          </form>
+        </nb-card-body>
+
+        <nb-card-footer>
+          <button nbButton fullWidth shape="semi-round" status="info" type="submit" [disabled]="!userForm.valid" (click)="save()">
+            Save Details <nb-icon icon="edit-2-outline"></nb-icon>
+          </button>
+        </nb-card-footer>
+      </nb-card>
+    </nb-layout-column>
+</nb-layout>
