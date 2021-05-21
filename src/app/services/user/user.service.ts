@@ -9,7 +9,7 @@ export class UserService {
   currentUser;
 
   constructor(private api: ApiService,
-              private events: Events) {
+    private events: Events) {
     const user = localStorage.getItem('user');
     // if (!user || environment.production) { return; }
     if (!user) { return; }
@@ -30,12 +30,20 @@ export class UserService {
     return this.api.get(`/patients/${patientId}`);
   }
 
+  getCenters() {
+    return this.api.get(`/centers`);
+  }
+
   addPatient(patientData) {
     return this.api.post(`/doctors/${this.currentUser.id}/patients/`, patientData);
   }
 
   editPatient(patientId, patientData) {
     return this.api.put(`/patients/${patientId}`, patientData);
+  }
+
+  editDoctor(doctorId, doctorData) {
+    return this.api.put(`/doctors/${doctorId}`, doctorData);
   }
 
   getPatientModules(patientId) {
