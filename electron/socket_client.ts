@@ -70,7 +70,7 @@ class SocketClient {
           port: portNumber
         }
 
-        console.log(this.clients);
+        // console.log(this.clients);
 
         if ( host.ip in this.clients ) {
           return;
@@ -102,7 +102,7 @@ class SocketClient {
             // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
             if (net.family.toLowerCase() === 'ipv4' && !net.internal) {
               var netName = name.toLowerCase()
-              if ( netName.includes('wlan') || netName.includes('wi') ) {
+              if ( netName.includes('wlan') || netName.includes('wi') || netName.includes('enp13s0') ) {
                 return net.address;
               }
             }
