@@ -6,6 +6,8 @@ import { UserService } from '../../services/user/user.service';
 import { HelperService } from '../../services/helper/helper.service';
 import { MainEventsService } from '../../services/main-events/main-events.service';
 import { getJSDocThisTag } from 'typescript/lib/tsserverlibrary';
+import { map, startWith } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,8 @@ import { getJSDocThisTag } from 'typescript/lib/tsserverlibrary';
 })
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
-  allUsersEmails: any[] = []
+  allUsersEmails: string[] = [];
+  filteredEmails$: Observable<string[]>;
   showPassword: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
@@ -27,6 +30,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      email: ['', Validators.compose([Validation.emailValidator, Validators.required])],
+      password: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(100), Validators.required])],
+    });
+
     this.allUsersEmails = this.mainEventsService.allUsersEmails
     this.mainEventsService.allUsersEmailsObserver.subscribe(usersEmailsList => {
       this.allUsersEmails = [] // usersEmailsList
@@ -36,12 +44,18 @@ export class LoginComponent implements OnInit {
       console.log('IT IS UPDATED', this.allUsersEmails)
       this.mainEventsService.sendEventAsync('all-users-list-received', {})
       this._cdr.detectChanges()
-    });
 
-    this.loginForm = this.formBuilder.group({
-      email: ['', Validators.compose([Validation.emailValidator, Validators.required])],
-      password: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(100), Validators.required])],
+      this.filteredEmails$ = of(this.allUsersEmails.sort());
+      this.filteredEmails$ = this.loginForm.controls.email.valueChanges.pipe(
+        startWith(''),
+        map(filterString => this.filter(filterString))
+      )
     });
+  }
+
+  private filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.allUsersEmails.filter(optionValue => optionValue.toLowerCase().startsWith(filterValue));
   }
 
   async save() {
