@@ -86,7 +86,7 @@
     @include nb-rtl(margin-left, 0.5rem);
     cursor: pointer;
     font-size: larger;
-    font-weight: bolder;
+    // font-weight: bolder;
   }
   .action-icon:hover {
     color: nb-theme(color-primary-500);
