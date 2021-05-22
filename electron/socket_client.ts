@@ -70,10 +70,12 @@ class SocketClient {
           port: portNumber
         }
 
-        // console.log(this.clients);
+        // console.log(device);
 
         if ( host.ip in this.clients ) {
-          return;
+          if ( this.clients[host.ip] != null ) {
+            return;
+          }    
         }
 
         const client = new Net.Socket();
