@@ -36,6 +36,12 @@ export class LoginComponent implements OnInit {
     });
 
     this.allUsersEmails = this.mainEventsService.allUsersEmails
+    this.filteredEmails$ = of(this.allUsersEmails.sort());
+    this.filteredEmails$ = this.loginForm.controls.email.valueChanges.pipe(
+      startWith(''),
+      map(filterString => this.filter(filterString))
+    )
+    
     this.mainEventsService.allUsersEmailsObserver.subscribe(usersEmailsList => {
       this.allUsersEmails = [] // usersEmailsList
       usersEmailsList.forEach((item) => {
@@ -46,10 +52,6 @@ export class LoginComponent implements OnInit {
       this._cdr.detectChanges()
 
       this.filteredEmails$ = of(this.allUsersEmails.sort());
-      this.filteredEmails$ = this.loginForm.controls.email.valueChanges.pipe(
-        startWith(''),
-        map(filterString => this.filter(filterString))
-      )
     });
   }
 
