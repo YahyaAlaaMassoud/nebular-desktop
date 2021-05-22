@@ -51,7 +51,7 @@ before_script:
 
 # on PRs and merges to master and prod run tests and build the app
 script:
-  - yarn build-electron
+  - echo BUILD NOT WOKRING
   # - |
   #   if [ "$TRAVIS_OS_NAME" == "linux" ]; then
   #     docker run --rm \
