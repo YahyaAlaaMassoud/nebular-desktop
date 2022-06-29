@@ -1,7 +1,7 @@
 // Include Nodejs' net module.
-import * as  Net from 'net';
-import * as  ip from 'ip';
-import * as  find from 'local-devices';
+import * as Net from 'net';
+import * as ip from 'ip';
+import * as find from 'local-devices';
 import { BrowserWindow, ipcMain } from 'electron';
 import { setInterval } from 'timers';
 import { networkInterfaces } from 'os';
@@ -45,9 +45,12 @@ class SocketClient {
     //   this.tryToConnect(options);
     // });
 
-    ipcMain.on(this.CLIENT_EVENTS.authorized_devices_changed, (_event, options) => {
-      this.authorizedHeadsets = options.authorized_devices;
-    });
+    ipcMain.on(
+      this.CLIENT_EVENTS.authorized_devices_changed,
+      (_event, options) => {
+        this.authorizedHeadsets = options.authorized_devices;
+      }
+    );
 
     this.tryToFindHeadsets();
   }
@@ -65,25 +68,33 @@ class SocketClient {
       // console.log(devices);
       // console.log('--------')
       devices.forEach((device) => {
-        const host =  {
+        const host = {
           ip: device.ip,
-          port: portNumber
-        }
+          port: portNumber,
+        };
 
         // console.log(device);
 
-        if ( host.ip in this.clients ) {
-          if ( this.clients[host.ip] != null ) {
+        if (host.ip in this.clients) {
+          if (this.clients[host.ip] != null) {
             return;
-          }    
+          }
         }
 
         const client = new Net.Socket();
         // Create a new TCP client.
-        client.connect({ port: portNumber, host: host.ip }, () => { this.onConnect(client); });
-        client.on('data', (chunk) => { this.onDataReceivedV2(chunk, client, host); });
-        client.on('end', () => { this.onEnd(client, host); });
-        client.on('error', (err) => { this.onError(err, client, host); });
+        client.connect({ port: portNumber, host: host.ip }, () => {
+          this.onConnect(client);
+        });
+        client.on('data', (chunk) => {
+          this.onDataReceivedV2(chunk, client, host);
+        });
+        client.on('end', () => {
+          this.onEnd(client, host);
+        });
+        client.on('error', (err) => {
+          this.onError(err, client, host);
+        });
       });
     } catch (err) {
       // console.log('findLocalServers. error..', err);
@@ -100,15 +111,19 @@ class SocketClient {
     // const results = Object.create(null); // Or just '{}', an empty object
 
     for (const name of Object.keys(nets)) {
-        for (const net of nets[name]) {
-            // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-            if (net.family.toLowerCase() === 'ipv4' && !net.internal) {
-              var netName = name.toLowerCase()
-              if ( netName.includes('wlan') || netName.includes('wi') || netName.includes('enp13s0') ) {
-                return net.address;
-              }
-            }
+      for (const net of nets[name]) {
+        // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+        if (net.family.toLowerCase() === 'ipv4' && !net.internal) {
+          var netName = name.toLowerCase();
+          if (
+            netName.includes('wlan') ||
+            netName.includes('wi') ||
+            netName.includes('enp13s0')
+          ) {
+            return net.address;
+          }
         }
+      }
     }
     // console.log(results)
     return '';
@@ -116,7 +131,11 @@ class SocketClient {
 
   setFindingIntervalV2() {
     this.findLocalServers(this.port);
-    this.findingServerInterval = setTimeout(() => this.setFindingIntervalV2(), 500);
+    console.log('?');
+    this.findingServerInterval = setTimeout(
+      () => this.setFindingIntervalV2(),
+      500
+    );
   }
 
   onConnect(client) {
@@ -131,8 +150,8 @@ class SocketClient {
   onError(_err, client, host) {
     // console.log('connect error...', _err.stack);
     // Remove clients that are already there but now we cannot connect with them
-    for ( var i = 0; i < this.onlineHeadsets.length; i++) {
-      if ( this.onlineHeadsets[i].headsetIP == host.ip ) {
+    for (var i = 0; i < this.onlineHeadsets.length; i++) {
+      if (this.onlineHeadsets[i].headsetIP == host.ip) {
         // console.log('REMOVING', this.onlineHeadsets[i]);
         this.sendEvToWin(this.CLIENT_EVENTS.online_devices_changed, {
           newHeadsetFound: false,
@@ -158,30 +177,38 @@ class SocketClient {
       headsetSerial: '',
       headsetModuleName: '',
       headsetName: '',
-    }
+    };
 
-    for ( var i = 0; i < data.length; i++ ) {
-      if ( data[i] == 'headsetSerial' ) {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i] == 'headsetSerial') {
         receivedObj.headsetSerial = data[i + 1];
-        const authorizedHeadset = this.authorizedHeadsets.some(el => el.serial == receivedObj.headsetSerial);
-        if ( !authorizedHeadset ) {
-          console.log('UNAUTHORIZED HEADSET', receivedObj.headsetSerial)
+        const authorizedHeadset = this.authorizedHeadsets.some(
+          (el) => el.serial == receivedObj.headsetSerial
+        );
+        if (!authorizedHeadset) {
+          console.log('UNAUTHORIZED HEADSET', receivedObj.headsetSerial);
           client.end();
           return;
         } else {
-          const headsetIdx = this.authorizedHeadsets.findIndex(el => el.serial == receivedObj.headsetSerial);
-          receivedObj.headsetName = this.authorizedHeadsets[headsetIdx].name
+          const headsetIdx = this.authorizedHeadsets.findIndex(
+            (el) => el.serial == receivedObj.headsetSerial
+          );
+          receivedObj.headsetName = this.authorizedHeadsets[headsetIdx].name;
         }
-      } else if ( data[i] == 'headsetModuleName' ) {
+      } else if (data[i] == 'headsetModuleName') {
         receivedObj.headsetModuleName = data[i + 1];
-      } else if ( data[i] == 'gotServerUrl' ) {
+      } else if (data[i] == 'gotServerUrl') {
         console.log('GOT IT ALREADY!');
         // client.end();
         return;
       }
     }
 
-    if ( receivedObj.headsetModuleName == '' || receivedObj.headsetSerial == '' || receivedObj.headsetName == '' ) {
+    if (
+      receivedObj.headsetModuleName == '' ||
+      receivedObj.headsetSerial == '' ||
+      receivedObj.headsetName == ''
+    ) {
       console.log(data);
       console.log(receivedObj);
       console.log('EMPTY STUFF');
@@ -190,16 +217,19 @@ class SocketClient {
     }
 
     var found = false;
-    if ( this.onlineHeadsets.length != 0 ) {
-      found = this.onlineHeadsets.some(el => 'headsetSerial' in el && el.headsetSerial == receivedObj.headsetSerial);
+    if (this.onlineHeadsets.length != 0) {
+      found = this.onlineHeadsets.some(
+        (el) =>
+          'headsetSerial' in el && el.headsetSerial == receivedObj.headsetSerial
+      );
     }
-    if ( !found ) {
+    if (!found) {
       // console.log('ADD', receivedObj)
       this.onlineHeadsets.push(receivedObj); // dont need that
       // console.log('ADDING', receivedObj)
       this.sendEvToWin(this.CLIENT_EVENTS.online_devices_changed, {
         newHeadsetFound: true,
-        onlineHeadsetObj: receivedObj
+        onlineHeadsetObj: receivedObj,
       });
       // console.log('-------------')
       // const response = JSON.stringify({
@@ -208,11 +238,11 @@ class SocketClient {
       // });
       console.log('IP ' + ip.address());
       const ipAddress = this.getWiFiIPAddress();
-      if ( ipAddress.length > 0 ) {
+      if (ipAddress.length > 0) {
         this.clients[host.ip] = client;
-        client.write('IP ' + ipAddress);  
+        client.write('IP ' + ipAddress);
       } else {
-        console.log('WIFI IP WAS NOT FOUND!')
+        console.log('WIFI IP WAS NOT FOUND!');
         client.end();
       }
     } else {
@@ -222,7 +252,7 @@ class SocketClient {
     // console.log(this.onlineHeadsets);
   }
 
-  onDataReceivedV1(chunk, client, selectedSerial=null) {
+  onDataReceivedV1(chunk, client, selectedSerial = null) {
     console.log(`Data received from the server: ${chunk.toString()}.`);
 
     const data = chunk.toString().split(' ');
@@ -232,18 +262,23 @@ class SocketClient {
         client.write('moduleName');
         this.sendEvToWin(this.CLIENT_EVENTS.finding_selected_headset, {
           msg: `selected headset is available around you, and we are verifying the module '${this.awaitingVrModuleToRun.moduleName}'...`,
-          running: true, serial
+          running: true,
+          serial,
         });
       } else {
         // store SERIAL in dict (array)
       }
     } else if (data[0] === 'moduleName') {
       const moduleName = data[1];
-      if (selectedSerial && moduleName === this.awaitingVrModuleToRun.packageName) {
+      if (
+        selectedSerial &&
+        moduleName === this.awaitingVrModuleToRun.packageName
+      ) {
         client.write('connect ' + ip.address());
         this.sendEvToWin(this.CLIENT_EVENTS.finding_selected_headset, {
           msg: `The module '${this.awaitingVrModuleToRun.moduleName}' is verified now on the headset and the IP has sent to it.`,
-          running: true, serial: selectedSerial
+          running: true,
+          serial: selectedSerial,
         });
       } else {
         // store MODULE_NAME in dict with SERIAL
@@ -254,24 +289,32 @@ class SocketClient {
   }
 
   clearFindingInterval(selectedSerial) {
-    if (!this.findingServerInterval) { return; }
+    if (!this.findingServerInterval) {
+      return;
+    }
 
     clearInterval(this.findingServerInterval);
     this.findingServerInterval = null;
     this.endAllClientsConnections();
     this.sendEvToWin(this.CLIENT_EVENTS.finding_selected_headset, {
       msg: `Seems the headset is not around, we stopped the searching now: ${selectedSerial}`,
-      running: false, selectedSerial
+      running: false,
+      selectedSerial,
     });
   }
 
   headsetIsConnectedSuccessfully(client) {
     this.connectedIP = client;
     this.clearFindingInterval(this.selectedSerial);
-    this.sendEvToWin(this.CLIENT_EVENTS.offline_headset_ready, { ready: true, headsetDevice: { id: this.selectedSerial } });
+    this.sendEvToWin(this.CLIENT_EVENTS.offline_headset_ready, {
+      ready: true,
+      headsetDevice: { id: this.selectedSerial },
+    });
     if (this.awaitingVrModuleToRun) {
       this.sendEvToWin(this.CLIENT_EVENTS.headset_module_ready, {
-        ready: true, headsetDevice: { id: this.selectedSerial }, ...this.awaitingVrModuleToRun
+        ready: true,
+        headsetDevice: { id: this.selectedSerial },
+        ...this.awaitingVrModuleToRun,
       });
       this.awaitingVrModuleToRun = null;
     }
