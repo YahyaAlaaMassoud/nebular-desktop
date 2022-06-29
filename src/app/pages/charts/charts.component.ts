@@ -23,13 +23,13 @@ export class ChartsComponent implements OnInit {
   showStats = false;
   datePickerOptions = {
     startDate: moment().subtract(29, 'days').format('YYYY-MM-DD'),
-    endDate: moment().format('YYYY-MM-DD')
+    endDate: moment().format('YYYY-MM-DD'),
   };
   nbDatePickerOptions = {
     orgStart: new Date(2019, 1),
     start: new Date(2019, 1),
     orgEnd: new Date(),
-    end: new Date()
+    end: new Date(),
   };
   datePickerSettings = {
     type: 'daily',
@@ -37,7 +37,7 @@ export class ChartsComponent implements OnInit {
     inputDateFormat: 'YYYY-MM-DD',
     outputDateFormat: 'YYYY-MM-DD',
     placeholder: 'Select Sessions Dates',
-    showRanges: true
+    showRanges: true,
   };
   constructor(
     public chartsService: ChartsService,
@@ -47,7 +47,7 @@ export class ChartsComponent implements OnInit {
     private router: Router,
     private _cdr: ChangeDetectorRef,
     private datepipe: DatePipe
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.patientId = this.route.snapshot.paramMap.get('patient_id');
@@ -55,7 +55,7 @@ export class ChartsComponent implements OnInit {
     this.sessionsScopes = this.chartsService.sessionsScopes;
     // this.loadPatient(this.patientId);
     this.initDefaultChartData();
-    console.log(this.nbDatePickerOptions)
+    console.log(this.nbDatePickerOptions);
   }
 
   async initDefaultChartData() {
@@ -67,7 +67,10 @@ export class ChartsComponent implements OnInit {
       this.changeSessionScope();
     } catch (err) {
       // this.helperService.showError(err);
-      this.helperService.showNbToast('Error happened when loading charts. Please Try again.', 'danger');
+      this.helperService.showNbToast(
+        'Error happened when loading charts. Please Try again.',
+        'danger'
+      );
     }
   }
 
@@ -82,12 +85,15 @@ export class ChartsComponent implements OnInit {
         await this.getAllSessionsStatistics();
         break;
       case 'Within Dates':
-        await this.getSessionsStatisticsWithinDates(this.datePickerOptions.startDate, this.datePickerOptions.endDate);
+        await this.getSessionsStatisticsWithinDates(
+          this.datePickerOptions.startDate,
+          this.datePickerOptions.endDate
+        );
         break;
     }
     this.helperService.removeNgLoading();
-    console.log(this.sessions)
-    this._cdr.detectChanges()
+    console.log(this.sessions);
+    this._cdr.detectChanges();
   }
 
   async getStatistics() {
@@ -107,25 +113,35 @@ export class ChartsComponent implements OnInit {
       // this.helperService.removeNgLoading();
     } catch (err) {
       // this.helperService.showError(err);
-      this.helperService.showNbToast('Error happened when loading statistics. Please Try again.', 'danger');
+      this.helperService.showNbToast(
+        'Error happened when loading statistics. Please Try again.',
+        'danger'
+      );
     }
   }
 
   onDateFilterChange(ev) {
-    if ( ev.start ) {
-      this.nbDatePickerOptions.start = ev.start
+    if (ev.start) {
+      this.nbDatePickerOptions.start = ev.start;
     }
-    if ( ev.end ) {
-      this.nbDatePickerOptions.end = ev.end
+    if (ev.end) {
+      this.nbDatePickerOptions.end = ev.end;
     }
-    var start = this.datepipe.transform(this.nbDatePickerOptions.start, 'yyyy-MM-dd')
-    var end = this.datepipe.transform(this.nbDatePickerOptions.end, 'yyyy-MM-dd')
-    console.log(start, end)
+    var start = this.datepipe.transform(
+      this.nbDatePickerOptions.start,
+      'yyyy-MM-dd'
+    );
+    var end = this.datepipe.transform(
+      this.nbDatePickerOptions.end,
+      'yyyy-MM-dd'
+    );
+    console.log(start, end);
     this.getSessionsStatisticsWithinDates(start, end);
   }
 
   async getAllSessionsStatistics() {
-    this.sessionStatistics = (await this.getFilteredSessionsStatistics()) as any[];
+    this.sessionStatistics =
+      (await this.getFilteredSessionsStatistics()) as any[];
   }
 
   async getSessionsStatisticsWithinDates(fromDate, toDate) {
@@ -158,10 +174,12 @@ export class ChartsComponent implements OnInit {
       return result;
     } catch (err) {
       // this.helperService.showError(err);
-      this.helperService.showNbToast('Error happened when loading statistics. Please Try again.', 'danger');
+      this.helperService.showNbToast(
+        'Error happened when loading statistics. Please Try again.',
+        'danger'
+      );
     }
   }
-
 
   // TODO
   async getAllSessionsStatisticsGroupedBySession() {

@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { Chart, InteractionMode, ChartDataSets } from 'chart.js';
 
 import { configs } from './configs';
@@ -6,7 +13,11 @@ import { ChartsConfig } from './chartsConfig';
 import { MatTableDataSource } from '@angular/material/table';
 import * as XLSX from 'xlsx';
 
-import { ColumnMode, TableColumn, SelectionType } from '@swimlane/ngx-datatable';
+import {
+  ColumnMode,
+  TableColumn,
+  SelectionType,
+} from '@swimlane/ngx-datatable';
 import { TitleCasePipe } from '@angular/common';
 import { RoundFloatPipe } from '../../pipes/round-float.pipe';
 
@@ -20,10 +31,9 @@ import { $ } from 'protractor';
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss']
+  styleUrls: ['./stats.component.scss'],
 })
 export class StatsComponent implements OnInit, OnDestroy {
-
   @Input() allData: any[];
   @Input() moduleId: number;
   @Input() sessionName: string;
@@ -52,9 +62,8 @@ export class StatsComponent implements OnInit, OnDestroy {
   constructor(
     private titleCasePipe: TitleCasePipe,
     private roundFloatPipe: RoundFloatPipe,
-    private stateService: StateService,
-    ) {
-  }
+    private stateService: StateService
+  ) {}
 
   ngOnInit() {
     this.initModule(this.moduleId);
@@ -69,8 +78,8 @@ export class StatsComponent implements OnInit, OnDestroy {
   }
 
   initModule(moduleId: number) {
-    this.fieldsConfig = configs[moduleId].fieldsConfig;
-    this.curModuleName = configs[moduleId].moduleName;
+    this.fieldsConfig = configs[moduleId].fieldsConfig || {};
+    this.curModuleName = configs[moduleId].moduleName || {};
     this.displayedColumns = Object.keys(this.fieldsConfig);
     this.chartsSettings = configs[moduleId].chartsConfigs;
     this.selectedChart = this.chartsSettings[0].id;
@@ -82,34 +91,34 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.sortedData = this.validData.slice();
     this.emptyChart = !this.validData.length;
 
-    var savedState = this.stateService.state$.getValue()
-    if ( savedState && savedState[this.moduleId] ) {
-      this.ngxColumns = savedState[this.moduleId]
+    var savedState = this.stateService.state$.getValue();
+    if (savedState && savedState[this.moduleId]) {
+      this.ngxColumns = savedState[this.moduleId];
     } else {
       this.ngxColumns = this.getNgxCols(this.displayedColumns);
 
-      this.state = savedState || {}
+      this.state = savedState || {};
       Object.assign(this.state, {
-        [this.moduleId]: this.ngxColumns
-      })
-      
-      this.stateService.state$.next(this.state)
+        [this.moduleId]: this.ngxColumns,
+      });
+
+      this.stateService.state$.next(this.state);
     }
     this.allNgxColumns = this.getNgxCols(this.displayedColumns);
 
-    this.ngxRows = []
+    this.ngxRows = [];
     this.validData.forEach((row) => {
-      var newRow = {}
+      var newRow = {};
       this.allNgxColumns.forEach((col) => {
-        if ( typeof row[col.name] == 'number' ) {
+        if (typeof row[col.name] == 'number') {
           row[col.name] = this.roundFloatPipe.transform(row[col.name]);
-        } else if ( typeof row[col.name] == 'string' ) {
+        } else if (typeof row[col.name] == 'string') {
           row[col.name] = this.titleCasePipe.transform(row[col.name]);
         }
-        newRow[col.name] = row[col.name]
-      })
-      this.ngxRows.push(newRow)
-    })
+        newRow[col.name] = row[col.name];
+      });
+      this.ngxRows.push(newRow);
+    });
   }
 
   removeUnderScore(str) {
@@ -119,19 +128,18 @@ export class StatsComponent implements OnInit, OnDestroy {
   }
 
   getNgxCols(columns) {
-
     var newColumns = [];
-    
-    for ( var i = 0; i < columns.length; i++ ) {
+
+    for (var i = 0; i < columns.length; i++) {
       newColumns.push({
         name: columns[i],
         prop: columns[i],
-        shownName: this.removeUnderScore(columns[i])
+        shownName: this.removeUnderScore(columns[i]),
         // shownName: columns[i]
-      })
+      });
     }
 
-    return newColumns
+    return newColumns;
   }
 
   validateAndFilterData(allData) {
@@ -148,32 +156,49 @@ export class StatsComponent implements OnInit, OnDestroy {
     const fieldY = this.selectedChartConfigs.fieldNameY;
     const fieldX = this.selectedChartConfigs.fieldNameX;
 
-    return (this.fieldsConfig[fieldY] === typeof (dataObj[fieldY]) && this.fieldsConfig[fieldX] === typeof (dataObj[fieldX]));
-  }
+    return (
+      this.fieldsConfig[fieldY] === typeof dataObj[fieldY] &&
+      this.fieldsConfig[fieldX] === typeof dataObj[fieldX]
+    );
+  };
 
   collectStatsData() {
     this.validateAndResetData();
-    if (!this.validData.length) { return; }
+    if (!this.validData.length) {
+      return;
+    }
 
-    this.validData.sort(function(a,b){
-      return new Date(a.attempt_start_time).getTime() - new Date(b.attempt_start_time).getTime();
+    this.validData.sort(function (a, b) {
+      return (
+        new Date(a.attempt_start_time).getTime() -
+        new Date(b.attempt_start_time).getTime()
+      );
     });
 
     this.chartsSettings.forEach((chart: ChartsConfig) => {
       const tooltipData = {};
       this.validData.forEach((sessionData: any) => {
         const y = sessionData[chart.fieldNameY].toFixed(2);
-        let x: any = (new Date(sessionData[chart.fieldNameX]));
-        x = this.sessionsScope === 'One Session' ?  x.toLocaleTimeString() : x.toLocaleDateString();
-        if (y < 0) { return; }
+        let x: any = new Date(sessionData[chart.fieldNameX]);
+        console.log('sessionData', sessionData);
+        x =
+          this.sessionsScope === 'One Session'
+            ? x.toLocaleTimeString()
+            : x.toLocaleTimeString();
+        if (y < 0) {
+          return;
+        }
         const dataGroup = sessionData[chart.groupBy] || chart.fieldNameY;
         chart.dataY[dataGroup] = chart.dataY[dataGroup] || [];
         chart.dataY[dataGroup].push({ x, y });
         chart.dataX.push(x);
         chart.tooltipFields.forEach((tooltipField: string) => {
           tooltipData[dataGroup] = tooltipData[dataGroup] || {};
-          tooltipData[dataGroup][tooltipField] = tooltipData[dataGroup][tooltipField] || [];
-          tooltipData[dataGroup][tooltipField].push(sessionData[tooltipField].toString());
+          tooltipData[dataGroup][tooltipField] =
+            tooltipData[dataGroup][tooltipField] || [];
+          tooltipData[dataGroup][tooltipField].push(
+            sessionData[tooltipField].toString()
+          );
         });
       });
       // console.log(tooltipData)
@@ -188,22 +213,30 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   buildCharts() {
     const indexedTooltipData = [];
-    this.selectedChartConfigs = this.chartsSettings.find((chartConfig) => (chartConfig.id === this.selectedChart));
+    this.selectedChartConfigs = this.chartsSettings.find(
+      (chartConfig) => chartConfig.id === this.selectedChart
+    );
     this.collectStatsData();
-    if (!this.validData.length) { return; }
+    if (!this.validData.length) {
+      return;
+    }
 
     // console.log(this.selectedChartConfigs.dataY)
     // console.log(this.selectedChartConfigs.dataX)
     // console.log(this.selectedChartConfigs.tooltipData)
 
-    const datasets: ChartDataSets[] = Object.entries(this.selectedChartConfigs.dataY).map((entry, index) => {
+    const datasets: ChartDataSets[] = Object.entries(
+      this.selectedChartConfigs.dataY
+    ).map((entry, index) => {
       // console.log('entry', entry)
       // console.log(this.selectedChartConfigs.tooltipData[entry[0]])
       indexedTooltipData.push(this.selectedChartConfigs.tooltipData[entry[0]]);
       const color = this.colorsPool.pop();
       // console.log('data', entry[1])
       return {
-        label: `${this.selectedChartConfigs.groupBy.split('_').join(' ') || ''} ${entry[0].split('_').join(' ')}`,
+        label: `${
+          this.selectedChartConfigs.groupBy.split('_').join(' ') || ''
+        } ${entry[0].split('_').join(' ')}`,
         data: entry[1],
         fill: false,
         backgroundColor: color,
@@ -216,88 +249,110 @@ export class StatsComponent implements OnInit, OnDestroy {
     // console.log('indexedTooltipData', indexedTooltipData)
     this.selectedChartConfigs.tooltipData = indexedTooltipData;
     const options = {
-        responsive: true,
-        legend: {
-          display: true,
-          labels: {
-            fontSize: 16,
-            fontFamily: "'Quicksand'",
-            fontStyle: 'bold'
-          }
+      responsive: true,
+      legend: {
+        display: true,
+        labels: {
+          fontSize: 16,
+          fontFamily: "'Quicksand'",
+          fontStyle: 'bold',
         },
-        title: {
-          display: false,
-          text: `${this.selectedChartConfigs.legend} - ${this.selectedChartConfigs.fieldNameY.split('_').join(' ') }`,
-          fontSize: 18,
-          fontColor: this.selectedChartConfigs.color,
-          fontFamily: "'Quicksand'"
-        },
-        hover: {
-          mode: 'index' as InteractionMode,
-          intersect: true
-        },
-        tooltips: {
-          enabled: true,
-          mode: 'single' as InteractionMode,
-          titleFontFamily: "'Quicksand'",
-          bodyFontFamily: "'Quicksand'",
-          titleFontSize: 14,
-          bodyFontSize: 14,
-          intersect: true,
-          displayColors: false,
-          callbacks: {
-            label: (tooltipItems: Chart.ChartTooltipItem, data: Chart.ChartData) => {
-              // console.log('tooltipItems', tooltipItems)
-              // console.log('tooltipData', data)
-              const tooltipDataArr = [`${this.titleCasePipe.transform(this.selectedChartConfigs.fieldNameY.split('_').join(' ')) }: ${tooltipItems.yLabel }`];
-              this.selectedChartConfigs.tooltipFields.forEach((tooltipField: string, index: number) => {
-                const tooltip = this.selectedChartConfigs.tooltipData[tooltipItems.datasetIndex][tooltipField][tooltipItems.index];
+      },
+      title: {
+        display: false,
+        text: `${
+          this.selectedChartConfigs.legend
+        } - ${this.selectedChartConfigs.fieldNameY.split('_').join(' ')}`,
+        fontSize: 18,
+        fontColor: this.selectedChartConfigs.color,
+        fontFamily: "'Quicksand'",
+      },
+      hover: {
+        mode: 'index' as InteractionMode,
+        intersect: true,
+      },
+      tooltips: {
+        enabled: true,
+        mode: 'single' as InteractionMode,
+        titleFontFamily: "'Quicksand'",
+        bodyFontFamily: "'Quicksand'",
+        titleFontSize: 14,
+        bodyFontSize: 14,
+        intersect: true,
+        displayColors: false,
+        callbacks: {
+          label: (
+            tooltipItems: Chart.ChartTooltipItem,
+            data: Chart.ChartData
+          ) => {
+            // console.log('tooltipItems', tooltipItems)
+            // console.log('tooltipData', data)
+            const tooltipDataArr = [
+              `${this.titleCasePipe.transform(
+                this.selectedChartConfigs.fieldNameY.split('_').join(' ')
+              )}: ${tooltipItems.yLabel}`,
+            ];
+            this.selectedChartConfigs.tooltipFields.forEach(
+              (tooltipField: string, index: number) => {
+                const tooltip =
+                  this.selectedChartConfigs.tooltipData[
+                    tooltipItems.datasetIndex
+                  ][tooltipField][tooltipItems.index];
                 if (tooltip && tooltip.length) {
-                  tooltipDataArr.push(this.titleCasePipe.transform(tooltipField.split('_').join(' ')  + ': ' + tooltip));
+                  tooltipDataArr.push(
+                    this.titleCasePipe.transform(
+                      tooltipField.split('_').join(' ') + ': ' + tooltip
+                    )
+                  );
                 }
-              });
-              return tooltipDataArr;
-            },
-            title: (item: Chart.ChartTooltipItem[], data: Chart.ChartData) => {
-              return '';
-            }
+              }
+            );
+            return tooltipDataArr;
+          },
+          title: (item: Chart.ChartTooltipItem[], data: Chart.ChartData) => {
+            return '';
           },
         },
-        scales: {
-          xAxes: [{
+      },
+      scales: {
+        xAxes: [
+          {
             display: true,
             barPercentage: 0.2,
             barThickness: 10,
             maxBarThickness: 20,
             offset: true,
             gridLines: {
-              offsetGridLines: true
+              offsetGridLines: true,
             },
             ticks: {
               fontFamily: "'Quicksand'",
-              fontStyle: 'bold'
-            }
-          }],
-          yAxes: [{
+              fontStyle: 'bold',
+            },
+          },
+        ],
+        yAxes: [
+          {
             display: true,
             ticks: {
               suggestedMin: 0,
               beginAtZero: true,
               fontFamily: "'Quicksand'",
-              fontStyle: 'bold'
-            }
-          }],
-        }
-      };
+              fontStyle: 'bold',
+            },
+          },
+        ],
+      },
+    };
 
     setTimeout(() => {
       const chart = new Chart(this.selectedChartConfigs.id, {
         type: this.selectedChartConfigs.chartType,
         data: {
           labels: this.selectedChartConfigs.dataX,
-          datasets
+          datasets,
         },
-        options
+        options,
       });
       this.selectedChartConfigs.chartObject = chart;
     }, 400);
@@ -308,14 +363,15 @@ export class StatsComponent implements OnInit, OnDestroy {
       chart.dataX = [];
       chart.dataY = {};
       chart.tooltipData = {};
-      if (chart.chartObject) { chart.chartObject.destroy(); }
+      if (chart.chartObject) {
+        chart.chartObject.destroy();
+      }
     });
 
     setTimeout(() => {
       this.colorsPool = ['gray', 'black', 'green', 'red', 'blue'];
       this.buildCharts();
     }, 400);
-
   }
 
   reSort(sort) {
@@ -344,8 +400,7 @@ export class StatsComponent implements OnInit, OnDestroy {
         row.push(data[field]);
       });
       return row;
-    }
-    );
+    });
     rowData.unshift(this.displayedColumns.map((f) => f.split('_').join(' ')));
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(rowData);
     /* generate workbook and add the worksheet */
@@ -365,8 +420,7 @@ export class StatsComponent implements OnInit, OnDestroy {
         row.push(data[field.name]);
       });
       return row;
-    }
-    );
+    });
     rowData.unshift(this.ngxColumns.map((f) => f.name.split('_').join(' ')));
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(rowData);
     /* generate workbook and add the worksheet */
@@ -377,49 +431,49 @@ export class StatsComponent implements OnInit, OnDestroy {
     XLSX.writeFile(wb, `${this.curModuleName}(${this.sessionName}).xlsx`);
   }
 
-  getRowClass (row) {
+  getRowClass(row) {
     return {
-      'datatable-body-row': true
-    } 
+      'datatable-body-row': true,
+    };
   }
 
   isChecked(col) {
     return (
-      this.ngxColumns.find(c => {
+      this.ngxColumns.find((c) => {
         return c.name === col.name;
       }) !== undefined
     );
   }
 
   sortColsFunc(cols) {
-    var newCols: any[] = []
+    var newCols: any[] = [];
     this.allNgxColumns.forEach((orgCol) => {
       var found = false;
       var items = cols.filter((ngxCol) => {
-          if (!found && ngxCol.name == orgCol.name) {
-            newCols.push(ngxCol);
-              found = true;
-              return false;
-          } else {
-            return true;
-          }
+        if (!found && ngxCol.name == orgCol.name) {
+          newCols.push(ngxCol);
+          found = true;
+          return false;
+        } else {
+          return true;
+        }
       });
     });
-    return newCols
+    return newCols;
   }
 
   toggle(col) {
     const isChecked = this.isChecked(col);
 
     if (isChecked) {
-      this.ngxColumns = this.ngxColumns.filter(c => {
+      this.ngxColumns = this.ngxColumns.filter((c) => {
         return c.name !== col.name;
       });
     } else {
       this.ngxColumns = [...this.ngxColumns, col];
     }
 
-    this.ngxColumns = this.sortColsFunc(this.ngxColumns)
+    this.ngxColumns = this.sortColsFunc(this.ngxColumns);
     // var newPair = {
     //   [this.moduleId]: this.ngxColumns
     // }
@@ -427,8 +481,8 @@ export class StatsComponent implements OnInit, OnDestroy {
     //   ...newPair
     // };
     Object.assign(this.state, {
-      [this.moduleId]: this.ngxColumns
-    })
-    this.stateService.state$.next(this.state)
+      [this.moduleId]: this.ngxColumns,
+    });
+    this.stateService.state$.next(this.state);
   }
 }

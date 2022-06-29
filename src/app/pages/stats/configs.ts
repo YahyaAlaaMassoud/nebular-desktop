@@ -1,6 +1,5 @@
-
 export let configs = {
-  7: {
+  17: {
     moduleName: 'Archeeko',
     chartsConfigs: [
       {
@@ -18,10 +17,15 @@ export let configs = {
         show: true,
         legend: 'Archeeko',
         canGroupBy: ['', 'level', 'distance'],
-        canBeFieldY: ['impulsivity_score', 'impulsivity_score_with_aiming',
-          'response_time', 'omission_score', 'distraction_endurance_score'],
-        groupBy: ''
-      }
+        canBeFieldY: [
+          'impulsivity_score',
+          'impulsivity_score_with_aiming',
+          'response_time',
+          'omission_score',
+          'distraction_endurance_score',
+        ],
+        groupBy: '',
+      },
     ],
     fieldsConfig: {
       session_start_time: 'string',
@@ -43,8 +47,11 @@ export let configs = {
       response_time: 'number',
       omission_score: 'number',
       distraction_endurance_score: 'number',
-      actual_attention_time: 'number'
-    }
+      actual_attention_time: 'number',
+      distractibility_score: 'number',
+      non_sustained: 'number',
+      total_sustained: 'number',
+    },
   },
   8: {
     moduleName: 'GardenDo',
@@ -64,10 +71,17 @@ export let configs = {
         show: true,
         legend: 'GardenDo',
         canGroupBy: ['', 'level'],
-        canBeFieldY: ['impulsivity_score', 'response_time',
-          'omission_score', 'distraction_endurance_score'],
-        groupBy: ''
-      }
+        canBeFieldY: [
+          'impulsivity_score',
+          'response_time',
+          'omission_score',
+          'distraction_endurance_score',
+          'actual_attention_time',
+          'distractibility_score',
+          'score',
+        ],
+        groupBy: '',
+      },
     ],
     fieldsConfig: {
       session_start_time: 'string',
@@ -85,8 +99,13 @@ export let configs = {
       response_time: 'number',
       omission_score: 'number',
       distraction_endurance_score: 'number',
-      actual_attention_time: 'number'
-    }
+      actual_attention_time: 'number',
+      // distractibility_score: 'number',
+      score: 'number',
+      flower_min_height: 'number',
+      flower_max_height: 'number',
+      flower_average_height: 'number',
+    },
   },
   13: {
     moduleName: 'IllyTale',
@@ -106,9 +125,14 @@ export let configs = {
         show: true,
         legend: 'IllyTale',
         canGroupBy: ['', 'level'],
-        canBeFieldY: ['impulsivity_score', 'response_time', 'omission_score', 'distraction_endurance_score'],
-        groupBy: ''
-      }
+        canBeFieldY: [
+          'impulsivity_score',
+          'response_time',
+          'omission_score',
+          'distraction_endurance_score',
+        ],
+        groupBy: '',
+      },
     ],
     fieldsConfig: {
       session_start_time: 'string',
@@ -125,8 +149,8 @@ export let configs = {
       response_time: 'number',
       omission_score: 'number',
       distraction_endurance_score: 'number',
-      actual_attention_time: 'number'
-    }
+      actual_attention_time: 'number',
+    },
   },
   14: {
     moduleName: 'Viblio',
@@ -146,9 +170,15 @@ export let configs = {
         show: true,
         legend: 'Viblio',
         canGroupBy: ['', 'level'],
-        canBeFieldY: ['impulsivity_score', 'response_time', 'omission_score', 'distraction_endurance_score'],
-        groupBy: ''
-      }
+        canBeFieldY: [
+          'impulsivity_score',
+          'response_time',
+          'omission_score',
+          'distraction_endurance_score',
+          'actual_attention_time',
+        ],
+        groupBy: '',
+      },
     ],
     fieldsConfig: {
       session_start_time: 'string',
@@ -164,8 +194,8 @@ export let configs = {
       response_time: 'number',
       omission_score: 'number',
       distraction_endurance_score: 'number',
-      actual_attention_time: 'number'
-    }
+      actual_attention_time: 'number',
+    },
   },
   15: {
     moduleName: 'Repella',
@@ -185,9 +215,14 @@ export let configs = {
         show: true,
         legend: 'Repella',
         canGroupBy: ['', 'level'],
-        canBeFieldY: ['impulsivity_score', 'response_time', 'omission_score', 'distraction_endurance_score'],
-        groupBy: ''
-      }
+        canBeFieldY: [
+          'impulsivity_score',
+          'response_time',
+          'omission_score',
+          'distraction_endurance_score',
+        ],
+        groupBy: '',
+      },
     ],
     fieldsConfig: {
       session_start_time: 'string',
@@ -201,7 +236,7 @@ export let configs = {
       response_time: 'number',
       omission_score: 'number',
       distraction_endurance_score: 'number',
-      actual_attention_time: 'number'
-    }
-  }
+      actual_attention_time: 'number',
+    },
+  },
 };
