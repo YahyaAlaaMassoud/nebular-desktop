@@ -186,7 +186,7 @@ async function createWindow() {
     modulesUpdate.windowWillClose(ev);
   });
 
-  sendUserEmails();
+  // sendUserEmails();
 }
 
 function sendUserEmails() {
