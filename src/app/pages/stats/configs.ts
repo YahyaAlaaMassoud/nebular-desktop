@@ -203,6 +203,9 @@ export let configs = {
       omission_score: 'number',
       distraction_endurance_score: 'number',
       actual_attention_time: 'number',
+      minimum_book_put_height: 'number',
+      maximum_book_put_height: 'number',
+      average_book_put_height: 'number',
     },
   },
   15: {

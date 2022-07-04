@@ -1,98 +1,142 @@
-
-
 <div class="center-div row module-controls">
-    <div style="flex: row;">
-        <label class="label filter-label">VR Module</label>
-        <nb-select filled status="info"
-                    fullWidth  shape="semi-round" size="medium" placeholder="VR Module"
-                    [(selected)]="selectedChart" (selectedChange)="rebuildChart()">
-            <nb-option *ngFor="let chart of chartsSettings" [value]="chart?.id">
-                {{ chart?.legend }}
-            </nb-option>
-        </nb-select>
-    </div>
+  <div style="flex: row">
+    <label class="label filter-label">VR Module</label>
+    <nb-select
+      filled
+      status="info"
+      fullWidth
+      shape="semi-round"
+      size="medium"
+      placeholder="VR Module"
+      [(selected)]="selectedChart"
+      (selectedChange)="rebuildChart()"
+    >
+      <nb-option *ngFor="let chart of chartsSettings" [value]="chart?.id">
+        {{ chart?.legend }}
+      </nb-option>
+    </nb-select>
+  </div>
 
-    <div style="flex: row;">
-        <label class="label filter-label">TOVA Variable</label>
-        <nb-select filled status="info"
-                    fullWidth  shape="semi-round" size="medium" placeholder="TOVA Variable"
-                    [(selected)]="selectedChartConfigs.fieldNameY" (selectedChange)="rebuildChart()">
-            <nb-option *ngFor="let fieldY of selectedChartConfigs?.canBeFieldY" [value]="fieldY">
-                {{ fieldY.split('_').join(' ') | titlecase }}
-            </nb-option>
-        </nb-select>
-    </div>
-    
-    <div style="flex: row;">
-        <label class="label filter-label">Group By</label>
-        <nb-select filled status="info"
-                    fullWidth  shape="semi-round" size="medium" placeholder="Group By"
-                    [(selected)]="selectedChartConfigs.groupBy" (selectedChange)="rebuildChart()">
-            <nb-option *ngFor="let group of selectedChartConfigs?.canGroupBy" [value]="group">
-                {{ (group.split('_').join(' ') || 'None') | titlecase }}
-            </nb-option>
-        </nb-select>
-    </div>
+  <div style="flex: row">
+    <label class="label filter-label">TOVA Variable</label>
+    <nb-select
+      filled
+      status="info"
+      fullWidth
+      shape="semi-round"
+      size="medium"
+      placeholder="TOVA Variable"
+      [(selected)]="selectedChartConfigs.fieldNameY"
+      (selectedChange)="rebuildChart()"
+    >
+      <nb-option
+        *ngFor="let fieldY of selectedChartConfigs?.canBeFieldY"
+        [value]="fieldY"
+      >
+        {{ fieldY.split("_").join(" ") | titlecase }}
+      </nb-option>
+    </nb-select>
+  </div>
+
+  <div style="flex: row">
+    <label class="label filter-label">Group By</label>
+    <nb-select
+      filled
+      status="info"
+      fullWidth
+      shape="semi-round"
+      size="medium"
+      placeholder="Group By"
+      [(selected)]="selectedChartConfigs.groupBy"
+      (selectedChange)="rebuildChart()"
+    >
+      <nb-option
+        *ngFor="let group of selectedChartConfigs?.canGroupBy"
+        [value]="group"
+      >
+        {{ group.split("_").join(" ") || "None" | titlecase }}
+      </nb-option>
+    </nb-select>
+  </div>
 </div>
 
-<br>
-<br>
+<br />
+<br />
 
 <div class="center-div row module-controls">
-    <nb-layout-column *ngIf="emptyChart">
-        <nb-card>
-            <nb-card-body class="empty-chart">
-                <span><nb-icon icon="trending-up-outline"></nb-icon> No Data Available For This Chart</span>
-            </nb-card-body>
-        </nb-card>
-    </nb-layout-column>
+  <nb-layout-column *ngIf="emptyChart">
+    <nb-card>
+      <nb-card-body class="empty-chart">
+        <span
+          ><nb-icon icon="trending-up-outline"></nb-icon> No Data Available For
+          This Chart</span
+        >
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
 </div>
-
 
 <div class="chart" *ngIf="validData?.length">
-    <canvas [id]="selectedChart"></canvas>
+  <canvas [id]="selectedChart"></canvas>
 </div>
 
-<br>
-<br>
+<br />
+<br />
 
 <nb-accordion *ngIf="selectedChartConfigs && validData?.length">
-    <nb-accordion-item class="card_title_accordion">
-        <nb-accordion-item-header>
-            <div class="accord-title">
-                <span>Statistics Data in Tabular Format</span>
-                <button nbButton shape="round" status="success" size="medium" (click)="exportV2($event)" style="margin-left: 3rem;">
-                    Export Excel
-                    <nb-icon icon="save-outline"></nb-icon>
-                </button>
-            </div>
-        </nb-accordion-item-header>
-        <nb-accordion-item-body>
-            <div>
-                <nb-checkbox *ngFor="let col of allNgxColumns" [checked]="isChecked(col)" class="filter-checkbox" (checkedChange)="toggle(col)">
-                    {{ col.shownName }}
-                </nb-checkbox>
-            </div>
-            <br>
-            <ngx-datatable
-                        class="material"
-                        [rowHeight]="$any('auto')"
-                        [limit]="5"
-                        [rows]="ngxRows"
-                        [loadingIndicator]="false"
-                        [rowClass]="getRowClass"
-                        [selectionType]="SelectionType.multiClick"
-                        [columnMode]="'force'"
-                        [headerHeight]="$any('auto')"
-                        [footerHeight]="$any('auto')">
-                <ngx-datatable-column *ngFor="let col of ngxColumns" [name]="col.name" [prop]="col.prop" >
-                    <ng-template ngx-datatable-header-template>
-                        <span class="table-header">{{ col.shownName }}</span>
-                    </ng-template>
-                </ngx-datatable-column>
-            </ngx-datatable>
-        </nb-accordion-item-body>
-    </nb-accordion-item>
+  <nb-accordion-item class="card_title_accordion">
+    <nb-accordion-item-header>
+      <div class="accord-title">
+        <span>Statistics Data in Tabular Format</span>
+        <button
+          nbButton
+          shape="round"
+          status="success"
+          size="medium"
+          (click)="exportV2($event)"
+          style="margin-left: 3rem"
+        >
+          Export Excel
+          <nb-icon icon="save-outline"></nb-icon>
+        </button>
+      </div>
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <div>
+        <nb-checkbox
+          *ngFor="let col of allNgxColumns"
+          [checked]="isChecked(col)"
+          class="filter-checkbox"
+          (checkedChange)="toggle(col)"
+        >
+          {{ col.shownName }}
+        </nb-checkbox>
+      </div>
+      <br />
+      <ngx-datatable
+        class="material"
+        [rowHeight]="$any('auto')"
+        [limit]="5"
+        [rows]="ngxRows"
+        [loadingIndicator]="false"
+        [rowClass]="getRowClass"
+        [selectionType]="SelectionType.multiClick"
+        [columnMode]="'force'"
+        [headerHeight]="$any('auto')"
+        [footerHeight]="$any('auto')"
+      >
+        <ngx-datatable-column
+          *ngFor="let col of ngxColumns"
+          [name]="col.name"
+          [prop]="col.prop"
+        >
+          <ng-template ngx-datatable-header-template>
+            <span class="table-header">{{ col.shownName }}</span>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
 </nb-accordion>
 
 <!-- <div class="center-div" style="display: flex; align-items: center; justify-content: center; flex-direction: row;" *ngIf="selectedChartConfigs && validData?.length" >

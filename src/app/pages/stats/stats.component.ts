@@ -107,6 +107,7 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.allNgxColumns = this.getNgxCols(this.displayedColumns);
 
     this.ngxRows = [];
+    this.validData = this.validData.reverse();
     this.validData.forEach((row) => {
       var newRow = {};
       this.allNgxColumns.forEach((col) => {
@@ -119,6 +120,7 @@ export class StatsComponent implements OnInit, OnDestroy {
       });
       this.ngxRows.push(newRow);
     });
+    this.validData = this.validData.reverse();
   }
 
   removeUnderScore(str) {
@@ -178,13 +180,18 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.chartsSettings.forEach((chart: ChartsConfig) => {
       const tooltipData = {};
       this.validData.forEach((sessionData: any) => {
+        console.log('sessionData', sessionData);
         const y = sessionData[chart.fieldNameY].toFixed(2);
         let x: any = new Date(sessionData[chart.fieldNameX]);
+        if (x == 'Invalid Date') {
+          return;
+        }
+        console.log('date', x);
         console.log('sessionData', sessionData);
         x =
           this.sessionsScope === 'One Session'
-            ? x.toLocaleTimeString()
-            : x.toLocaleTimeString();
+            ? x.toLocaleString()
+            : x.toLocaleString();
         if (y < 0) {
           return;
         }
